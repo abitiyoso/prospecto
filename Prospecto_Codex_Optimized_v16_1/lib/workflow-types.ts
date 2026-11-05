@@ -1,0 +1,9 @@
+export type IndexedSource={source_id:string;product_id:string;state:'indexing'|'ready'|'failed';error_code:string;updated_at:string;chunk_count:number};
+export type LeoDraft={subject:string;body:string;rationale:string;source_ids:string[]};
+export type LeoRun={id:string;product_id:string;engine:'template'|'openai';result:LeoDraft;source_refs:{source_id:string;title:string;excerpt:string}[];created_at:string};
+export type Channel={id:string;sender_email:string;sender_name:string;status:string;verified_at:string};
+export type Launch={id:string;campaign_id:string;connection_id:string;state:string;created_at:string};
+export type OutboundJob={id:string;launch_id:string;contact_id:string;step_index:number;state:string;due_at:string;attempts:number;note:string;message_id:string};
+export type Invite={id:string;email:string;expires_at:string;accepted_at:string|null};
+export type WorkflowData={documents:IndexedSource[];leoRuns:LeoRun[];connections:Channel[];launches:Launch[];jobs:OutboundJob[];invites:Invite[];suppressions:{id:string;email:string;reason:string}[];presentationEligible:boolean;openAIAvailable:boolean};
+export type Flow=(action:string,extra?:Record<string,unknown>)=>Promise<any>;

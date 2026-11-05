@@ -2,6 +2,7 @@ import {NextRequest,NextResponse} from 'next/server';
 import {z} from 'zod';
 import {supabase} from '@/lib/supabase';
 import {readBody,sameOrigin} from '@/lib/request';
+import {adminDb} from '@/lib/admin';
 import {uuid} from '@/lib/domain';
 import {normalizeEvidence,researchError} from '@/lib/research';
 export async function POST(req:NextRequest){
@@ -19,6 +20,7 @@ export async function POST(req:NextRequest){
   const rates=await db.from('credit_action_rates').select('id').eq('action',v.kind==='company'?'company_research':'pic_research').eq('enabled',true).lte('effective_from',new Date().toISOString()).or('effective_to.is.null,effective_to.gt.'+new Date().toISOString()).limit(1);
   if(rates.error||rates.data?.length)return NextResponse.json({error:'Penagihan riset memerlukan koneksi worker kredit sebelum tarif diaktifkan.'},{status:503});
   if(!process.env.FIRECRAWL_API_KEY)return NextResponse.json({error:'Layanan riset belum terhubung'},{status:503});
+  const budget=await adminDb().rpc('reserve_provider_usage',{w:v.workspace_id,actor:user.id,k:v.kind});if(budget.error)return NextResponse.json({error:'Batas riset akun/server tercapai. Coba lagi nanti.'},{status:429});
   const reserved=await db.rpc('reserve_research',{w:v.workspace_id,p:v.product_id,k:v.kind,q:query});if(reserved.error)return NextResponse.json({error:'Batas riset workspace tercapai. Tunggu satu menit dan coba lagi.'},{status:429});
   const id=reserved.data as string;
   try{

@@ -4,7 +4,9 @@ Kode aplikasi aktif berada di [Prospecto_Codex_Optimized_v16_1](Prospecto_Codex_
 
 Kode aplikasi, migrasi Supabase, pengujian, screenshot QA, dan petunjuk startup tersedia di folder tersebut. Status terperinci: [IMPLEMENTATION_STATUS.md](Prospecto_Codex_Optimized_v16_1/IMPLEMENTATION_STATUS.md).
 
-Status terkini: V8 Phase 0–2, integrasi Firecrawl, dan authoring/review Phase 3, dan fondasi commercial/reporting Phase 4 selesai untuk alur yang dicatat dalam [IMPLEMENTATION_STATE.md](IMPLEMENTATION_STATE.md). Landing v7 dan workspace v15 dipertahankan; aplikasi berautentikasi ada di `/app`. Sebanyak 48 tes lokal dan build produksi lulus, dengan bukti integrasi live di folder QA. Sequence, template, personalisasi dan approval tersimpan; LEO dan pengiriman masih membutuhkan koneksi provider. Katalog, ledger kredit dan reporting sudah tersedia; pembayaran merchant/worker masih diblokir. Berikutnya: Phase 5 — Final QA.
+Status terkini: alur presentasi fungsional dengan akses tanpa pembayaran, KMS PDF/DOCX/TXT/URL, XLSX, undangan, SMTP Hostinger, antrean campaign, unsubscribe, analytics dan backup–restore. Landing v7 dan workspace v15 dipertahankan; aplikasi terautentikasi ada di `/app`. Sebanyak 61 tes lokal dan build produksi lulus. GPT nyata masih memerlukan API key dan model OpenAI terpisah; draft template tersedia dengan label tanpa AI. Checkout belum diaktifkan.
+
+Panduan upload Node.js, environment, worker, domain/Auth URL dan pemulihan: [MANUAL_UPLOAD.md](Prospecto_Codex_Optimized_v16_1/MANUAL_UPLOAD.md). Riwayat migrasi sudah cocok dengan Elenio: [MIGRATIONS.md](Prospecto_Codex_Optimized_v16_1/MIGRATIONS.md).
 
 ```powershell
 cd Prospecto_Codex_Optimized_v16_1
@@ -14,4 +16,4 @@ Copy-Item .env.example .env.local
 pnpm dev
 ```
 
-Jangan commit `.env.local`. Supabase URL/publishable key dan Firecrawl server key harus disediakan di environment masing-masing. Detail integrasi, batas kemampuan, migrasi, verifikasi, dan langkah berikutnya ada di `IMPLEMENTATION_STATE.md`. Aplikasi belum dideploy; SMTP khusus dan layanan fase berikutnya belum dikonfigurasi.
+Jangan commit `.env.local`. Isi seluruh environment server menurut `.env.example`. Detail dan batas verifikasi ada di `IMPLEMENTATION_STATE.md`. Aplikasi belum dideploy ke domain publik; SMTP Auth dan sender presentasi sudah terhubung. Kredensial server tidak ikut repository.

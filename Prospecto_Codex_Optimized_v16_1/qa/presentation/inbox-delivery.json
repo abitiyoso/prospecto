@@ -1,0 +1,26 @@
+{
+  "checked": true,
+  "mailbox": "hello@elenio.id",
+  "messages": [
+    {
+      "uid": 37,
+      "subject": "Prospecto QA 7807ea1e-7853-452d-8b68-319a574dd259",
+      "messageId": "<2803ee9d-3db3-47c8-b67b-b69b264aa0eb@elenio.id>",
+      "from": "hello@elenio.id",
+      "to": [
+        "hello@elenio.id"
+      ],
+      "date": "2026-11-05T12:37:31Z"
+    },
+    {
+      "uid": 36,
+      "subject": "Prospecto QA ce85d4ad-42d8-4175-90ea-e1e3026b588e",
+      "messageId": "<084ec3dc-295e-4567-a2f5-13146b08d89a@elenio.id>",
+      "from": "hello@elenio.id",
+      "to": [
+        "hello@elenio.id"
+      ],
+      "date": "2026-11-05T12:33:32Z"
+    }
+  ]
+}

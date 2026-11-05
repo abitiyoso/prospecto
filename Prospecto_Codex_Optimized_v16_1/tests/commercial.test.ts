@@ -1,15 +1,15 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {PGlite} from '@electric-sql/pglite';
-import {readFile} from 'node:fs/promises';
+import {readFile,readdir} from 'node:fs/promises';
 test('commercial engine uses trusted settlement, isolated ledgers and event cohorts',async t=>{
  const db=new PGlite();const A=crypto.randomUUID(),B=crypto.randomUUID(),M=crypto.randomUUID(),w=crypto.randomUUID(),foreign=crypto.randomUUID();
  const one=async(sql:string,args:unknown[]=[])=> (await db.query<any>(sql,args)).rows[0];
  const as=async(id:string)=>{await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[id]);await db.exec('set role authenticated');};
  const trusted=async()=>{await db.exec('reset role;set role service_role');};
  try{
-  await db.exec(`create role authenticated nologin;create role anon nologin;create role service_role nologin bypassrls;create schema auth;create table auth.users(id uuid primary key);insert into auth.users values('${A}'),('${B}'),('${M}');create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth to authenticated;grant execute on function auth.uid() to authenticated;create schema storage;create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);create table storage.objects(id uuid default gen_random_uuid(),bucket_id text,name text);alter table storage.objects enable row level security;grant usage on schema storage to authenticated;grant select,insert,delete on storage.objects to authenticated;grant usage on schema public to authenticated;`);
-  for(const file of ['20261104180159_prospecto_foundation.sql','20261104234302_prospect_data.sql','20261104235659_research_runs.sql','20261105001844_outreach_review.sql','20261105002739_outreach_sequence_defaults.sql','20261105004019_commercial_reporting.sql'])await db.exec(await readFile('supabase/migrations/'+file,'utf8'));
+  await db.exec(`create role authenticated nologin;create role anon nologin;create role service_role nologin bypassrls;create schema auth;create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz);insert into auth.users(id) values('${A}'),('${B}'),('${M}');create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth to authenticated;grant execute on function auth.uid() to authenticated;create schema storage;create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);create table storage.objects(id uuid default gen_random_uuid(),bucket_id text,name text);alter table storage.objects enable row level security;grant usage on schema storage to authenticated;grant select,insert,delete on storage.objects to authenticated;grant usage on schema public to authenticated;`);
+  for(const file of (await readdir('supabase/migrations')).filter(f=>f.endsWith('.sql')).sort())await db.exec(await readFile('supabase/migrations/'+file,'utf8'));
   await as(A);await db.query("insert into workspaces(id,name,created_by) values($1,'Isolated commercial fixture',$2)",[w,A]);
   await as(B);await db.query("insert into workspaces(id,name,created_by) values($1,'Foreign fixture',$2)",[foreign,B]);
   await as(A);const contacts=[] as string[];

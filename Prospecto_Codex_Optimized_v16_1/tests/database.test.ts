@@ -1,18 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { PGlite } from '@electric-sql/pglite';
-import { readFile } from 'node:fs/promises';
+import { readFile,readdir } from 'node:fs/promises';
 const A='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',B='bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',M='cccccccc-cccc-4ccc-8ccc-cccccccccccc';
 test('PostgreSQL migration, tenant RLS and Phase 1 persistence',async t=>{
  const db=new PGlite();
  try {
- await db.exec(`create role authenticated nologin;create role anon nologin;create role service_role nologin bypassrls;create schema auth;create table auth.users(id uuid primary key);insert into auth.users values('${A}'),('${B}'),('${M}');create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth to authenticated;grant execute on function auth.uid() to authenticated;create schema storage;create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);create table storage.objects(id uuid default gen_random_uuid(),bucket_id text,name text);alter table storage.objects enable row level security;grant usage on schema storage to authenticated;grant select,insert,delete on storage.objects to authenticated;grant usage on schema public to authenticated;`);
- await db.exec(await readFile('supabase/migrations/20261104180159_prospecto_foundation.sql','utf8'));
- await db.exec(await readFile('supabase/migrations/20261104234302_prospect_data.sql','utf8'));
- await db.exec(await readFile('supabase/migrations/20261104235659_research_runs.sql','utf8'));
- await db.exec(await readFile('supabase/migrations/20261105001844_outreach_review.sql','utf8'));
- await db.exec(await readFile('supabase/migrations/20261105002739_outreach_sequence_defaults.sql','utf8'));
- await db.exec(await readFile('supabase/migrations/20261105004019_commercial_reporting.sql','utf8'));
+ await db.exec(`create role authenticated nologin;create role anon nologin;create role service_role nologin bypassrls;create schema auth;create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz);insert into auth.users(id) values('${A}'),('${B}'),('${M}');create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth to authenticated;grant execute on function auth.uid() to authenticated;create schema storage;create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);create table storage.objects(id uuid default gen_random_uuid(),bucket_id text,name text);alter table storage.objects enable row level security;grant usage on schema storage to authenticated;grant select,insert,delete on storage.objects to authenticated;grant usage on schema public to authenticated;`);
+ for(const file of (await readdir('supabase/migrations')).filter(f=>f.endsWith('.sql')).sort())await db.exec(await readFile('supabase/migrations/'+file,'utf8'));
  const as=async(id:string)=>{await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[id]);await db.exec('set role authenticated');};
  const one=async(sql:string,params:unknown[]=[])=>{const r=await db.query<any>(sql,params);return r.rows[0];};
  const wa=crypto.randomUUID(),wb=crypto.randomUUID();
@@ -58,7 +53,7 @@ test('PostgreSQL migration, tenant RLS and Phase 1 persistence',async t=>{
   await assert.rejects(db.query('insert into campaign_templates(workspace_id,name,steps) values($1,$2,$3)',[wa,'Foreign',JSON.stringify(steps)]));
   await as(A);await db.query('update campaigns set product_id=null where id=$1',[campaign!]);
  });
- await t.test('anonymous access blocked and every exposed tenant table has RLS',async()=>{await db.exec('reset role');const r=await db.query<{relname:string;relrowsecurity:boolean}>("select relname,relrowsecurity from pg_class join pg_namespace n on n.oid=relnamespace where n.nspname='public' and relkind='r'");assert.equal(r.rows.length,25);assert.ok(r.rows.every(x=>x.relrowsecurity));await db.exec('set role anon');await assert.rejects(db.query('select * from products'));await assert.rejects(db.query('select create_campaign($1,$2,$3)',[wa,'Anonymous',ids]));});
+ await t.test('anonymous access blocked and every exposed tenant table has RLS',async()=>{await db.exec('reset role');const r=await db.query<{relname:string;relrowsecurity:boolean}>("select relname,relrowsecurity from pg_class join pg_namespace n on n.oid=relnamespace where n.nspname='public' and relkind='r'");assert.equal(r.rows.length,37);assert.ok(r.rows.every(x=>x.relrowsecurity));await db.exec('set role anon');await assert.rejects(db.query('select * from products'));await assert.rejects(db.query('select create_campaign($1,$2,$3)',[wa,'Anonymous',ids]));});
  await t.test('owner deletion removes product metadata and storage must be explicitly removed first',async()=>{await as(A);await db.query("delete from storage.objects where name=$1",[path]);await db.query('delete from products where id=$1',[pa]);assert.equal((await one('select count(*)::int n from knowledge_sources where product_id=$1',[pa])).n,0);});
  } finally {await db.close();}
 });

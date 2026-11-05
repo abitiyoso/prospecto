@@ -4,6 +4,7 @@ import Dashboard from '@/app/ui/dashboard';
 import Auth from '@/app/ui/auth';
 import type { DashboardData, Workspace } from '@/lib/domain';
 import { collectRows } from '@/lib/data';
+import {workflowData} from '@/lib/workflow-data';
 export const dynamic = 'force-dynamic';
 export default async function Page({ searchParams }: { searchParams: Promise<{mode?: string;auth?:string}> }) {
   const query=await searchParams;
@@ -28,7 +29,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<{mo
   const campaigns=await Promise.all(results[3].map(async c=>{const r=await db.rpc('campaign_preflight',{w:active.id,c:c.id});if(r.error)throw new Error('Review campaign belum dapat dimuat');return {...c,preflight:r.data};}));
   const templates=await collectRows((a,b)=>db.from('campaign_templates').select('id,name,steps').eq('workspace_id',active.id).order('created_at').order('id').range(a,b));
   const commercialResult=await db.rpc('commercial_summary',{w:active.id});if(commercialResult.error)throw new Error('Ringkasan penggunaan belum dapat dimuat');
-  const data = { commercial:commercialResult.data,templates, prospects, workspaces, active, products:results[0], sources:results[1], contacts:results[2], campaigns, email:user.email||'' } as DashboardData;
+  const workflow=await workflowData(db,active.id,user.email||'');
+  const data = { workflow,commercial:commercialResult.data,templates, prospects, workspaces, active, products:results[0], sources:results[1], contacts:results[2], campaigns, email:user.email||'' } as DashboardData;
   return <Dashboard key={active.id} data={data}/>;
 }
 

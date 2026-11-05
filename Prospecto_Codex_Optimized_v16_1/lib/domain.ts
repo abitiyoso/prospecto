@@ -11,7 +11,7 @@ export type Contact = Omit<z.infer<typeof contactInput>, 'company'|'domain'> & {
 export type Source = { id: string; product_id: string; title: string; kind: string; content: string; status: string; upload_state: 'uploading'|'stored'|'failed'; storage_path: string | null };
 export type Campaign = { id: string; name: string; subject: string; body: string; status: 'draft'; product_id:string|null; sender_name:string; steps:import('./outreach').CampaignStep[]; preflight?:{content_ready:boolean;approved:boolean;sending_available:false}; campaign_audience: { contact_id: string }[] };
 export type Workspace = { id: string; name: string; timezone?:import('./commercial').WorkspaceZone; role: 'owner'|'admin'|'member' };
-export type DashboardData = { commercial:import('./commercial').CommercialData; templates?:import('./outreach').CampaignTemplate[]; prospects?: {researchAvailable?:boolean; runs?: import('./research').ResearchRun[]; icps: import('./prospect').ICP[]; companies: import('./prospect').Company[]; pics: import('./prospect').PIC[]}; workspaces: Workspace[]; active: Workspace; products: Product[]; sources: Source[]; contacts: Contact[]; campaigns: Campaign[]; email: string };
+export type DashboardData = { workflow?:import('./workflow-types').WorkflowData; commercial:import('./commercial').CommercialData; templates?:import('./outreach').CampaignTemplate[]; prospects?: {researchAvailable?:boolean; runs?: import('./research').ResearchRun[]; icps: import('./prospect').ICP[]; companies: import('./prospect').Company[]; pics: import('./prospect').PIC[]}; workspaces: Workspace[]; active: Workspace; products: Product[]; sources: Source[]; contacts: Contact[]; campaigns: Campaign[]; email: string };
 
 // RFC 4180 style quoted fields, escaped quotes, CRLF and embedded line breaks.
 export function parseCsv(raw: string): string[][] {
@@ -54,9 +54,9 @@ export function assertUpload(name: string, type: string, bytes: Uint8Array) {
   const ext = name.split('.').pop()?.toLowerCase();
   const head = new TextDecoder().decode(bytes.subarray(0, 8));
   if (ext === 'pdf' && type === 'application/pdf' && head.startsWith('%PDF-')) return;
-  // DOCX is deliberately blocked until an OOXML parser can verify package contents.
+  if(ext==='docx'&&type==='application/vnd.openxmlformats-officedocument.wordprocessingml.document'&&bytes.length>30&&bytes[0]===80&&bytes[1]===75)return; // Full OOXML validation happens before Storage upload.
   if (ext === 'txt' && (type === 'text/plain' || !type) && !bytes.includes(0)) { new TextDecoder('utf-8', { fatal: true }).decode(bytes); return; }
-  throw new Error('Gunakan PDF atau TXT UTF-8 yang valid. DOCX belum tersedia.');
+  throw new Error('Gunakan PDF, DOCX, atau TXT UTF-8 yang valid.');
 }
 
 

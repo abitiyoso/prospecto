@@ -36,3 +36,12 @@
 @media(max-width:640px){.commercial-panel .report-filters,.commercial-panel .p-metrics{grid-template-columns:1fr;}.commercial-panel .btn{white-space:normal;max-width:100%;}}
 /* Long billing breadcrumb measured 9px beyond the 320px header. */
 @media(max-width:640px){.prospecto-app .topbar>.flex{min-width:0;flex:1;}.prospecto-app .topbar .crumb{min-width:0;}.prospecto-app .topbar .crumb b{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.prospecto-app .topbar .right-head,.prospecto-app .topbar .mobile-menu{flex-shrink:0;}}
+
+/* Scoped operational controls reuse the approved workspace tokens. */
+.prospecto-app .workflow-panel{margin-top:20px;min-width:0}
+.prospecto-app .workflow-panel .p-actions{display:flex;flex-wrap:wrap;gap:8px}
+.prospecto-app .workflow-item{padding:14px 0;border-bottom:1px solid var(--border,#e5e7eb);overflow-wrap:anywhere}
+.prospecto-app .workflow-panel label,.prospecto-app .workflow-panel form{min-width:0}
+.prospecto-app .workflow-panel textarea{max-width:100%}
+.prospecto-app .workflow-panel pre{white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:600px){.prospecto-app .workflow-panel .btn{max-width:100%;white-space:normal}.prospecto-app .p-modal{max-height:90dvh;overflow:auto}}

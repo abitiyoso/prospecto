@@ -1,3 +1,25 @@
+# Prospecto — functional presentation release
+
+## Current handoff — 5 November 2026
+
+User authorized functional completion for presentation, payment bypass, manual domain/hosting later, and final Git push. This section supersedes historical integration gaps below. Full paid SaaS production launch is not claimed.
+
+Implemented: server-only credential boundary; separate expiring presentation access; private KMS text extraction/chunking/search for note/URL/PDF/DOCX/TXT; bounded safe Office archives; XLSX first-sheet import through existing CSV mapping; source-labeled template drafts plus optional real OpenAI Responses adapter; verified-email member invites; TLS-verified encrypted SMTP sender; persistent scheduled campaign queue, idempotent launch/claim/finish, approval/snapshot rechecks, role/expiry checks, pause/cancel, waits/conditions and manual LinkedIn tasks; suppression and signed GET-confirm/POST unsubscribe; manual outcome evidence with provenance; backup/private-file restore into a new workspace; health/worker routes; account/global provider budgets.
+
+Hosted migrations presentation_functional and workflow_hardening applied. All 37 public tables have RLS. Definer invite implementation moved to private schema behind invoker wrapper. Local migration filenames now match all nine hosted versions; old SQL bodies unchanged. Security advisor has no new findings; only pre-existing leaked-password-protection warning remains. See MIGRATIONS.md.
+
+Main workspace owned by the user's Gmail login has actual presentation access until 5 December 2026 and a verified hello@elenio.id Hostinger sender. No campaign was launched for that workspace. SMTP credentials, server Supabase key, encryption key, worker secret and Firecrawl key remain only in ignored environment/encrypted credential storage. Do not rotate encryption/worker keys casually. Auth email verification remains ON; signup/reset templates and Hostinger sender remain as previously verified.
+
+Validation: 61 tests pass, TypeScript and production build pass, production dependency audit reports zero vulnerabilities. Actual hosted/API checks pass for note and DOCX indexing/search, XLSX parsing, matching verified invitation acceptance, tenant/role enforcement, real self-mail SMTP acceptance once, launch/process deduplication and pause, unsubscribe confirmation, ZIP backup–restore without credential/execution cloning. Two isolated QA emails were observed in the own Hostinger inbox with matching Message-ID; no mail was sent to other recipients. QA users were globally signed out and banned; queued/manual jobs canceled, QA credentials/suppressions/private files removed. Isolated metadata retained for audit is not customer seed data.
+
+PDF unit extraction exposed a Next bundling-only worker-path failure; fixed by externalizing pdf-parse via the documented [serverExternalPackages](https://nextjs.org/docs/app/api-reference/config/next-config-js/serverExternalPackages) option, and rechecked through actual authenticated upload/index/search. Operational screens and LEO dialog pass at 1440/1024/390/320; mobile navigation closes before capture, no horizontal overflow/client errors. Approved landing/reference interactions pass and source/served pixel hashes remain equal at all four widths; all six immutable asset hashes match. Browser asset scan finds no configured private keys/passwords.
+
+Evidence: qa/presentation/ (results, responsive captures, PDF check on production build, seven production HTTP checks, tests/build logs, mail metadata, client-secret scan), qa/phase0/results.json, qa/presentation-dependency-audit.json. Authenticated worker --check passed with queueProcessed=false. Automatic approval review declined starting the global active worker because it could send queued email; the safe connectivity probe replaced that verification. No global worker daemon is running. Per-workspace processing was tested with own-mailbox-only QA. Manual upload/worker/backup/rollback directions: MANUAL_UPLOAD.md. Application code is in this folder; root README points here.
+
+Remaining: manual Node hosting/domain/HTTPS/Auth production URLs; real GPT requires OPENAI_API_KEY + OPENAI_MODEL and a live provider test (ChatGPT login is not app API access); payment adapter intentionally bypassed/unimplemented. Template drafts are explicitly not AI. SMTP sent means provider acceptance, never fabricated delivered/open; reply/bounce/meeting are manually recorded with evidence, no inbox webhook tracking. Workspace export is not database/PITR backup. Hosting monitoring, process supervision and scheduled provider backups must be configured on the eventual host. Next milestone: upload/configure staging origin and test signup/reset plus GPT once API credentials are available.
+
+## Historical milestone record
+
 # Prospecto V8 — Phase 4 commercial foundation and reporting
 
 NEXT_PHASE=5

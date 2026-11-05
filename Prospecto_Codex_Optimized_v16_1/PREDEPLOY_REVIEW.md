@@ -1,3 +1,11 @@
+# Pemeriksaan terbaru — handoff presentasi
+
+Temuan implementasi di audit lama di bawah telah ditindaklanjuti: KMS diekstrak/diindeks, DOCX/XLSX dan undangan aktif, sender SMTP/antrean/suppression/unsubscribe berfungsi, event sent nyata tercatat, backup–restore workspace diuji, budget akun/server diterapkan dan migrasi diselaraskan. Bukti terkini: 61 tes, build/TypeScript, audit dependency nol, pengiriman own-mailbox dan inbox cocok, PDF di runtime production, empat ukuran layar tanpa overflow, aset/pixel landing tetap sama. Detail di IMPLEMENTATION_STATE.md dan qa/presentation/.
+
+Belum: hosting/domain/HTTPS serta URL Auth final (manual sesuai permintaan), GPT API key/model + uji provider nyata, penagihan (sengaja bypass). Tidak ada webhook delivered/open/inbox otomatis; hasil percakapan diberi label manual. Global worker tidak dinyalakan dalam handoff; probe autentikasi tanpa antrean lulus dan pengiriman diuji hanya per-workspace ke mailbox sendiri. Monitoring/supervisor dan backup database/Storage perlu dipasang pada host final. Warning lama Supabase leaked-password protection tetap tercatat. Panduan: MANUAL_UPLOAD.md.
+
+## Audit historis sebelum penyelesaian fungsi
+
 # Pemeriksaan pra-deploy Prospecto — 5 November 2026
 
 Scope: kesiapan implementasi saat ini; pembayaran dikecualikan. Verdict: layak staging/internal untuk alur manual yang sudah tersedia, belum layak rilis publik sebagai SaaS outreach/AI lengkap. Tidak ada deployment atau perubahan pengaturan hosted pada audit ini.

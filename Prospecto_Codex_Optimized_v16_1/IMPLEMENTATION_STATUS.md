@@ -1,4 +1,9 @@
-# Current milestone: V8 Phase 4 foundation and reporting
+# Current milestone: functional presentation handoff
+
+Presentation access, private KMS extraction/search (PDF/DOCX/TXT/URL/notes), XLSX, verified-email member invitations, Hostinger SMTP, persistent campaign execution/suppression/unsubscribe, manual outcome provenance, backup/restore and health/worker checks are implemented and verified. 61 tests, TypeScript, production build and dependency audit pass. The main workspace has separate 30-day presentation access and a verified sender; no paid transaction or customer campaign was fabricated. GPT still requires separate OpenAI API credentials and a live-provider test. Domain/hosting/Auth final URLs remain manual, payment deliberately bypassed. See [current state](IMPLEMENTATION_STATE.md) and [upload guide](MANUAL_UPLOAD.md); reports below are historical.
+
+---
+# Historical milestone: V8 Phase 4 foundation and reporting
 
 Versioned proposal catalog, trusted credit engine/capacity enforcement, subscription/ledger views and event-based analytics now pass 48 local tests, TypeScript/build, six live browser/API groups, and an actual hosted PostgreSQL transaction test with full rollback. Landing pixels and assets are unchanged. NEXT_PHASE=5. Exact evidence and limits are in IMPLEMENTATION_STATE.md and qa/v8-phase4/.
 
