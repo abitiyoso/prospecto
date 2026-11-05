@@ -1,4 +1,9 @@
-# Current milestone: functional presentation handoff
+# Current milestone: functional cleanup verified
+
+Fixed audited campaign reply/unsubscribe, ICP exclusions and restore bugs. Added safe member role/removal/invite revocation, named lead lists, accurate KMS state and paginated campaign job history. 70 tests plus hosted API/browser checks, TypeScript/build and dependency audit pass. All 39 public tables have RLS. Current evidence and remaining GPT/provider/hosting boundaries: [IMPLEMENTATION_STATE.md](IMPLEMENTATION_STATE.md), `qa/functional-repair/`. No email/campaign was launched by this cleanup's QA; no production deployment.
+
+---
+# Historical milestone: functional presentation handoff
 
 Presentation access, private KMS extraction/search (PDF/DOCX/TXT/URL/notes), XLSX, verified-email member invitations, Hostinger SMTP, persistent campaign execution/suppression/unsubscribe, manual outcome provenance, backup/restore and health/worker checks are implemented and verified. 61 tests, TypeScript, production build and dependency audit pass. The main workspace has separate 30-day presentation access and a verified sender; no paid transaction or customer campaign was fabricated. GPT still requires separate OpenAI API credentials and a live-provider test. Domain/hosting/Auth final URLs remain manual, payment deliberately bypassed. See [current state](IMPLEMENTATION_STATE.md) and [upload guide](MANUAL_UPLOAD.md); reports below are historical.
 

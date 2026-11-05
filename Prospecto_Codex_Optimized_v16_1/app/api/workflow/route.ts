@@ -7,6 +7,7 @@ import {uuid} from '@/lib/domain';
 import {indexSource,generateDraft,presentationEligible,presentationActive,saveSender,sendTest,createInvite,must} from '@/lib/workflow-services';
 import {allowedRecipient,platformSmtp} from '@/lib/smtp';
 import {processOutbound} from '@/lib/outbound-worker';
+import {launchRecipient} from '@/lib/outreach-state';
 export async function POST(req:NextRequest){
  if(!sameOrigin(req))return NextResponse.json({error:'Origin tidak valid'},{status:403});
  try{
@@ -17,6 +18,14 @@ export async function POST(req:NextRequest){
   if(action==='kms.search')return ok({results:must(await db.rpc('search_knowledge',{w,p:uuid.parse(input.product_id),q:z.string().max(200).parse(input.query)}))});
   if(action==='kms.index')return ok(await indexSource(db,w,uuid.parse(input.source_id),user.id));
   if(action==='leo.generate')return ok(await generateDraft(db,w,uuid.parse(input.product_id),user.id,z.string().trim().max(2000).parse(input.instruction||''),z.enum(['template','openai']).parse(input.engine)));
+  if(action==='outreach.history'){
+   const c=uuid.parse(input.campaign_id),offset=z.number().int().min(0).max(1000000).parse(input.offset||0);
+   must(await db.from('campaigns').select('id').eq('workspace_id',w).eq('id',c).single());
+   const page=await db.from('outbound_jobs').select('id,launch_id,contact_id,step_index,state,due_at,attempts,note,message_id,campaign_launches!inner(campaign_id)',{count:'exact'}).eq('workspace_id',w).eq('campaign_launches.campaign_id',c).order('due_at',{ascending:false}).order('id').range(offset,offset+99);must(page);return ok({jobs:page.data,total:page.count||0});
+  }
+  if(action==='team.change'){must(await db.rpc('manage_workspace_member',{w,target:uuid.parse(input.user_id),new_role:z.enum(['admin','member']).parse(input.role)}));return ok();}
+  if(action==='team.remove'){must(await db.rpc('manage_workspace_member',{w,target:uuid.parse(input.user_id),new_role:null}));return ok();}
+  if(action==='invite.revoke'){must(await db.rpc('revoke_workspace_invite',{w,invitation:uuid.parse(input.invite_id)}));return ok();}
   if(!isAdmin)return NextResponse.json({error:'Tindakan ini membutuhkan owner atau admin'},{status:403});
   const admin=adminDb();
   if(action==='presentation.activate'){
@@ -55,9 +64,9 @@ export async function POST(req:NextRequest){
    const launch=job.campaign_launches as any;if(!['active','queued','paused'].includes(launch.state))throw new Error('Peluncuran tidak aktif');const next=job.step_index+1<launch.snapshot.campaign.steps.length?job.step_index+1:null;must(await admin.rpc('finish_outbound',{job:job.id,outcome:'completed',next_index:next,job_note:'Tugas manual ditandai selesai oleh pengguna'}));return ok();
   }
   if(action==='event.record'){
-   const type=z.enum(['replied','positive_reply','meeting','bounced','unsubscribed']).parse(input.type),note=z.string().trim().min(1).max(2000).parse(input.note),job=must(await admin.from('outbound_jobs').select('*,campaign_launches(campaign_id,connection_id)').eq('workspace_id',w).eq('id',uuid.parse(input.job_id)).eq('state','sent').single());const launch=job.campaign_launches as any;
+   const type=z.enum(['replied','positive_reply','meeting','bounced','unsubscribed']).parse(input.type),note=z.string().trim().min(1).max(2000).parse(input.note),job=must(await admin.from('outbound_jobs').select('*,campaign_launches(campaign_id,sender_email,snapshot)').eq('workspace_id',w).eq('id',uuid.parse(input.job_id)).eq('state','sent').single());const launch=job.campaign_launches as any;
    const event=must(await admin.from('outbound_events').insert({workspace_id:w,campaign_id:launch.campaign_id,contact_id:job.contact_id,provider:'manual',provider_event_id:crypto.randomUUID(),event_type:type,occurred_at:new Date().toISOString()}).select('id').single());must(await admin.from('manual_event_notes').insert({event_id:event.id,workspace_id:w,note,actor_id:user.id}));
-   if(['bounced','unsubscribed'].includes(type)){const c=must(await admin.from('contacts').select('email').eq('workspace_id',w).eq('id',job.contact_id).single()),s=must(await admin.from('channel_connections').select('sender_email').eq('id',launch.connection_id).single());must(await admin.from('smtp_suppressions').upsert({workspace_id:w,email:c.email,sender_email:s.sender_email,reason:type==='bounced'?'bounce':'unsubscribed'},{onConflict:'workspace_id,email,sender_email'}));}return ok();
+   if(['bounced','unsubscribed'].includes(type)){const recipient=launchRecipient(launch,job.contact_id);must(await admin.from('smtp_suppressions').upsert({workspace_id:w,email:recipient.email,sender_email:recipient.senderEmail,reason:type==='bounced'?'bounce':'unsubscribed'},{onConflict:'workspace_id,email,sender_email'}));}return ok();
   }
   return NextResponse.json({error:'Tindakan belum tersedia'},{status:400});
  }catch(e){return NextResponse.json({error:e instanceof z.ZodError?'Isian belum valid':e instanceof Error&&!/password|credential|secret|token|apikey/i.test(e.message)?e.message:'Operasi belum berhasil. Periksa koneksi server.'},{status:400});}

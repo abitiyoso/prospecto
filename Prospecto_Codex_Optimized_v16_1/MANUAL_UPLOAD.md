@@ -33,6 +33,10 @@ Email hanya diluncurkan setelah konten dan audience lolos review/approval serta 
 
 Settings menyediakan arsip produk, KMS beserta file asli, ICP, leads dan draft campaign. Restore membuat workspace baru dengan UUID baru; tidak memulihkan approval, sender, antrean kirim, sesi atau pembayaran. Dokumen perlu diindeks ulang. Batas arsip restore 10 MB, file asli total 20 MB sebelum kompresi. Ini backup isi workspace, bukan pengganti backup database/PITR dan Storage hosting. Jadwalkan backup database dan bucket melalui Supabase/penyedia hosting sesuai paket yang tersedia; simpan kunci enkripsi di tempat terpisah.
 
+Daftar leads beserta anggotanya dan draft kosong ikut dipulihkan. Batas tambahan: 999 file, 40 MB seluruh isi sebelum kompresi, 5.000 baris per jenis data. Upload yang belum tersimpan harus diselesaikan atau dihapus sebelum backup. File/referensi yang hilang pada arsip menyebabkan penolakan sebelum workspace dibuat. Nama workspace hingga 160 karakter diterima; nama hasil restore dipotong seperlunya agar akhiran `(restored)` tetap muat.
+
+Owner dapat mengubah admin/member dan mencabut akses. Admin hanya dapat menghapus member; owner tidak dapat dihapus/didemote lewat fungsi ini. Anggota non-owner bisa keluar sendiri. Penghapusan/demotion membatalkan antrean yang dikelola pengguna serta mencabut undangan lama ketika akses dihapus. SMTP yang sudah terlanjur menerima pesan tidak dapat ditarik kembali.
+
 Rollback aplikasi: checkout commit release sebelumnya dan build ulang. Jangan rollback SQL dengan menghapus tabel berisi data; gunakan migrasi perbaikan maju. Simpan release sebelumnya dan uji di staging sebelum mengganti proses produksi.
 
 ## Batas kesiapan

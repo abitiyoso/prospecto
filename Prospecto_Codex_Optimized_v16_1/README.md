@@ -18,13 +18,13 @@ Preview default: http://127.0.0.1:3000. Login memakai akun aplikasi Supabase; pa
 
 ## Fungsi
 
-- Workspace terpisah, membership/role, produk, ICP, riset Firecrawl dengan review sumber dan promosi PIC.
-- Leads manual, CSV/XLSX, mapping, deduplikasi dan export aman untuk spreadsheet.
+- Workspace terpisah, pengaturan peran/hapus anggota, pencabutan undangan dan perlindungan owner. Produk, ICP beserta pengecualian, riset Firecrawl dengan review sumber dan promosi PIC.
+- Leads manual, CSV/XLSX, mapping, deduplikasi, daftar leads tersimpan dan export aman untuk spreadsheet.
 - KMS privat: catatan/URL/PDF/DOCX/TXT, ekstraksi teks, indeks dan pencarian sumber sesuai workspace. PDF hasil scan memerlukan OCR di luar aplikasi.
 - Draft berbasis profil produk dengan label template; adapter GPT Responses API disiapkan untuk `OPENAI_API_KEY` + `OPENAI_MODEL`. Tanpa kredensial itu, tombol GPT nonaktif dan tidak ada hasil AI yang diklaim.
 - Campaign builder/template, personalisasi, review/approval, jadwal, SMTP TLS, antrean persisten, pause/cancel, suppression dan unsubscribe dengan konfirmasi. LinkedIn merupakan tugas manual.
-- `sent` hanya sesudah SMTP menerima pesan. Analytics memakai event tersimpan; hasil percakapan manual berlabel manual. Tidak ada simulasi delivered/open atau pembacaan inbox otomatis.
-- Undangan member terikat email yang telah dikonfirmasi, backup/restore ke workspace baru tanpa memulihkan credential atau menjalankan campaign, endpoint health dan worker berautentikasi.
+- `sent` hanya sesudah SMTP menerima pesan. Balasan positif dihitung sebagai balasan pada cabang dan analytics. Identitas pengirim/penerima unsubscribe diambil dari peluncuran asli, meskipun sender/kontak kemudian diubah. Riwayat antrean memiliki pagination per campaign.
+- Undangan member terikat email yang telah dikonfirmasi. Menghapus anggota mencabut undangan lama serta antrean yang dikelolanya. Backup/restore mencakup file asli, daftar leads dan draft tanpa audience; validasi dilakukan sebelum menulis. Credential dan eksekusi tidak dipulihkan. Endpoint health dan worker berautentikasi tersedia.
 - Akses presentasi 30 hari untuk akun yang ditentukan server. Pembayaran dibypass melalui akses ini, tanpa membuat invoice, langganan atau kredit berbayar palsu.
 
 ## Validasi dan pengiriman

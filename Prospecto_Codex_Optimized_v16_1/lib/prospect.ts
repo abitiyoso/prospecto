@@ -11,7 +11,9 @@ export type Company=z.infer<typeof companyInput>&{id:string;observed_at:string};
 export type PIC=z.infer<typeof picInput>&{id:string;observed_at:string};
 export function matchesICP(company:Company,icp:ICP){
  const match=(filter:string,value:string)=>!filter.trim()||filter.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean).some(s=>value.toLowerCase().includes(s));
- return match(icp.industry,company.industry)&&match(icp.location,company.location)
+ const excluded=(icp.exclusions||'').split(/[,;\n]+/).map(s=>s.trim().toLowerCase()).filter(Boolean);
+ const facts=[company.name,company.domain,company.industry,company.location].filter(Boolean).map(s=>s.toLowerCase());
+ return !excluded.some(term=>facts.some(fact=>fact.includes(term)))&&match(icp.industry,company.industry)&&match(icp.location,company.location)
   &&(icp.employee_min==null||(company.employee_count!=null&&company.employee_count>=icp.employee_min))
   &&(icp.employee_max==null||(company.employee_count!=null&&company.employee_count<=icp.employee_max));
 }

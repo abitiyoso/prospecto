@@ -1,6 +1,20 @@
 # Prospecto — functional presentation release
 
-## Current handoff — 5 November 2026
+## Current functional cleanup — 5 November 2026
+
+User requested fixing the audited functions first and previously authorized pushing completed work. Fixed positive_reply handling in condition branches and reply analytics; frozen sender email/name/verification on each launch; old unsubscribe and manual suppression now use original sender AND recipient even after SMTP/contact edits. Worker refuses changed/unresolved sender identities. Existing three hosted launches were safely backfilled; zero ambiguous sender histories found.
+
+ICP exclusion terms now apply case-insensitively to name/domain/industry/location, separated by comma, semicolon or newline. Backup validates references, duplicate IDs and all original files before export/restore; rejects incomplete uploads/missing files before creating a workspace; restores valid long workspace names, empty-audience drafts, named lead lists and their members. Restored execution/credentials remain absent.
+
+Added workspace-scoped saved lead lists with atomic replacement, selection/filtering and admin deletion. Added visible team membership, owner-only role changes, constrained member removal/self-leave, revoked invitations and prevention of rejoining through an old accepted link. Removing/demoting a campaign manager cancels pending/manual work; owner cannot be removed/demoted. Privileged helpers remain private, public wrappers invoker, and all 39 public tables have RLS. Migration 20261105141025_functional_repair is applied and matches local history.
+
+KMS source labels now reflect stored indexing state. Index/invite/suppression/launch metadata uses stable pagination internally; campaign jobs have campaign-scoped API/UI pagination rather than truncating to the latest 200 workspace jobs. LEO's retained 20-draft view is explicitly labeled. Legacy endpoint messages point to the working workflow rather than claiming SMTP/KMS are absent.
+
+Validation: 70 tests and TypeScript/build pass, including new local PostgreSQL regressions for sender changes, positive replies, role boundaries, invite revocation/reuse, immediate queue cancellation and atomic/foreign-tenant lead lists. Hosted API/browser tests pass for list edits/filtering, ready KMS labels, role changes/removal/old-token denial, canceled invites, missing-file restore rejection before writes, long-name restore, exact private-file bytes, list membership and empty-draft preservation. Screens at 1440/1024/390/320 have no page errors/overflow. No email or campaign was sent/launched in these tests. Isolated QA users are signed out/banned; test Storage files removed, metadata retained separately. Evidence: qa/functional-repair/. Approved landing/reference pixel and asset checks remain unchanged at all four widths. Dependency audit remains zero vulnerabilities; hosted security advisor has only the pre-existing leaked-password-protection warning.
+
+Remaining external/deployment work: actual GPT needs OPENAI_API_KEY + OPENAI_MODEL and provider validation; automatic delivered/open/inbox tracking has no provider integration (manual outcomes stay labeled); global worker is configured but not started, with safe --check available and per-workspace manual processing retained; final Node hosting/domain/HTTPS/Auth URLs are manual as requested. Payment stays bypassed via real presentation access. No redesign, public deployment, customer password change or new production send occurred.
+
+## Historical handoff — 5 November 2026, before functional cleanup
 
 User authorized functional completion for presentation, payment bypass, manual domain/hosting later, and final Git push. This section supersedes historical integration gaps below. Full paid SaaS production launch is not claimed.
 

@@ -37,4 +37,4 @@ export function contentIssues(steps:CampaignStep[],contacts:Contact[],sender:str
  return issues;
 }
 // These capabilities stay closed until a real, verified adapter is configured.
-export const outreachCapabilities={email:{state:'requires_authorization',reason:'Sender OAuth, suppression/unsubscribe dan worker belum terhubung.'},linkedin:{state:'unsupported',reason:'Koneksi dan outreach LinkedIn dilakukan manual.'},leo:{state:'requires_authorization',reason:'Provider LLM dan indeks KMS belum terhubung.'}} as const;
+export const outreachCapabilities={email:{state:'requires_authorization',reason:'Gunakan Review & luncurkan pada Campaigns dengan sender SMTP terverifikasi dan persetujuan audience.'},linkedin:{state:'unsupported',reason:'Koneksi dan outreach LinkedIn dilakukan manual.'},leo:{state:'requires_authorization',reason:'Gunakan panel LEO untuk draft. GPT membutuhkan koneksi provider AI; draft template tersedia tanpa AI.'}} as const;

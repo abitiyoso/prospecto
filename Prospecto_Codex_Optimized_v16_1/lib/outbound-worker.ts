@@ -4,6 +4,7 @@ import {connectionTransport,allowedRecipient} from './smtp';
 import {canonicalJSON,personalize,type CampaignStep} from './outreach';
 import {signLink} from './server-crypto';
 import {must,presentationActive} from './workflow-services';
+import {replyEventTypes} from './outreach-state';
 export async function processOutbound(workspace:string|null=null,limit=3){
  const db=adminDb();let processed=0;
  for(let n=0;n<Math.min(limit,5);n++){
@@ -19,20 +20,21 @@ export async function processOutbound(workspace:string|null=null,limit=3){
    if(step.kind==='wait'){await finish('completed',next,step.days*86400,`Jeda ${step.days} hari dijadwalkan`);processed++;continue;}
    if(step.kind==='linkedin_manual'){await finish('manual',null,0,'Tugas LinkedIn manual: '+step.body.slice(0,500));processed++;continue;}
    if(step.kind==='condition'){
-    const reply=await db.from('outbound_events').select('id').eq('workspace_id',job.workspace_id).eq('campaign_id',launch.campaign_id).eq('contact_id',job.contact_id).eq('event_type','replied').gte('occurred_at',launch.created_at).limit(1);
+    const reply=await db.from('outbound_events').select('id').eq('workspace_id',job.workspace_id).eq('campaign_id',launch.campaign_id).eq('contact_id',job.contact_id).in('event_type',[...replyEventTypes]).gte('occurred_at',launch.created_at).limit(1);
     if(reply.error)throw new Error('Reply state unavailable');const yes=step.condition==='replied'?!!reply.data?.length:!reply.data?.length;const target=yes?step.then_step:step.else_step;await finish('completed',target==null?null:target-1,0,`Kondisi ${step.condition}: ${yes?'benar':'salah'}, berdasarkan event tersimpan`);processed++;continue;
    }
    const entry=launch.snapshot.audience.find((v:any)=>v.contact.id===job.contact_id);if(!entry)throw new Error('Recipient missing');const contact={...entry.contact,companies:entry.company};
    const channel=must(await db.from('channel_connections').select('*').eq('workspace_id',job.workspace_id).eq('id',launch.connection_id).single());
-   if(channel.status!=='verified'||new Date(channel.verified_at)>new Date(launch.created_at)){await finish('needs_attention',null,0,'Sender berubah. Buat peluncuran baru setelah review.');continue;}
-   const suppression=await db.from('smtp_suppressions').select('id').eq('sender_email',channel.sender_email).eq('email',contact.email).limit(1);if(suppression.error)throw new Error('Suppression state unavailable');
+   if(!launch.sender_email||channel.status!=='verified'||channel.sender_email.toLowerCase()!==launch.sender_email||new Date(channel.verified_at).getTime()!==new Date(launch.sender_verified_at).getTime()){await finish('needs_attention',null,0,'Sender berubah. Buat peluncuran baru setelah review.');continue;}
+   const suppression=await db.from('smtp_suppressions').select('id').eq('sender_email',launch.sender_email).eq('email',contact.email).limit(1);if(suppression.error)throw new Error('Suppression state unavailable');
    if(suppression.data?.length||!allowedRecipient(contact.email)){await finish('blocked',null,0,'Penerima disuppress atau di luar alamat uji preview lokal.');continue;}
    const subject=personalize(step.subject,contact,launch.snapshot.campaign.sender_name),body=personalize(step.body,contact,launch.snapshot.campaign.sender_name);
    if(subject.unresolved.length||body.unresolved.length||/[\r\n]/.test(subject.text)){await finish('needs_attention',null,0,'Personalisasi atau subject tidak valid.');continue;}
    const still=must(await db.from('campaign_launches').select('state').eq('id',launch.id).single());if(!['queued','active'].includes(still.state)){await db.from('outbound_jobs').update({state:still.state==='canceled'?'canceled':'pending'}).eq('id',job.id);continue;}
    const {transport,config}=await connectionTransport(db,launch.connection_id);const unsubscribe=(process.env.APP_BASE_URL||'http://127.0.0.1:3000')+'/unsubscribe?job='+job.id+'&token='+signLink('unsubscribe',job.id);
    try{
-    const result=await transport.sendMail({from:{name:config.name,address:config.from},to:contact.email,subject:subject.text,text:body.text+'\n\nBerhenti menerima email dari pengirim ini:\n'+unsubscribe,messageId:`<${job.id}@${config.from.split('@')[1]}>`,headers:{'List-Unsubscribe':`<${unsubscribe}>`},disableFileAccess:true,disableUrlAccess:true});
+    if(config.from.toLowerCase()!==launch.sender_email)throw new Error('SMTP identity changed');
+    const result=await transport.sendMail({from:{name:launch.sender_name,address:launch.sender_email},to:contact.email,subject:subject.text,text:body.text+'\n\nBerhenti menerima email dari pengirim ini:\n'+unsubscribe,messageId:`<${job.id}@${launch.sender_email.split('@')[1]}>`,headers:{'List-Unsubscribe':`<${unsubscribe}>`},disableFileAccess:true,disableUrlAccess:true});
     if(!result.accepted?.length)throw new Error('SMTP did not accept message');
     // Do not retry if SMTP accepted but the database acknowledgement is lost.
     await finish('sent',next,0,'Diterima server SMTP; status delivered/open belum diketahui.',result.messageId);

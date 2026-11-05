@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/workspace.html",
+      "status": 200
+    },
+    {
+      "path": "/app",
+      "status": 200
+    },
+    {
+      "path": "/api/health",
+      "status": 200
+    },
+    {
+      "path": "/invite",
+      "status": 200
+    },
+    {
+      "path": "/unsubscribe",
+      "status": 200
+    }
+  ],
+  "workerWithoutKey": 401,
+  "workerProbe": {
+    "ok": true,
+    "queueProcessed": false
+  },
+  "emailsSent": 0
+}

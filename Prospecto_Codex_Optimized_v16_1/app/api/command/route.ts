@@ -8,6 +8,7 @@ import { readBody, sameOrigin, requestOrigin } from '@/lib/request';
 import { collectRows } from '@/lib/data';
 import { outreachInput, templateInput, outreachCapabilities } from '@/lib/outreach';
 import {paymentCapability,reportingInput,zones} from '@/lib/commercial';
+import {leadListInput} from '@/lib/lists';
 export async function POST(req:NextRequest) {
  if(!sameOrigin(req))return NextResponse.json({error:'Origin tidak valid'},{status:403});
  if(Number(req.headers.get('content-length')||0)>2_500_000)return NextResponse.json({error:'Permintaan terlalu besar'},{status:413});
@@ -24,6 +25,8 @@ export async function POST(req:NextRequest) {
   if(action.startsWith('billing.')&&!['owner','admin'].includes(role))return NextResponse.json({error:'Billing membutuhkan owner atau admin'},{status:403});
   if((action.endsWith('.delete')||action==='leads.export'||action==='workspace.rename')&&!['owner','admin'].includes(role))return NextResponse.json({error:'Tindakan ini membutuhkan owner atau admin'},{status:403});
   if(action==='workspace.switch') {(await cookies()).set('prospecto-workspace',w,{httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',path:'/'});return ok();}
+  if(action==='list.save'){const v=leadListInput.parse(input.values);return ok({id:check(await db.rpc('save_lead_list',{w,list_id:v.id,list_name:v.name,ids:v.contact_ids}))});}
+  if(action==='list.delete'){check(await db.from('lead_lists').delete().eq('workspace_id',w).eq('id',uuid.parse(input.id)));return ok();}
   if(action==='workspace.rename'){check(await db.from('workspaces').update({name:z.string().trim().min(1).max(160).parse(input.name)}).eq('id',w));return ok();}
   if(action==='workspace.timezone'){if(!['owner','admin'].includes(role))return NextResponse.json({error:'Pengaturan membutuhkan owner atau admin'},{status:403});check(await db.from('workspaces').update({timezone:z.enum(zones).parse(input.timezone)}).eq('id',w));return ok();}
   if(action==='reporting.load'){const v=reportingInput.parse(input.values);const analytics=check(await db.rpc('analytics_summary',{w,from_time:v.from,to_time:v.to,c:v.campaign_id}));return ok({analytics});}

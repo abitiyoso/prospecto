@@ -4,6 +4,7 @@ export type LeoRun={id:string;product_id:string;engine:'template'|'openai';resul
 export type Channel={id:string;sender_email:string;sender_name:string;status:string;verified_at:string};
 export type Launch={id:string;campaign_id:string;connection_id:string;state:string;created_at:string};
 export type OutboundJob={id:string;launch_id:string;contact_id:string;step_index:number;state:string;due_at:string;attempts:number;note:string;message_id:string};
-export type Invite={id:string;email:string;expires_at:string;accepted_at:string|null};
-export type WorkflowData={documents:IndexedSource[];leoRuns:LeoRun[];connections:Channel[];launches:Launch[];jobs:OutboundJob[];invites:Invite[];suppressions:{id:string;email:string;reason:string}[];presentationEligible:boolean;openAIAvailable:boolean};
+export type Invite={id:string;email:string;expires_at:string;accepted_at:string|null;revoked_at:string|null};
+export type TeamMember={user_id:string;email:string;role:'owner'|'admin'|'member'};
+export type WorkflowData={documents:IndexedSource[];leoRuns:LeoRun[];connections:Channel[];launches:Launch[];jobs:OutboundJob[];invites:Invite[];team:TeamMember[];leadLists:import('./lists').LeadList[];listMembers:import('./lists').LeadListMember[];suppressions:{id:string;email:string;reason:string}[];presentationEligible:boolean;openAIAvailable:boolean};
 export type Flow=(action:string,extra?:Record<string,unknown>)=>Promise<any>;
