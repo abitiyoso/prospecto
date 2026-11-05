@@ -1,3 +1,14 @@
+# Current connections — V8 Phase 4
+
+Supabase Elenio and the server-side Firecrawl key are connected and verified. The application remains local; no payment or outbound campaign was sent.
+
+To complete Phase 4 production payments: select the merchant provider (for example Midtrans/Xendit) and sandbox/production environment; configure server credentials, merchant/account identity and webhook verification material in server secrets; provide the public HTTPS deployment/webhook target. A real adapter must still implement authoritative signature/order/amount/IDR/settlement checks, checkout, reconciliation, renewal/cancellation/refund handling and the scheduled credit worker. No automatic activation follows from merely supplying an API key. Current proposal tariffs and credit rates also need explicit business activation/configuration.
+
+Phase 3 still needs an internal LLM provider and private KMS indexing for LEO, plus permitted sender OAuth/Composio configuration and an authorized Gmail/Outlook sender with suppression/unsubscribe and sending worker. Hostinger mailbox credentials supplied earlier are separate from sender OAuth. Custom Supabase Auth SMTP remains a separate pending configuration.
+
+The historical Phase 1 checklist below is retained for context; statements that later phases have not started are superseded by IMPLEMENTATION_STATE.md.
+
+---
 # Connections and remaining credentials
 
 Updated 5 November 2026, Asia/Jakarta. Scope: master prompt, Phase 1 only. Landing page deferred to its separate prompt.

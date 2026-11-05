@@ -16,6 +16,8 @@ export async function POST(req:NextRequest){
    const{data:company}=await db.from('companies').select('domain').eq('workspace_id',v.workspace_id).eq('id',v.company_id||'').single();if(!company)return NextResponse.json({error:'Pilih perusahaan yang diizinkan'},{status:403});
    query=`site:${company.domain} ${v.query||icp?.buyer_roles||product.buyer_roles||'leadership management team'}`;
   }
+  const rates=await db.from('credit_action_rates').select('id').eq('action',v.kind==='company'?'company_research':'pic_research').eq('enabled',true).lte('effective_from',new Date().toISOString()).or('effective_to.is.null,effective_to.gt.'+new Date().toISOString()).limit(1);
+  if(rates.error||rates.data?.length)return NextResponse.json({error:'Penagihan riset memerlukan koneksi worker kredit sebelum tarif diaktifkan.'},{status:503});
   if(!process.env.FIRECRAWL_API_KEY)return NextResponse.json({error:'Layanan riset belum terhubung'},{status:503});
   const reserved=await db.rpc('reserve_research',{w:v.workspace_id,p:v.product_id,k:v.kind,q:query});if(reserved.error)return NextResponse.json({error:'Batas riset workspace tercapai. Tunggu satu menit dan coba lagi.'},{status:429});
   const id=reserved.data as string;

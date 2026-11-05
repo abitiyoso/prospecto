@@ -1,3 +1,5 @@
+Status terbaru: V8 Phase 4 — commercial foundation/reporting. Lihat [IMPLEMENTATION_STATE.md](IMPLEMENTATION_STATE.md) dan [bukti QA](qa/v8-phase4/results.json). Checkout dan worker pembayaran belum terhubung; laporan fase sebelumnya di bawah bersifat historis.
+
 Status terkini dan batas integrasi: [IMPLEMENTATION_STATE.md](IMPLEMENTATION_STATE.md). Laporan Phase 1 di bawah dipertahankan sebagai riwayat; urutan campaign, template dan approval Phase 3 sudah tersedia. LEO dan pengiriman masih diblokir sampai provider terhubung.
 
 # Prospecto — V8 Phase 3 authoring/review

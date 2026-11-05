@@ -21,3 +21,18 @@
 .outreach-editor .p-actions,.prospecto-app [aria-label="Campaign builder"] { flex-wrap:wrap; }
 .outreach-editor .p-actions .btn { white-space:normal;max-width:100%; }
 .outreach-editor label,.outreach-editor input,.outreach-editor select,.outreach-editor textarea { min-width:0; }
+.commercial-panel>.card { margin:18px 0; }
+.commercial-panel .p-metrics { display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px; }
+.commercial-panel .p-metrics strong { font-size:28px; }
+.commercial-panel .commercial-item { padding:14px 0;border-bottom:1px solid #e2e8f0;overflow-wrap:anywhere; }
+.commercial-panel .commercial-item small { color:#64748b;line-height:1.7; }
+.commercial-panel h2 small { font-size:12px;font-weight:400; }
+.commercial-panel .report-filters { display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:12px;align-items:end; }
+.commercial-panel label,.commercial-panel input,.commercial-panel select { min-width:0;max-width:100%; }
+.commercial-panel .report-filters label { margin:0; }
+.commercial-panel .report-filters>small { grid-column:1/-1; }
+.commercial-panel .p-row { flex-wrap:wrap; }
+@media(max-width:800px){.commercial-panel .report-filters{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:640px){.commercial-panel .report-filters,.commercial-panel .p-metrics{grid-template-columns:1fr;}.commercial-panel .btn{white-space:normal;max-width:100%;}}
+/* Long billing breadcrumb measured 9px beyond the 320px header. */
+@media(max-width:640px){.prospecto-app .topbar>.flex{min-width:0;flex:1;}.prospecto-app .topbar .crumb{min-width:0;}.prospecto-app .topbar .crumb b{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.prospecto-app .topbar .right-head,.prospecto-app .topbar .mobile-menu{flex-shrink:0;}}

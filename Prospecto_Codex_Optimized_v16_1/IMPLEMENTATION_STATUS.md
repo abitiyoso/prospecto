@@ -1,3 +1,10 @@
+# Current milestone: V8 Phase 4 foundation and reporting
+
+Versioned proposal catalog, trusted credit engine/capacity enforcement, subscription/ledger views and event-based analytics now pass 48 local tests, TypeScript/build, six live browser/API groups, and an actual hosted PostgreSQL transaction test with full rollback. Landing pixels and assets are unchanged. NEXT_PHASE=5. Exact evidence and limits are in IMPLEMENTATION_STATE.md and qa/v8-phase4/.
+
+Merchant verification/checkout/renewal/cancel/refund adapters and scheduled billing worker are not connected. No payment or paid customer state was created. Previous phase reports below are historical; this status supersedes their next-step statements.
+
+---
 # Current milestone: V8 Phase 3 authoring and review
 
 Phase 0–2 plus Firecrawl are complete. Phase 3 sequence/templates/personalization/approval now pass 37 local tests, TypeScript, production build and 7 live integration groups. Four desktop/mobile sizes pass with no overflow; landing pixels and assets remain locked. Evidence and exact blockers: IMPLEMENTATION_STATE.md and qa/v8-phase3/results.json. NEXT_PHASE=4.

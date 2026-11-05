@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "checks": [
+    "Actual new tenants have no subscription, credits, invoice or paid activity; catalog is proposal-only",
+    "Checkout/cancellation unavailable, unsigned webhook cannot mutate billing, client grant/config/reserve paths denied",
+    "Billing/report RPCs, all new tenant tables and command CSRF enforce isolation",
+    "Real saved research usage is counted while outreach stays empty; invalid interval/campaign denied",
+    "Billing UI uses server proposal prices, empty balances and workspace timezone; sidebar shows no price after reload",
+    "Date/campaign reporting and billing render at 1440/1024/390/320 without overflow or JS errors"
+  ],
+  "errors": [],
+  "userIds": [
+    "6c852beb-84f4-4cb8-9958-401f704c4ae7",
+    "07727350-e2aa-4364-82ef-321cf297e337"
+  ],
+  "workspaceIds": [
+    "244a6b03-8346-40ac-b122-63ecd7698fa6",
+    "834e13d0-dd20-4d38-bf9d-be8ee606a508"
+  ],
+  "cleanup": "No paid fixtures created. Test content removed and sessions globally signed out; ban QA identities separately."
+}

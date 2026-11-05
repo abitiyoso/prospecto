@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "environment": "Hosted Elenio PostgreSQL",
+  "script": "scripts/commercial-hosted-transaction.sql",
+  "checks": ["authenticated versus service_role privileges", "idempotent normalized settlement", "reserve and actual-unit settlement", "idempotent job refund", "authenticated balance summary"],
+  "cleanup": "Entire transaction rolled back, including isolated workspace, financial fixtures and temporary catalog/rate changes.",
+  "merchant_connected": false,
+  "paid_qa_receipts_remaining": 0,
+  "commercial_qa_users_banned": 6,
+  "multi_connection_contention_stress_test": "not performed"
+}

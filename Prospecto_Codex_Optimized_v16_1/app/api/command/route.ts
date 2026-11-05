@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { readBody, sameOrigin, requestOrigin } from '@/lib/request';
 import { collectRows } from '@/lib/data';
 import { outreachInput, templateInput, outreachCapabilities } from '@/lib/outreach';
+import {paymentCapability,reportingInput,zones} from '@/lib/commercial';
 export async function POST(req:NextRequest) {
  if(!sameOrigin(req))return NextResponse.json({error:'Origin tidak valid'},{status:403});
  if(Number(req.headers.get('content-length')||0)>2_500_000)return NextResponse.json({error:'Permintaan terlalu besar'},{status:413});
@@ -20,9 +21,15 @@ export async function POST(req:NextRequest) {
   const w=uuid.parse(input.workspace_id); const membership=await db.from('workspace_memberships').select('role').eq('workspace_id',w).eq('user_id',user.id).single();
   if(!membership.data)return NextResponse.json({error:'Workspace tidak diizinkan'},{status:403});
   const role=membership.data.role;
+  if(action.startsWith('billing.')&&!['owner','admin'].includes(role))return NextResponse.json({error:'Billing membutuhkan owner atau admin'},{status:403});
   if((action.endsWith('.delete')||action==='leads.export'||action==='workspace.rename')&&!['owner','admin'].includes(role))return NextResponse.json({error:'Tindakan ini membutuhkan owner atau admin'},{status:403});
   if(action==='workspace.switch') {(await cookies()).set('prospecto-workspace',w,{httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',path:'/'});return ok();}
   if(action==='workspace.rename'){check(await db.from('workspaces').update({name:z.string().trim().min(1).max(160).parse(input.name)}).eq('id',w));return ok();}
+  if(action==='workspace.timezone'){if(!['owner','admin'].includes(role))return NextResponse.json({error:'Pengaturan membutuhkan owner atau admin'},{status:403});check(await db.from('workspaces').update({timezone:z.enum(zones).parse(input.timezone)}).eq('id',w));return ok();}
+  if(action==='reporting.load'){const v=reportingInput.parse(input.values);const analytics=check(await db.rpc('analytics_summary',{w,from_time:v.from,to_time:v.to,c:v.campaign_id}));return ok({analytics});}
+  if(action==='billing.summary')return ok(check(await db.rpc('commercial_summary',{w})));
+  if(action==='billing.checkout'){const price=check(await db.from('commercial_catalog').select('id').eq('id',z.string().max(80).parse(input.price_id)).single());return NextResponse.json({error:paymentCapability.reason,price_id:price.id},{status:409});}
+  if(['billing.cancel','billing.change'].includes(action))return NextResponse.json({error:'Perubahan langganan menunggu koneksi merchant dan konfirmasi provider.'},{status:409});
   if(action==='icp.save'){const v=icpInput.parse(input.values);check(await db.from('icp_profiles').upsert({...v,workspace_id:w},{onConflict:'workspace_id,product_id'}));return ok();}
   if(action==='company.save'){const v=companyInput.parse(input.values);check(await db.from('companies').upsert({...v,workspace_id:w,observed_at:new Date().toISOString()},{onConflict:'workspace_id,domain'}));return ok();}
   if(action==='pic.save'){const v=picInput.parse(input.values);if(input.id)check(await db.from('pic_candidates').update(v).eq('workspace_id',w).eq('id',uuid.parse(input.id)).select('id').single());else check(await db.from('pic_candidates').insert({...v,workspace_id:w}));return ok();}

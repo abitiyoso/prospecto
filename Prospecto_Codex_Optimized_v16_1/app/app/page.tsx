@@ -12,7 +12,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{mo
   const db = await supabase();
   const { data: { user } } = await db.auth.getUser();
   if (!user) return <Auth configured initialMode={mode} error={query.auth==='expired'?'Tautan sudah kedaluwarsa atau tidak valid. Silakan minta tautan baru.':''}/>;
-  const memberships = await db.from('workspace_memberships').select('workspace_id,role,workspaces(id,name)').eq('user_id',user.id);
+  const memberships = await db.from('workspace_memberships').select('workspace_id,role,workspaces(id,name,timezone)').eq('user_id',user.id);
   if (memberships.error) return <Auth configured error="Workspace belum dapat dimuat. Periksa koneksi dan migrasi database."/>;
   const workspaces = memberships.data.map(m => ({ ...(m.workspaces as unknown as {id:string;name:string}), role: m.role })) as Workspace[];
   if (!workspaces.length) return <Auth configured onboarding/>;
@@ -27,7 +27,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<{mo
   const prospects={researchAvailable:!!process.env.FIRECRAWL_API_KEY,runs:await db.from('research_runs').select('*').eq('workspace_id',active.id).order('created_at',{ascending:false}).limit(20).then(r=>{if(r.error)throw new Error('Riwayat riset belum dapat dimuat');return r.data;}),icps:await collectRows((a,b)=>db.from('icp_profiles').select('*').eq('workspace_id',active.id).order('id').range(a,b)),companies:await collectRows((a,b)=>db.from('companies').select('*').eq('workspace_id',active.id).order('id').range(a,b)),pics:await collectRows((a,b)=>db.from('pic_candidates').select('*').eq('workspace_id',active.id).order('id').range(a,b))};
   const campaigns=await Promise.all(results[3].map(async c=>{const r=await db.rpc('campaign_preflight',{w:active.id,c:c.id});if(r.error)throw new Error('Review campaign belum dapat dimuat');return {...c,preflight:r.data};}));
   const templates=await collectRows((a,b)=>db.from('campaign_templates').select('id,name,steps').eq('workspace_id',active.id).order('created_at').order('id').range(a,b));
-  const data = { templates, prospects, workspaces, active, products:results[0], sources:results[1], contacts:results[2], campaigns, email:user.email||'' } as DashboardData;
+  const commercialResult=await db.rpc('commercial_summary',{w:active.id});if(commercialResult.error)throw new Error('Ringkasan penggunaan belum dapat dimuat');
+  const data = { commercial:commercialResult.data,templates, prospects, workspaces, active, products:results[0], sources:results[1], contacts:results[2], campaigns, email:user.email||'' } as DashboardData;
   return <Dashboard key={active.id} data={data}/>;
 }
 

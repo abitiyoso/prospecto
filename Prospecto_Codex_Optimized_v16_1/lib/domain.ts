@@ -10,8 +10,8 @@ export type Product = z.infer<typeof productInput> & { id: string; workspace_id:
 export type Contact = Omit<z.infer<typeof contactInput>, 'company'|'domain'> & { id: string; workspace_id: string; company_id: string | null; company_name?: string; companies?: { name: string; domain: string } | null };
 export type Source = { id: string; product_id: string; title: string; kind: string; content: string; status: string; upload_state: 'uploading'|'stored'|'failed'; storage_path: string | null };
 export type Campaign = { id: string; name: string; subject: string; body: string; status: 'draft'; product_id:string|null; sender_name:string; steps:import('./outreach').CampaignStep[]; preflight?:{content_ready:boolean;approved:boolean;sending_available:false}; campaign_audience: { contact_id: string }[] };
-export type Workspace = { id: string; name: string; role: 'owner'|'admin'|'member' };
-export type DashboardData = { templates?:import('./outreach').CampaignTemplate[]; prospects?: {researchAvailable?:boolean; runs?: import('./research').ResearchRun[]; icps: import('./prospect').ICP[]; companies: import('./prospect').Company[]; pics: import('./prospect').PIC[]}; workspaces: Workspace[]; active: Workspace; products: Product[]; sources: Source[]; contacts: Contact[]; campaigns: Campaign[]; email: string };
+export type Workspace = { id: string; name: string; timezone?:import('./commercial').WorkspaceZone; role: 'owner'|'admin'|'member' };
+export type DashboardData = { commercial:import('./commercial').CommercialData; templates?:import('./outreach').CampaignTemplate[]; prospects?: {researchAvailable?:boolean; runs?: import('./research').ResearchRun[]; icps: import('./prospect').ICP[]; companies: import('./prospect').Company[]; pics: import('./prospect').PIC[]}; workspaces: Workspace[]; active: Workspace; products: Product[]; sources: Source[]; contacts: Contact[]; campaigns: Campaign[]; email: string };
 
 // RFC 4180 style quoted fields, escaped quotes, CRLF and embedded line breaks.
 export function parseCsv(raw: string): string[][] {
