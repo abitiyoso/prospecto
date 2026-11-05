@@ -25,7 +25,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<{mo
     collectRows((from,to)=>db.from('campaigns').select('*,campaign_audience(contact_id)').eq('workspace_id',active.id).order('created_at').order('id').range(from,to)),
   ]);
   const prospects={researchAvailable:!!process.env.FIRECRAWL_API_KEY,runs:await db.from('research_runs').select('*').eq('workspace_id',active.id).order('created_at',{ascending:false}).limit(20).then(r=>{if(r.error)throw new Error('Riwayat riset belum dapat dimuat');return r.data;}),icps:await collectRows((a,b)=>db.from('icp_profiles').select('*').eq('workspace_id',active.id).order('id').range(a,b)),companies:await collectRows((a,b)=>db.from('companies').select('*').eq('workspace_id',active.id).order('id').range(a,b)),pics:await collectRows((a,b)=>db.from('pic_candidates').select('*').eq('workspace_id',active.id).order('id').range(a,b))};
-  const data = { prospects, workspaces, active, products:results[0], sources:results[1], contacts:results[2], campaigns:results[3], email:user.email||'' } as DashboardData;
+  const campaigns=await Promise.all(results[3].map(async c=>{const r=await db.rpc('campaign_preflight',{w:active.id,c:c.id});if(r.error)throw new Error('Review campaign belum dapat dimuat');return {...c,preflight:r.data};}));
+  const templates=await collectRows((a,b)=>db.from('campaign_templates').select('id,name,steps').eq('workspace_id',active.id).order('created_at').order('id').range(a,b));
+  const data = { templates, prospects, workspaces, active, products:results[0], sources:results[1], contacts:results[2], campaigns, email:user.email||'' } as DashboardData;
   return <Dashboard key={active.id} data={data}/>;
 }
 

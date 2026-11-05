@@ -9,4 +9,15 @@
 @font-face{font-family:Inter;font-style:normal;font-weight:100 900;font-display:swap;src:url('/fonts/inter-latin-wght-normal.woff2') format('woff2')}
 .prospect-data .p-actions{flex-wrap:wrap}.prospect-data .p-actions .btn{white-space:normal;max-width:100%;height:auto}.prospect-data form,.prospect-data label,.prospect-data details{min-width:0}.prospect-data summary{white-space:normal;overflow-wrap:anywhere}.prospect-data .p-row h3{min-width:0;overflow-wrap:anywhere}.prospect-data input,.prospect-data select,.prospect-data textarea{min-width:0}
 
-@media(max-width:360px){.prospecto-app .right-head{gap:5px}}
+@media(max-width:360px){.prospecto-app .right-head{gap:3px}}
+/* Scoped sequence editor; approved landing and workspace assets stay frozen. */
+.outreach-editor { margin-top:16px; }
+.outreach-step { border:1px solid var(--border,#e4e7ef);border-radius:12px;padding:16px;margin:16px 0;min-width:0; }
+.outreach-toggle { display:flex!important;flex-direction:row;align-items:center;gap:10px;margin:14px 0; }
+.outreach-toggle input[type=checkbox] { width:16px;min-width:16px;margin:0; }
+.outreach-editor .p-mail-preview { margin:16px 0;overflow-wrap:anywhere;white-space:pre-wrap; }
+.outreach-step .p-row { flex-wrap:wrap;gap:8px; }
+.outreach-editor select { max-width:100%; }
+.outreach-editor .p-actions,.prospecto-app [aria-label="Campaign builder"] { flex-wrap:wrap; }
+.outreach-editor .p-actions .btn { white-space:normal;max-width:100%; }
+.outreach-editor label,.outreach-editor input,.outreach-editor select,.outreach-editor textarea { min-width:0; }

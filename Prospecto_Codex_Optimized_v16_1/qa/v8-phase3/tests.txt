@@ -1,0 +1,46 @@
+✔ tenant data pagination does not silently stop at API row limit (1.5194ms)
+✔ failed page does not expose partial workspace results as complete (0.3536ms)
+▶ PostgreSQL migration, tenant RLS and Phase 1 persistence
+  ✔ new workspaces start empty and bootstrap owner securely (5.37ms)
+  ✔ cross tenant SELECT/INSERT/UPDATE/DELETE are denied by RLS (3.0976ms)
+  ✔ product edits persist and KMS uses same-tenant product FK (5.2902ms)
+  ✔ private storage rejects foreign and unbound paths (3.5171ms)
+  ✔ CSV batch RPC dedupes email and company domain atomically (9.9824ms)
+  ✔ campaign audience persists exact IDs and blocks cross-tenant audience (10.986ms)
+  ✔ membership writes and role escalation blocked; member deletion blocked (3.9231ms)
+  ✔ records cannot move across workspaces even for dual member (1.796ms)
+  ✔ all tenant tables hide foreign rows and audit is append-only (5.2496ms)
+  ✔ ICP and PIC provenance enforce tenant FKs and promotion review (11.3261ms)
+  ✔ research reservation limits persist and deny foreign tenants (8.5003ms)
+  ✔ outreach approval is role-checked, append-only and invalidated by current content/audience facts (33.4819ms)
+  ✔ anonymous access blocked and every exposed tenant table has RLS (1.7077ms)
+  ✔ owner deletion removes product metadata and storage must be explicitly removed first (3.154ms)
+✔ PostgreSQL migration, tenant RLS and Phase 1 persistence (1633.544ms)
+✔ CSV handles BOM, quoted commas/newlines and escaped quotes (1.6249ms)
+✔ CSV rejects empty, malformed, mismatched and duplicate headers (0.5135ms)
+✔ CSV enforces batch and size limits (4.582ms)
+✔ mapping validates rows, normalizes emails and deduplicates (3.9594ms)
+✔ products and audience reject blank names, foreign input, duplicate audience (1.3006ms)
+✔ manual verification requires public HTTPS evidence (0.4315ms)
+✔ CSV export quotes fields and protects spreadsheet formulas (0.2243ms)
+✔ KMS upload validates file signature, type, UTF8 and size (0.8581ms)
+✔ JSONB key ordering after save does not mark an unchanged draft as dirty (9.3767ms)
+✔ personalization preserves unknown or missing variables and never invents facts (1.0952ms)
+✔ content review checks every recipient and every sequence step (1.9975ms)
+✔ sequence validation rejects excessive steps, automatic LinkedIn, invalid delays and oversized messages (1.8608ms)
+✔ conditional branches point forward or stop, never form cycles (0.4128ms)
+✔ ICP validates size range and nullable bounds (2.6205ms)
+✔ company domain and PIC public evidence are validated (1.8198ms)
+✔ ICP matching uses saved facts, unknown size never satisfies numeric constraints (0.2709ms)
+✔ CSRF accepts actual request host when framework normalizes URL hostname (29.7191ms)
+✔ request body limits protect declared and chunked payloads (5.8569ms)
+✔ web evidence rejects credential/private/non-HTTPS URLs and limits/dedupes results (1.7037ms)
+✔ provider failures return actionable safe messages without raw errors (0.2231ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2312.7166

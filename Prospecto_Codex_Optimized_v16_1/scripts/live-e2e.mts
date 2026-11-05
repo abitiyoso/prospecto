@@ -49,7 +49,7 @@ try{
  const contact=must(await clients[0].from('contacts').select('*').eq('workspace_id',workspaces[0]).single());expect(contact.company_name).toBe('QA Company');
  const draft=await cmd(0,'campaign.create',{values:{name:'Live QA draft',contact_ids:[contact.id]}});
  expect(must(await clients[0].from('campaign_audience').select('contact_id').eq('campaign_id',draft.id)).map(r=>r.contact_id)).toEqual([contact.id]);
- await cmd(0,'campaign.save',{id:draft.id,values:{name:'Live QA draft',subject:'QA subject',body:'QA draft body'}});
+ await cmd(0,'campaign.save',{id:draft.id,contact_ids:[contact.id],values:{name:'Live QA draft',product_id:product.id,sender_name:'',steps:[{kind:'email',subject:'QA subject',body:'QA draft body',days:3}]}});
  expect((await clients[1].rpc('create_campaign',{w:workspaces[1],campaign_name:'Foreign audience',ids:[contact.id]})).error).toBeTruthy();
  checks.push('Real CSV import/dedupe and exact campaign audience persistence; foreign contact rejected');
  const page=await contexts[0].newPage();await page.goto(origin+'/app');await expect(page.getByRole('heading',{name:'Welcome to Prospecto'})).toBeVisible();await page.reload();await expect(page.getByRole('heading',{name:'Welcome to Prospecto'})).toBeVisible();

@@ -1,3 +1,10 @@
+# Current milestone: V8 Phase 3 authoring and review
+
+Phase 0–2 plus Firecrawl are complete. Phase 3 sequence/templates/personalization/approval now pass 37 local tests, TypeScript, production build and 7 live integration groups. Four desktop/mobile sizes pass with no overflow; landing pixels and assets remain locked. Evidence and exact blockers: IMPLEMENTATION_STATE.md and qa/v8-phase3/results.json. NEXT_PHASE=4.
+
+Actual LEO generation, OAuth sender, suppression/unsubscribe and scheduled delivery worker remain unavailable. No email was sent, campaign activated or AI result invented. All outreach QA content was deleted and all 14 isolated test identities banned. The Phase 1 report below is historical; current state above supersedes its next-step statements.
+
+---
 # Phase 1 — exit checks completed
 
 Updated 5 November 2026 (Asia/Jakarta). User selected the existing **Elenio** Supabase project `qmuwqwzmezbatvatawur`. Project restored successfully to ACTIVE_HEALTHY. Local `.env.local` now contains its API URL and publishable key; no service-role key is used. Web application is not deployed. Phase 2–4 have not started.

@@ -1,4 +1,6 @@
-# Prospecto — Phase 1
+Status terkini dan batas integrasi: [IMPLEMENTATION_STATE.md](IMPLEMENTATION_STATE.md). Laporan Phase 1 di bawah dipertahankan sebagai riwayat; urutan campaign, template dan approval Phase 3 sudah tersedia. LEO dan pengiriman masih diblokir sampai provider terhubung.
+
+# Prospecto — V8 Phase 3 authoring/review
 
 Aplikasi Next.js/TypeScript dengan Supabase Auth, PostgreSQL RLS, dan private Storage. UI memakai logo, aset, warna, layout, dan CSS referensi v16.1. Workspace pelanggan dimulai kosong.
 

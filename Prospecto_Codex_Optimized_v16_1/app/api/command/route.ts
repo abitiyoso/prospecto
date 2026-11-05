@@ -6,6 +6,7 @@ import { campaignInput, contactInput, csvExport, mapCsv, productInput, sourceInp
 import { z } from 'zod';
 import { readBody, sameOrigin, requestOrigin } from '@/lib/request';
 import { collectRows } from '@/lib/data';
+import { outreachInput, templateInput, outreachCapabilities } from '@/lib/outreach';
 export async function POST(req:NextRequest) {
  if(!sameOrigin(req))return NextResponse.json({error:'Origin tidak valid'},{status:403});
  if(Number(req.headers.get('content-length')||0)>2_500_000)return NextResponse.json({error:'Permintaan terlalu besar'},{status:413});
@@ -36,7 +37,15 @@ export async function POST(req:NextRequest) {
   if(action==='leads.import'){const parsed=mapCsv(z.string().max(2_000_000).parse(input.csv),z.record(z.string(),z.string()).parse(input.mapping));const report=check(await db.rpc('import_contacts',{w,records:parsed.valid}));return ok({...report,duplicates:report.duplicates+parsed.duplicates,errors:parsed.errors,total:parsed.total});}
   if(action==='leads.export'){const rows=await collectRows((from,to)=>db.from('contacts').select('name,email,title,source_url,verification,company_name,companies(name,domain)').eq('workspace_id',w).order('id').range(from,to));return ok({csv:csvExport([['name','email','title','source_url','verification','company','domain'],...rows.map(r=>{const c=r.companies as unknown as {name:string;domain:string}|null;return[r.name,r.email,r.title,r.source_url,r.verification,c?.name||r.company_name||'',c?.domain||''];})])});}
   if(action==='campaign.create'){const v=campaignInput.parse(input.values);const id=check(await db.rpc('create_campaign',{w,campaign_name:v.name,ids:v.contact_ids}));return ok({id});}
-  if(action==='campaign.save'){const v=z.object({name:z.string().trim().min(1).max(160),subject:z.string().max(300),body:z.string().max(20000)}).parse(input.values);check(await db.from('campaigns').update(v).eq('workspace_id',w).eq('id',uuid.parse(input.id)).select('id').single());return ok();}
+  if(action==='campaign.save'){const v=outreachInput.parse(input.values);const ids=campaignInput.shape.contact_ids.parse(input.contact_ids);if(new Set(ids).size!==ids.length)throw new Error('Audience berisi duplikat');check(await db.rpc('save_outreach',{w,c:uuid.parse(input.id),v,ids}));return ok();}
+  if(action==='template.save'){check(await db.from('campaign_templates').insert({...templateInput.parse(input.values),workspace_id:w}));return ok();}
+  if(action==='template.delete'){check(await db.from('campaign_templates').delete().eq('workspace_id',w).eq('id',uuid.parse(input.id)));return ok();}
+  if(action==='campaign.approve'){if(!['owner','admin'].includes(role))return NextResponse.json({error:'Approval membutuhkan owner atau admin'},{status:403});check(await db.rpc('approve_campaign',{w,c:uuid.parse(input.id)}));return ok();}
+  if(['campaign.preflight','campaign.launch','campaign.leo'].includes(action)){
+   const id=uuid.parse(input.id);const state=check(await db.rpc('campaign_preflight',{w,c:id}));if(!state)throw new Error('Campaign tidak diizinkan');
+   if(action==='campaign.preflight')return ok(state);
+   return NextResponse.json({error:action==='campaign.leo'?outreachCapabilities.leo.reason:outreachCapabilities.email.reason},{status:409});
+  }
   return NextResponse.json({error:'Fitur ini belum tersedia'},{status:400});
  } catch(e) { return NextResponse.json({error:e instanceof z.ZodError?e.issues.map(x=>x.message).join('; '):e instanceof Error?e.message:'Permintaan gagal'},{status:400}); }
 }

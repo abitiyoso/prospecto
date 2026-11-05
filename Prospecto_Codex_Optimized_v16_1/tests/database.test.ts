@@ -10,6 +10,8 @@ test('PostgreSQL migration, tenant RLS and Phase 1 persistence',async t=>{
  await db.exec(await readFile('supabase/migrations/20261104180159_prospecto_foundation.sql','utf8'));
  await db.exec(await readFile('supabase/migrations/20261104234302_prospect_data.sql','utf8'));
  await db.exec(await readFile('supabase/migrations/20261104235659_research_runs.sql','utf8'));
+ await db.exec(await readFile('supabase/migrations/20261105001844_outreach_review.sql','utf8'));
+ await db.exec(await readFile('supabase/migrations/20261105002739_outreach_sequence_defaults.sql','utf8'));
  const as=async(id:string)=>{await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[id]);await db.exec('set role authenticated');};
  const one=async(sql:string,params:unknown[]=[])=>{const r=await db.query<any>(sql,params);return r.rows[0];};
  const wa=crypto.randomUUID(),wb=crypto.randomUUID();
@@ -33,7 +35,29 @@ test('PostgreSQL migration, tenant RLS and Phase 1 persistence',async t=>{
  await t.test('all tenant tables hide foreign rows and audit is append-only',async()=>{await as(B);for(const table of ['products','knowledge_sources','companies','contacts','campaigns','campaign_audience','audit_events']){assert.equal((await one('select count(*)::int n from '+table+' where workspace_id=$1',[wa])).n,0);}await assert.rejects(db.query("insert into audit_events(workspace_id,entity,entity_id,operation) values($1,'forged',$2,'INSERT')",[wb,pb]));await as(A);assert.ok((await one('select count(*)::int n from audit_events where workspace_id=$1',[wa])).n>0);});
  await t.test('ICP and PIC provenance enforce tenant FKs and promotion review',async()=>{await as(A);await db.query('insert into icp_profiles(workspace_id,product_id,industry) values($1,$2,$3)',[wa,pa,'Manufacturing']);await assert.rejects(db.query('insert into icp_profiles(workspace_id,product_id) values($1,$2)',[wa,pb]));const co=(await one('select id from companies where workspace_id=$1',[wa])).id;const pic=(await one("insert into pic_candidates(workspace_id,company_id,name,email,source_url) values($1,$2,'Manual QA','pic@example.com','https://example.com/team') returning id",[wa,co])).id;await assert.rejects(db.query('select promote_pic($1,$2)',[wa,pic]));await db.query("update pic_candidates set verification='verified' where id=$1",[pic]);const promoted=(await one('select promote_pic($1,$2) id',[wa,pic])).id;assert.equal((await one('select promote_pic($1,$2) id',[wa,pic])).id,promoted);await as(B);assert.equal((await one('select count(*)::int n from pic_candidates where workspace_id=$1',[wa])).n,0);await assert.rejects(db.query('select promote_pic($1,$2)',[wa,pic]));await assert.rejects(db.query("insert into pic_candidates(workspace_id,company_id,name,source_url) values($1,$2,'Attack','https://example.com/team')",[wb,co]));await as(A);});
  await t.test('research reservation limits persist and deny foreign tenants',async()=>{await as(A);for(let i=0;i<3;i++)await db.query('select reserve_research($1,$2,$3,$4)',[wa,pa,'company','Public company sources']);await assert.rejects(db.query('select reserve_research($1,$2,$3,$4)',[wa,pa,'company','Too many']));await assert.rejects(db.query("update research_runs set created_at=now()-interval '1 day'"));await as(B);assert.equal((await one('select count(*)::int n from research_runs where workspace_id=$1',[wa])).n,0);await assert.rejects(db.query('select reserve_research($1,$2,$3,$4)',[wa,pa,'company','Foreign workspace']));await as(A);});
- await t.test('anonymous access blocked and every exposed tenant table has RLS',async()=>{await db.exec('reset role');const r=await db.query<{relname:string;relrowsecurity:boolean}>("select relname,relrowsecurity from pg_class join pg_namespace n on n.oid=relnamespace where n.nspname='public' and relkind='r'");assert.equal(r.rows.length,12);assert.ok(r.rows.every(x=>x.relrowsecurity));await db.exec('set role anon');await assert.rejects(db.query('select * from products'));await assert.rejects(db.query('select create_campaign($1,$2,$3)',[wa,'Anonymous',ids]));});
+ await t.test('outreach approval is role-checked, append-only and invalidated by current content/audience facts',async()=>{
+  await as(A);const steps=[{kind:'email',subject:'Hello {{first_name}}',body:'From {{sender_name}}',days:3},{kind:'wait',subject:'',body:'',days:3},{kind:'linkedin_manual',subject:'',body:'Manual task',days:3}];
+  const values={name:'Outreach QA',product_id:pa,sender_name:'Ani',steps};
+  await db.query('select save_outreach($1,$2,$3,$4)',[wa,campaign!,JSON.stringify(values),ids]);
+  await assert.rejects(db.query('select approve_campaign($1,$2)',[wa,campaign!]));
+  await db.query("update contacts set verification='verified',source_url='https://example.com/team' where id=any($1)",[ids]);
+  await as(M);await assert.rejects(db.query('select approve_campaign($1,$2)',[wa,campaign!]));await as(A);
+  await db.query('select approve_campaign($1,$2)',[wa,campaign!]);
+  const state=async()=> (await one('select campaign_preflight($1,$2) s',[wa,campaign!])).s;
+  assert.deepEqual(await state(),{approved:true,content_ready:true,sending_available:false});
+  await assert.rejects(db.query("update campaign_reviews set snapshot='{}'"));await assert.rejects(db.query('delete from campaign_reviews'));
+  await db.query("update contacts set verification='unverified' where id=$1",[ids[0]]);assert.equal((await state()).approved,false);assert.equal((await state()).content_ready,false);
+  await db.query("update contacts set verification='verified' where id=$1",[ids[0]]);
+  await db.query("update campaigns set sender_name='Changed' where id=$1",[campaign!]);assert.equal((await state()).approved,false);
+  await assert.rejects(db.query('select save_outreach($1,$2,$3,$4)',[wa,campaign!,JSON.stringify({...values,name:'Should roll back'}),[foreignId]]));assert.notEqual((await one('select name from campaigns where id=$1',[campaign!])).name,'Should roll back');
+  await assert.rejects(db.query("update campaigns set steps='[{\"kind\":\"linkedin_auto\",\"subject\":\"\",\"body\":\"x\",\"days\":3}]' where id=$1",[campaign!]));
+  await db.query('insert into campaign_templates(workspace_id,name,steps) values($1,$2,$3)',[wa,'Reusable',JSON.stringify(steps)]);
+  await as(B);for(const table of ['campaign_templates','campaign_reviews'])assert.equal((await one('select count(*)::int n from '+table+' where workspace_id=$1',[wa])).n,0);
+  await assert.rejects(db.query('select approve_campaign($1,$2)',[wa,campaign!]));assert.equal((await one('select campaign_preflight($1,$2) s',[wa,campaign!])).s,null);
+  await assert.rejects(db.query('insert into campaign_templates(workspace_id,name,steps) values($1,$2,$3)',[wa,'Foreign',JSON.stringify(steps)]));
+  await as(A);await db.query('update campaigns set product_id=null where id=$1',[campaign!]);
+ });
+ await t.test('anonymous access blocked and every exposed tenant table has RLS',async()=>{await db.exec('reset role');const r=await db.query<{relname:string;relrowsecurity:boolean}>("select relname,relrowsecurity from pg_class join pg_namespace n on n.oid=relnamespace where n.nspname='public' and relkind='r'");assert.equal(r.rows.length,14);assert.ok(r.rows.every(x=>x.relrowsecurity));await db.exec('set role anon');await assert.rejects(db.query('select * from products'));await assert.rejects(db.query('select create_campaign($1,$2,$3)',[wa,'Anonymous',ids]));});
  await t.test('owner deletion removes product metadata and storage must be explicitly removed first',async()=>{await as(A);await db.query("delete from storage.objects where name=$1",[path]);await db.query('delete from products where id=$1',[pa]);assert.equal((await one('select count(*)::int n from knowledge_sources where product_id=$1',[pa])).n,0);});
  } finally {await db.close();}
 });

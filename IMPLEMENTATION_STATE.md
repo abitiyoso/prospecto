@@ -1,6 +1,6 @@
-# Prospecto V8 — Phase 2 prospect data complete
+# Prospecto V8 — Phase 3 outreach authoring and review
 
-NEXT_PHASE=3
+NEXT_PHASE=4
 
 Updated 5 November 2026, Asia/Jakarta. Phases 0 and 1 were completed first. The user's subsequent "ya go" resumed V8 Phase 2 (tenant Product/KMS, ICP, company/PIC provenance and validated file import). The scoped data milestone now passes with manual/public-source records and existing CSV import. The older four-phase v16.1 scope is historical. V8 defines phases 0–5; continue one milestone at a time.
 
@@ -80,3 +80,23 @@ API reference checked before implementation: https://docs.firecrawl.dev/api-refe
 
 Next: **V8 Phase 3 — Outreach**, when requested: campaign steps/templates/review, permitted integration adapters and LEO, reusing existing persisted drafts/audience. Real AI generation/sending will require server credentials and authorized sender capability; do not implement billing/payments in this milestone.
 
+
+## Phase 3 — campaign authoring and approval verified
+
+The user requested the next milestone after Phase 2. Implemented V8 Phase 3 authoring/review while preserving the approved landing and static workspace. Provider-dependent execution remains blocked as required by the missing-credentials contract; this is not a production sending service.
+
+Reused persisted campaigns and exact selected contact IDs. Added simple Message → Audience → Review navigation, tenant product and sender-name selection, editable sequence steps/delays/reordering, an optional advanced condition builder with forward-only targets or stop, the default Email Intro → Wait 3 days → manual LinkedIn → Follow-up sequence, reusable tenant templates, and per-contact previews for first_name/company/sender_name. Unknown/missing variables stay visible and block approval. LinkedIn is a manual instruction, never automated.
+
+Atomic SECURITY INVOKER save_outreach validates tenant-bound audience IDs and product FK; audience changes follow existing owner/admin delete permissions. Approval requires owner/admin and valid content for every recipient, records an append-only snapshot of campaign/product/contact/company facts, and becomes invalid when current data differs. Supabase RLS protects templates and reviews. Status remains draft; campaign.launch and campaign.leo authenticate the tenant/campaign then return HTTP 409 with the actual unavailable capability. No queue, delivery, AI output, credits, or active status is fabricated.
+
+Two additive migrations are applied on Elenio. Local CLI files 20261105001844_outreach_review.sql and 20261105002739_outreach_sequence_defaults.sql correspond to hosted MCP versions 20261105002417 and 20261105002929 respectively. Earlier local/hosted migration versions also differ; consult hosted migration history before any future CLI db push to avoid replaying existing DDL. No database reset or auth replacement was performed.
+
+Changed implementation: lib/outreach.ts, lib/domain.ts, app/ui/campaign-editor.tsx, app/ui/dashboard.tsx, app/app/page.tsx, app/api/command/route.ts, scoped app/globals.css, the two migrations, tests/outreach.test.ts, tests/database.test.ts, scripts/outreach-e2e.mts and the existing scripts/live-e2e.mts regression request. JSONB key-order normalization fixes a measured false unsaved-change state after adding a condition. Small scoped wrapping fixes remove sequence button overflow; header gap changes from 5 to 3 px below 360 px remove the measured 4 px Campaigns-header overflow. No immutable source/assets changed.
+
+Verification: **37 local tests pass**, TypeScript and production build pass; **7 live integration groups pass** covering actual sessions/new empty tenants, sequence/templates/audience persistence, CSRF/cross-tenant denial, approval/no-send gates, personalisation and reload, editable delays/conditions and desktop/mobile rendering, and invalidation after contact verification is revoked. Editor and review screenshots at 1440×900, 1024×768, 390×844 and 320×700 have no document overflow or browser JS exceptions. The landing full-page/firstfold screenshots remain pixel-exact at all four widths; all six asset hashes and v15 reference interactions pass. Hosted security advisor finds no new RLS/definer issue; its pre-existing leaked-password-protection warning remains.
+
+Evidence: qa/v8-phase3/results.json, tests.txt, typecheck.txt, build.txt, editor-*.png, review-*.png, overflow-*.json; refreshed qa/phase0/results.json. All content from each isolated outreach QA iteration was removed through authenticated tenant APIs, sessions globally signed out, and all 14 prospecto-outreach-* identities banned. Only isolated empty workspace/audit metadata and banned identities remain; no customer tenant was seeded.
+
+Remaining Phase 3 production dependencies: internal LLM provider configuration and private KMS extraction/indexing for grounded LEO; permitted sender OAuth/Composio configuration plus an authorized Gmail/Outlook connection; verified sender capability, suppression/unsubscribe and a tested idempotent scheduled worker. Existing Hostinger mailbox credentials are not an OAuth authorization and were not used for campaign sending. No external email was sent. The current capability gates are deliberately closed until those components are provided and implemented.
+
+Next bounded milestone: **V8 Phase 4 — Commercial + reporting**, when requested. Phase 3 provider execution is still a documented blocker; do not describe it as operational outreach. No billing/payment implementation or public deployment in this run.

@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checks": [
+    "New tenant starts empty with real auth sessions",
+    "Four-step sequence, selected audience and custom template persist",
+    "CSRF, API and direct database cross-tenant access denied",
+    "Approval persists but launch and LEO are honestly unavailable; no campaign activation",
+    "Browser personalization, unsaved approval guard and content invalidation survive reload",
+    "Editable delay and desktop/tablet/mobile screenshots pass with no overflow or JS errors",
+    "Browser approval persists and revoked contact verification invalidates it server-side"
+  ],
+  "errors": [],
+  "userIds": [
+    "306c017f-0dd7-4274-bfa4-eeb1010eebb6",
+    "f576f1f5-fca6-4609-94a5-eab3683f3d77"
+  ],
+  "workspaceIds": [
+    "5c1f7c42-6cd5-49f3-a44a-11e4e78a12be",
+    "66d9882b-505d-43d4-9e3a-a84a06d75020"
+  ],
+  "cleanup": "Tenant content removed; sessions signed out. Ban isolated QA identities separately."
+}
