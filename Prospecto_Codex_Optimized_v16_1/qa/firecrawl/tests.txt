@@ -1,0 +1,40 @@
+✔ tenant data pagination does not silently stop at API row limit (1.2827ms)
+✔ failed page does not expose partial workspace results as complete (0.2936ms)
+▶ PostgreSQL migration, tenant RLS and Phase 1 persistence
+  ✔ new workspaces start empty and bootstrap owner securely (6.7342ms)
+  ✔ cross tenant SELECT/INSERT/UPDATE/DELETE are denied by RLS (3.3407ms)
+  ✔ product edits persist and KMS uses same-tenant product FK (5.88ms)
+  ✔ private storage rejects foreign and unbound paths (4.0154ms)
+  ✔ CSV batch RPC dedupes email and company domain atomically (12.469ms)
+  ✔ campaign audience persists exact IDs and blocks cross-tenant audience (10.7588ms)
+  ✔ membership writes and role escalation blocked; member deletion blocked (4.492ms)
+  ✔ records cannot move across workspaces even for dual member (1.7222ms)
+  ✔ all tenant tables hide foreign rows and audit is append-only (5.7707ms)
+  ✔ ICP and PIC provenance enforce tenant FKs and promotion review (13.7791ms)
+  ✔ research reservation limits persist and deny foreign tenants (12.5827ms)
+  ✔ anonymous access blocked and every exposed tenant table has RLS (2.8236ms)
+  ✔ owner deletion removes product metadata and storage must be explicitly removed first (3.8197ms)
+✔ PostgreSQL migration, tenant RLS and Phase 1 persistence (1433.342ms)
+✔ CSV handles BOM, quoted commas/newlines and escaped quotes (1.234ms)
+✔ CSV rejects empty, malformed, mismatched and duplicate headers (0.3463ms)
+✔ CSV enforces batch and size limits (3.0699ms)
+✔ mapping validates rows, normalizes emails and deduplicates (2.9011ms)
+✔ products and audience reject blank names, foreign input, duplicate audience (2.233ms)
+✔ manual verification requires public HTTPS evidence (0.7241ms)
+✔ CSV export quotes fields and protects spreadsheet formulas (0.3813ms)
+✔ KMS upload validates file signature, type, UTF8 and size (1.1159ms)
+✔ ICP validates size range and nullable bounds (3.1479ms)
+✔ company domain and PIC public evidence are validated (2.1223ms)
+✔ ICP matching uses saved facts, unknown size never satisfies numeric constraints (0.2495ms)
+✔ CSRF accepts actual request host when framework normalizes URL hostname (20.4373ms)
+✔ request body limits protect declared and chunked payloads (5.6808ms)
+✔ web evidence rejects credential/private/non-HTTPS URLs and limits/dedupes results (1.0825ms)
+✔ provider failures return actionable safe messages without raw errors (0.3336ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1894.1306

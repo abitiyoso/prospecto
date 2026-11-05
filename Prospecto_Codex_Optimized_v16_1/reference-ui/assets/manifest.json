@@ -1,0 +1,79 @@
+{
+  "source": "approved Prospecto v16.1 index.html",
+  "extracted_data_uris": 12,
+  "unique_assets": 9,
+  "assets": [
+    {
+      "name": "prospecto-logo-approved.png",
+      "bytes": 64232,
+      "width": 431,
+      "height": 131,
+      "sha256": "d3b78476fd70f3e2b4a1f6502decf906b0373c4ac0c3128e77cc6dc0b47943df",
+      "occurrences": null
+    },
+    {
+      "name": "legacy-hero-portrait.webp",
+      "bytes": 60376,
+      "width": 920,
+      "height": 660,
+      "sha256": "08fa076bb4a7e2e3e9706e4a0dc575c3e77c290f411cde99dcf4516335ff79b2",
+      "occurrences": null
+    },
+    {
+      "name": "journey-product.webp",
+      "bytes": 22360,
+      "width": 860,
+      "height": 580,
+      "sha256": "f3db1f6b9bfa1637ab5b7d86a8c178d311817b73a22537d550551c8f16599091",
+      "occurrences": null
+    },
+    {
+      "name": "journey-prospect.webp",
+      "bytes": 30136,
+      "width": 860,
+      "height": 580,
+      "sha256": "cee7b55fcc4aca90534ca16c47b93f3a41ccf283079c0a44b8f0675f58828bde",
+      "occurrences": null
+    },
+    {
+      "name": "journey-campaign.webp",
+      "bytes": 33980,
+      "width": 860,
+      "height": 580,
+      "sha256": "19a24f37292335374752bc76e0e098b8e4625697bbe3e2640ffbee03c6b55ca8",
+      "occurrences": null
+    },
+    {
+      "name": "home-hero-professional-workspace.webp",
+      "bytes": 99804,
+      "width": 1672,
+      "height": 941,
+      "sha256": "754dff851a1c5153755a18e174106a3b2187048f0b20710cdbed250a4f223ae9",
+      "occurrences": null
+    },
+    {
+      "name": "product-knowledge-workspace.webp",
+      "bytes": 187620,
+      "width": 1450,
+      "height": 930,
+      "sha256": "edd765554663e47b09d0fde2c3f213711eb029625f414adad51b7d1f34e7b4fc",
+      "occurrences": null
+    },
+    {
+      "name": "prospect-research-workspace.webp",
+      "bytes": 186950,
+      "width": 1460,
+      "height": 920,
+      "sha256": "cf6519a380a4b4080f244b3a12d6035966e25cfc77f9c3faa3db9e300f754aba",
+      "occurrences": null
+    },
+    {
+      "name": "campaign-workspace.webp",
+      "bytes": 185584,
+      "width": 1460,
+      "height": 920,
+      "sha256": "58445a8f1ea5e7a55d0bfe49c0962f2c9488f89e65533f05e8dbafd7a93e14f3",
+      "occurrences": null
+    }
+  ]
+}

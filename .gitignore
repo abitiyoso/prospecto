@@ -1,0 +1,14 @@
+# Secrets and local runtime state
+**/.env*
+!**/.env.example
+**/node_modules/
+**/.next/
+**/*.tsbuildinfo
+**/test-results/
+**/supabase/.temp/
+# Delivery archives are generated artifacts, not application source
+*.zip
+# Account-settings screenshots are local verification evidence
+**/qa/**/confirm-email-*.jpg
+Thumbs.db
+.DS_Store

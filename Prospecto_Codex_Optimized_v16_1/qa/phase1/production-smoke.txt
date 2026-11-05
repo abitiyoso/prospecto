@@ -1,0 +1,1 @@
+PASS: production HTTP 200, unauthenticated session gate, no reference tenant fixtures, security headers, QA routes 404, three CSRF boundaries. Provider E2E evidence is recorded separately in live-results.json.

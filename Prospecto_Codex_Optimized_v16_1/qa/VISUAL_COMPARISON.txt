@@ -1,0 +1,6 @@
+{'variant': 'original', 'viewport': 1440, 'body_text_length': 1632, 'image_count': 2, 'images_loaded': 2, 'page_errors': []}
+{'variant': 'optimized', 'viewport': 1440, 'body_text_length': 1632, 'image_count': 2, 'images_loaded': 2, 'page_errors': []}
+{'viewport': 1440, 'pixel_mean_abs_error': 0.0, 'same_pixels': True, 'diff_bbox': None}
+{'variant': 'original', 'viewport': 390, 'body_text_length': 1601, 'image_count': 2, 'images_loaded': 2, 'page_errors': []}
+{'variant': 'optimized', 'viewport': 390, 'body_text_length': 1601, 'image_count': 2, 'images_loaded': 2, 'page_errors': []}
+{'viewport': 390, 'pixel_mean_abs_error': 0.0, 'same_pixels': True, 'diff_bbox': None}

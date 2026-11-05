@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "Two real Auth password logins and cookie sessions; empty workspace creation",
+    "Product CRUD persistence and direct HTTP/API cross-tenant read/insert/update isolation",
+    "Real private PDF/TXT uploads, pending KMS state, signed downloads and foreign-tenant denial",
+    "Real CSV import/dedupe and exact campaign audience persistence; foreign contact rejected",
+    "Authenticated browser rendering/reload and membership-verified workspace switching",
+    "Real password update revokes app session; old password rejected and new password accepted",
+    "Product/Storage cleanup and logout/session gate"
+  ],
+  "workspaces": [
+    "7a7e347e-ec36-4065-914d-20c51d91c9d4",
+    "78faddf8-18d5-46b7-9dd0-b9bcfdac354b",
+    "1f1b43f7-b58f-441c-8751-70fceb1028a5"
+  ],
+  "passed": true,
+  "limitations": [
+    "QA users were seeded separately, not signed up through email. Email confirmation/reset delivery is not tested here."
+  ]
+}

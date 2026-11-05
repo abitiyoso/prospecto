@@ -1,0 +1,6 @@
+{
+  "status": 200,
+  "emailEnabled": true,
+  "signupEnabled": true,
+  "automaticEmailConfirmation": true
+}

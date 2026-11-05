@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "Landing login and signup buttons reach real Auth without visual changes",
+    "Two actual new signups receive sessions immediately without email verification; new tenants start empty",
+    "Persisted ICP/company/source metadata and foreign-tenant PIC/ICP isolation",
+    "PIC cannot become a Lead before explicit manual verification; promotion preserves provenance and dedupes",
+    "Live prospect UI renders saved company/PIC with no overflow at all four approved widths",
+    "Direct database read/insert/update and application workspace-switch attempts across tenants denied",
+    "Authenticated UI and reload preserve actual tenant data",
+    "Workspace content cleanup, logout session gate and subsequent password login pass"
+  ],
+  "userIds": [
+    "0d3d9f2d-d376-4b9b-af74-73f5154ec220",
+    "edc139f5-6c71-441b-861e-941b5959432d"
+  ],
+  "workspaceIds": [
+    "d6d1da89-4dd6-480d-99ec-6c0c8c6f48c2",
+    "76e4be58-cacf-4802-ad5e-3fc68ef027c6"
+  ],
+  "passed": true,
+  "cleanup": "Current-run content deleted, sessions signed out, all six Phase 2 QA identities banned; first failed visual-run fixtures remain isolated under banned QA users."
+}

@@ -1,0 +1,9 @@
+* text=auto eol=lf
+*.png binary
+*.webp binary
+*.jpg binary
+*.woff2 binary
+# Immutable reference checksums must survive checkout on all platforms.
+PROSPECTO_CODEX_LEAN_HANDOFF_V8/source/** -text
+Prospecto_Codex_Optimized_v16_1/public/approved/** -text
+Prospecto_Codex_Optimized_v16_1/reference-ui/** -text

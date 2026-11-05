@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Landing login and signup buttons reach real Auth without visual changes",
+    "Two actual new signups receive sessions immediately without email verification; new tenants start empty",
+    "Real Firecrawl search via server route persists up to five sources, survives reload, denies foreign tenant, requires manual review, and fits mobile",
+    "Direct database read/insert/update and application workspace-switch attempts across tenants denied",
+    "Authenticated UI and reload preserve actual tenant data",
+    "Workspace content cleanup, logout session gate and subsequent password login pass"
+  ],
+  "userIds": [
+    "ee137ee9-0955-4994-b089-3272a57218e9",
+    "5ea43166-b991-499a-ab18-b145e144c2da"
+  ],
+  "workspaceIds": [
+    "15eb8946-40df-49bb-85c4-e97d73081467",
+    "5920d542-84a9-4fd1-bf09-c1f40055a184"
+  ],
+  "passed": true,
+  "cleanup": "Content removed through authenticated tenant APIs, sessions signed out, all research QA identities banned.",
+  "livePICDomainSearch": true
+}

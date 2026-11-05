@@ -1,0 +1,33 @@
+✔ tenant data pagination does not silently stop at API row limit (1.8941ms)
+✔ failed page does not expose partial workspace results as complete (0.2875ms)
+▶ PostgreSQL migration, tenant RLS and Phase 1 persistence
+  ✔ new workspaces start empty and bootstrap owner securely (5.9ms)
+  ✔ cross tenant SELECT/INSERT/UPDATE/DELETE are denied by RLS (3.1065ms)
+  ✔ product edits persist and KMS uses same-tenant product FK (5.2386ms)
+  ✔ private storage rejects foreign and unbound paths (2.9883ms)
+  ✔ CSV batch RPC dedupes email and company domain atomically (10.2021ms)
+  ✔ campaign audience persists exact IDs and blocks cross-tenant audience (7.2389ms)
+  ✔ membership writes and role escalation blocked; member deletion blocked (3.6523ms)
+  ✔ records cannot move across workspaces even for dual member (1.7567ms)
+  ✔ all tenant tables hide foreign rows and audit is append-only (4.6704ms)
+  ✔ anonymous access blocked and every exposed tenant table has RLS (1.888ms)
+  ✔ owner deletion removes product metadata and storage must be explicitly removed first (2.448ms)
+✔ PostgreSQL migration, tenant RLS and Phase 1 persistence (1352.329ms)
+✔ CSV handles BOM, quoted commas/newlines and escaped quotes (1.6053ms)
+✔ CSV rejects empty, malformed, mismatched and duplicate headers (0.506ms)
+✔ CSV enforces batch and size limits (3.6521ms)
+✔ mapping validates rows, normalizes emails and deduplicates (2.0806ms)
+✔ products and audience reject blank names, foreign input, duplicate audience (1.3176ms)
+✔ manual verification requires public HTTPS evidence (0.358ms)
+✔ CSV export quotes fields and protects spreadsheet formulas (0.1821ms)
+✔ KMS upload validates file signature, type, UTF8 and size (0.5948ms)
+✔ CSRF accepts actual request host when framework normalizes URL hostname (19.909ms)
+✔ request body limits protect declared and chunked payloads (4.4738ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1851.8176

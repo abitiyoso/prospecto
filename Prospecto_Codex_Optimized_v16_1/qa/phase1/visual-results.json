@@ -1,0 +1,218 @@
+{
+  "results": [
+    {
+      "surface": "Home",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "surface": "My Products",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "surface": "Find Prospects",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "surface": "Leads",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "surface": "Campaigns",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "surface": "Analytics",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "surface": "Subscription & Credits",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "surface": "Settings",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "surface": "Home",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "surface": "My Products",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "surface": "Find Prospects",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "surface": "Leads",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "surface": "Campaigns",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "surface": "Analytics",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "surface": "Subscription & Credits",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "surface": "Settings",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "surface": "Home",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "surface": "My Products",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "surface": "Find Prospects",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "surface": "Leads",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "surface": "Campaigns",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "surface": "Analytics",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "surface": "Subscription & Credits",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "surface": "Settings",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "surface": "Home",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "surface": "My Products",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "surface": "Find Prospects",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "surface": "Leads",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "surface": "Campaigns",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "surface": "Analytics",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "surface": "Subscription & Credits",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "surface": "Settings",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "surface": "Home",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "surface": "My Products",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "surface": "Find Prospects",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "surface": "Leads",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "surface": "Campaigns",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "surface": "Analytics",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "surface": "Subscription & Credits",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "surface": "Settings",
+      "width": 1440,
+      "overflow": false
+    }
+  ],
+  "clientErrors": [],
+  "checks": {
+    "productFormPayload": true,
+    "selectedAudiencePayload": true,
+    "unconfiguredLoginDisabled": true,
+    "csrfCommands": true,
+    "csrfAuth": true,
+    "csrfUpload": true,
+    "assetHashes": 9
+  },
+  "limitations": [
+    "Browser command responses in isolated QA are intercepted. Actual persistence/RLS is tested separately in PGlite.",
+    "Supabase Auth and Storage HTTP services require a configured running project."
+  ]
+}

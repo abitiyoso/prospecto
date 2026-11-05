@@ -1,0 +1,2 @@
+'use client';
+export default function ErrorPage({reset}:{reset:()=>void}){return <main className="auth-panel"><section className="card auth-card"><img width="190" src="/assets/prospecto-logo-approved.png" alt="Prospecto by Elenio"/><h2>Workspace belum dapat dimuat</h2><p>Periksa koneksi, lalu coba lagi. Data Anda tidak diubah.</p><button className="btn btn-primary" onClick={reset}>Coba lagi</button></section></main>;}

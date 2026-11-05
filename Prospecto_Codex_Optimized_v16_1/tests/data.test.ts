@@ -1,0 +1,3 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {collectRows} from '../lib/data';
+test('tenant data pagination does not silently stop at API row limit',async()=>{const items=[1,2,3,4,5];const ranges:number[][]=[];const result=await collectRows(async(from,to)=>{ranges.push([from,to]);return{data:items.slice(from,to+1),error:null};},2);assert.deepEqual(result,items);assert.deepEqual(ranges,[[0,1],[2,3],[4,5]]);});
+test('failed page does not expose partial workspace results as complete',async()=>{await assert.rejects(collectRows(async()=>({data:null,error:new Error('Unavailable')})));});

@@ -1,0 +1,19 @@
+{
+  "checks": [
+    "Landing login and signup buttons reach real Auth without visual changes",
+    "Two actual new signups receive sessions immediately without email verification; new tenants start empty",
+    "Direct database read/insert/update and application workspace-switch attempts across tenants denied",
+    "Authenticated UI and reload preserve actual tenant data",
+    "Workspace content cleanup, logout session gate and subsequent password login pass"
+  ],
+  "userIds": [
+    "17ffe88b-19b8-4e77-8e47-5a6cbdf37b57",
+    "9649ab66-c2bf-4df6-8c94-de09f6bc1bd1"
+  ],
+  "workspaceIds": [
+    "fcceccc3-c31b-4136-aeff-f0d70942cb0f",
+    "c1d88ea1-00b0-40fa-af27-82ef9cc51bc0"
+  ],
+  "passed": true,
+  "cleanup": "Product content deleted; all test sessions signed out; both isolated QA identities banned indefinitely."
+}

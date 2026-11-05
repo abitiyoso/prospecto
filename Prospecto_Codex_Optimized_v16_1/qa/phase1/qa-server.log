@@ -1,0 +1,20 @@
+▲ Next.js 16.4.5 (Turbopack)
+- Local:         http://127.0.0.1:3187
+- Network:       http://127.0.0.1:3187
+✓ Ready in 385ms
+✓ Running next.config.ts took 45ms
+
+ GET / 200 in 451ms (next.js: 246ms, proxy.ts: 56ms, application-code: 149ms)
+ GET /qa-visual 200 in 106ms (next.js: 37ms, proxy.ts: 6ms, application-code: 63ms)
+ GET /qa-visual 200 in 54ms (next.js: 8ms, proxy.ts: 5ms, application-code: 41ms)
+ GET /qa-visual 200 in 64ms (next.js: 4ms, proxy.ts: 5ms, application-code: 55ms)
+ GET /qa-visual 200 in 53ms (next.js: 5ms, proxy.ts: 5ms, application-code: 44ms)
+ GET /qa-visual 200 in 47ms (next.js: 4ms, proxy.ts: 4ms, application-code: 39ms)
+ GET /qa-visual 200 in 43ms (next.js: 3ms, proxy.ts: 4ms, application-code: 35ms)
+ GET /qa-visual 200 in 81ms (next.js: 8ms, proxy.ts: 6ms, application-code: 67ms)
+ GET /qa-visual?filled=1 200 in 75ms (next.js: 22ms, proxy.ts: 6ms, application-code: 46ms)
+ GET /qa-visual?filled=1 200 in 32ms (next.js: 7ms, proxy.ts: 5ms, application-code: 19ms)
+ GET / 200 in 62ms (next.js: 27ms, proxy.ts: 6ms, application-code: 30ms)
+ POST /api/command 403 in 771ms (next.js: 745ms, proxy.ts: 4ms, application-code: 21ms)
+ POST /auth/action 403 in 380ms (next.js: 370ms, proxy.ts: 4ms, application-code: 5ms)
+ POST /api/upload 403 in 289ms (next.js: 281ms, proxy.ts: 3ms, application-code: 4ms)

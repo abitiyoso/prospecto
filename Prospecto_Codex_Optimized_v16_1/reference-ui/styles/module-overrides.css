@@ -1,0 +1,42 @@
+
+.v10-performance-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
+.v10-performance-tiles>div{background:#F9FAFD;border:1px solid #E2E8F0;border-radius:12px;padding:15px 11px}
+.v10-performance-tiles b{display:block;color:#0B1E49;font-weight:750;font-size:25px;margin-bottom:5px}
+.v10-performance-tiles small{display:block;color:#64748b;font-size:11px}
+.v10-caption{padding:12px 13px;border-radius:10px;border:1px solid #E2E8F0;color:#475569;background:#fff;line-height:1.6;font-size:11.5px}
+.v10-table-scroll{overflow-x:auto}
+.v10-table{border-collapse:collapse;width:100%;min-width:650px;color:#111827}
+.v10-table th{text-align:left;font-size:11px;color:#64748b;font-weight:650;background:#F9FAFD;padding:12px 13px;border-bottom:1px solid #E2E8F0}
+.v10-table td{padding:14px 13px;border-bottom:1px solid #F1F5F9;font-size:12px}
+.v10-table td strong{font-weight:650;color:#0B1E49}
+.v10-table tr:last-child td{border-bottom:0}
+@media(max-width:620px){.v10-performance-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.v10-performance-tiles>div{padding:13px 8px}.v10-performance-tiles b{font-size:21px}.v10-performance-tiles small{font-size:10px}}
+
+/* Prospecto v14 | Context-led real-object assets. Approved logo and brand system unchanged. */
+.v12-home-hero{grid-template-columns:1.08fr .92fr}
+.v12-hero-scene{background:linear-gradient(130deg,#efebfb,#e9ebf6);isolation:isolate}
+.v12-hero-scene:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#f3f0fa 0%,#f3f0fa22 24%,transparent 63%);z-index:0;pointer-events:none}
+.v12-hero-portrait{position:absolute;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:50% 53%!important;border-radius:0!important;box-shadow:none!important;opacity:.94;mask-image:linear-gradient(to right,transparent 0%,black 24%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 24%)}
+.v12-photo-wash{display:none}
+.v12-product-object{top:24px;left:5px;z-index:2;transform:none;box-shadow:0 15px 30px #0b1e4923;background:#fffffff2}
+.v12-leo-floating{right:12px;bottom:18px}
+.v12-step-image{background:linear-gradient(140deg,#eef0fa,#e7e4f7)}
+.v12-step-image>img{object-fit:cover;object-position:center center;filter:saturate(.9);}
+.v12-image-product>img{object-position:50% 47%}
+.v12-image-research>img{object-position:50% 42%}
+.v12-image-outreach>img{object-position:50% 49%}
+.v12-step-image:after{background:linear-gradient(0deg,rgba(11,30,73,.28),transparent 57%)}
+.v12-img-overlay-product,.v12-img-overlay-match,.v12-img-overlay-mail{background:#fffffff5;box-shadow:0 9px 16px #0b1e4925;border-color:#e5e3f2}
+.v12-product-banner img{object-fit:cover;object-position:50% 33%;border:1px solid #dedcf0}
+.v12-target-shot{background:#e6eaf5}
+.v12-target-shot img{inset:0!important;width:100%!important;height:100%!important;right:auto!important;bottom:auto!important;border-radius:0!important;object-fit:cover!important;object-position:50% 45%!important;opacity:.84}
+.v12-target-shot:after{content:"";inset:0;position:absolute;background:linear-gradient(90deg,rgba(238,234,250,.93),rgba(241,238,249,.13) 78%);pointer-events:none}
+.v12-target-shot .v12-target-card{z-index:2;top:50%;transform:translateY(-50%);left:18px;border:1px solid #e2e3f0;padding:15px 18px;min-width:148px;box-shadow:0 12px 28px #0b1e4929}
+.v12-campaign-scene{background:linear-gradient(135deg,#f4f1fc,#e9e4f7);border:1px solid #e4dff3}
+.v12-campaign-scene:before{background:radial-gradient(circle at 18% 32%,#ece7fa,transparent 70%)}
+.v12-campaign-desk{display:none!important}
+.v12-campaign-scene .v11-campaign-shot{transform:rotate(-1deg) scale(.93);box-shadow:0 18px 32px #0b1e4915}
+/* Clear contextual imagery supports, not replaces, the workflow UI */
+@media(max-width:860px){.v12-home-hero{grid-template-columns:1fr!important}.v12-hero-portrait{object-position:50% 55%!important}.v12-product-object{left:8%;top:18px}}
+@media(max-width:600px){.v12-home-hero{display:grid;grid-template-columns:1fr!important}.v12-hero-copy{padding:26px 24px 19px}.v12-hero-scene{min-height:222px;background:#eae8f8}.v12-hero-portrait{width:100%!important;height:100%!important;right:0!important;object-position:53% 45%!important}.v12-product-object{top:13px;left:12px;width:176px}.v12-leo-floating{right:10px;bottom:14px}.v12-step-image{height:165px}.v12-target-shot .v12-target-card{left:12px;min-width:118px}}
+

@@ -1,0 +1,48 @@
+{
+  "checks": {
+    "approvedMarkupExceptThreeAuthLinks": true,
+    "assetHashes": 6,
+    "latestLogo": true,
+    "fiveTabs": true,
+    "prospectSearch": true,
+    "sequenceEditing": true,
+    "csvInteraction": true,
+    "leoPanel": true,
+    "workspaceV15Overlay": true,
+    "mobileMenu": true,
+    "existingAppLogin": true,
+    "noClientExceptions": true
+  },
+  "captures": [
+    {
+      "width": 1440,
+      "height": 900,
+      "sourceHash": "2371dce925d5354eccec940d6ef46a6186c4ced81ca5fec5e01975a841e15130",
+      "servedHash": "2371dce925d5354eccec940d6ef46a6186c4ced81ca5fec5e01975a841e15130",
+      "pixelExact": true
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "sourceHash": "05d28f1cb9a2d585596f3669bd9be19d5a44ba7f298de2856ebbb5b8da63c94d",
+      "servedHash": "05d28f1cb9a2d585596f3669bd9be19d5a44ba7f298de2856ebbb5b8da63c94d",
+      "pixelExact": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "sourceHash": "09174f8e6a5c1be73189ff459ed276f31846842602ed4e7be0f3ef38fdc714e6",
+      "servedHash": "09174f8e6a5c1be73189ff459ed276f31846842602ed4e7be0f3ef38fdc714e6",
+      "pixelExact": true
+    },
+    {
+      "width": 320,
+      "height": 700,
+      "sourceHash": "c227baf82187993f351d7528113242fd2f72179dc0e7bdb4d4bc0a2862810acf",
+      "servedHash": "c227baf82187993f351d7528113242fd2f72179dc0e7bdb4d4bc0a2862810acf",
+      "pixelExact": true
+    }
+  ],
+  "errors": [],
+  "note": "Supplied previews may show the superseded logo. Latest ASSET_LOCK guideline logo wins. Source/served captures use identical viewport and reduced-motion settings."
+}

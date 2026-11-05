@@ -1,0 +1,13 @@
+{
+  "results": {
+    "confirmationEmailLinkAccepted": true,
+    "appRecoveryRequested": true,
+    "recoveryCallbackAndSession": true,
+    "passwordResetAndLogin": true,
+    "emptyWorkspaceOnboarding": true,
+    "loggedOut": true
+  },
+  "passed": true,
+  "account": "hello@elenio.id",
+  "passwordStored": false
+}

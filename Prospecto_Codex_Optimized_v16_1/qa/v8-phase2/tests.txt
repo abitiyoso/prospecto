@@ -1,0 +1,37 @@
+✔ tenant data pagination does not silently stop at API row limit (1.3168ms)
+✔ failed page does not expose partial workspace results as complete (0.2988ms)
+▶ PostgreSQL migration, tenant RLS and Phase 1 persistence
+  ✔ new workspaces start empty and bootstrap owner securely (5.3236ms)
+  ✔ cross tenant SELECT/INSERT/UPDATE/DELETE are denied by RLS (3.3878ms)
+  ✔ product edits persist and KMS uses same-tenant product FK (5.8044ms)
+  ✔ private storage rejects foreign and unbound paths (4.3344ms)
+  ✔ CSV batch RPC dedupes email and company domain atomically (13.0941ms)
+  ✔ campaign audience persists exact IDs and blocks cross-tenant audience (8.9183ms)
+  ✔ membership writes and role escalation blocked; member deletion blocked (3.9326ms)
+  ✔ records cannot move across workspaces even for dual member (1.5597ms)
+  ✔ all tenant tables hide foreign rows and audit is append-only (5.5001ms)
+  ✔ ICP and PIC provenance enforce tenant FKs and promotion review (11.3348ms)
+  ✔ anonymous access blocked and every exposed tenant table has RLS (2.0991ms)
+  ✔ owner deletion removes product metadata and storage must be explicitly removed first (3.8999ms)
+✔ PostgreSQL migration, tenant RLS and Phase 1 persistence (1429.7075ms)
+✔ CSV handles BOM, quoted commas/newlines and escaped quotes (1.3989ms)
+✔ CSV rejects empty, malformed, mismatched and duplicate headers (0.3611ms)
+✔ CSV enforces batch and size limits (3.8603ms)
+✔ mapping validates rows, normalizes emails and deduplicates (2.5262ms)
+✔ products and audience reject blank names, foreign input, duplicate audience (1.3722ms)
+✔ manual verification requires public HTTPS evidence (0.3904ms)
+✔ CSV export quotes fields and protects spreadsheet formulas (0.2078ms)
+✔ KMS upload validates file signature, type, UTF8 and size (0.679ms)
+✔ ICP validates size range and nullable bounds (2.8555ms)
+✔ company domain and PIC public evidence are validated (1.531ms)
+✔ ICP matching uses saved facts, unknown size never satisfies numeric constraints (0.2304ms)
+✔ CSRF accepts actual request host when framework normalizes URL hostname (22.0018ms)
+✔ request body limits protect declared and chunked payloads (6.4935ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1880.5024
