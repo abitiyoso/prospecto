@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "checks": [
+    "Repeated GETs do not consume recovery token; confirmation is a POST with no-referrer policy",
+    "Delivered Hostinger recovery link establishes a session in a fresh browser cookie context without the initiating PKCE verifier",
+    "Consumed token cannot be replayed; cross-origin POST denied; real account password was not changed"
+  ],
+  "mailbox": "hello@elenio.id",
+  "sender": "hello@elenio.id",
+  "templateSubject": "Atur ulang kata sandi akun Prospecto Anda",
+  "smtp": "smtp.hostinger.com:465",
+  "emailConfirmationEnabled": true,
+  "passwordChanged": false,
+  "tokensStored": false
+}
