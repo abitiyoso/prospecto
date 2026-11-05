@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/app",
+      "status": 200
+    },
+    {
+      "path": "/auth/password",
+      "status": 200
+    },
+    {
+      "path": "/workspace.html",
+      "status": 200
+    },
+    {
+      "path": "/api/command",
+      "unauthenticatedStatus": 401
+    },
+    {
+      "path": "/api/upload",
+      "unauthenticatedStatus": 401
+    },
+    {
+      "path": "/api/research",
+      "unauthenticatedStatus": 401
+    }
+  ],
+  "csrfDenied": true,
+  "authPasswordGuard": true,
+  "serverKeyAbsentFromClient": true,
+  "clientAssetsScanned": 12,
+  "scope": "Local production build HTTP smoke. Production HTTPS/domain Auth roundtrip still required."
+}
