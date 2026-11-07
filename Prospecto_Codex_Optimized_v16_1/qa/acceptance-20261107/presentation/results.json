@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "checks": [
+    "Private note and actual DOCX indexed/searchable; XLSX first sheet parsed through authenticated routes",
+    "Source-labeled template persists; invalid AI engine rejected; tenant and role boundaries; invite requires matching verified email",
+    "Hostinger TLS credentials verified and encrypted; approved self-mail campaign accepted by SMTP once; duplicate launch/process and pause do not resend",
+    "Unsubscribe GET does not mutate, confirmed POST suppresses; ZIP restore creates new workspace with private files and no sender/execution",
+    "Authenticated operational screens render at 1440/390/320 without page errors or horizontal overflow"
+  ],
+  "browserErrors": [],
+  "isolatedQAUsersBanned": 2,
+  "workspaceCount": 2,
+  "qaContentRetainedForAudit": true,
+  "at": "2026-11-07T01:38:58.043Z"
+}

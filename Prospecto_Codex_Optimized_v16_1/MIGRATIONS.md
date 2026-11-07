@@ -14,7 +14,10 @@ Migrasi lokal diselaraskan dengan versi yang sudah diterapkan melalui Supabase M
 | 20261105012958 | 20261105121950 |
 | 20261105122754 | 20261105122807 |
 | 20261105135532 | 20261105141025 |
+| 20261107011209 | 20261107011858 |
 
 Jangan menjalankan ulang foundation pada database Elenio yang sudah berisi schema. Cocokkan supabase migration list terlebih dahulu. Database baru: terapkan semua migrasi berurutan menggunakan CLI dan konfigurasi Supabase resmi. Auth/SMTP, URL redirect, dan secrets dikelola terpisah; tidak disimpan dalam migrasi.
 
 Migrasi kesepuluh `functional_repair` menyimpan identitas sender per peluncuran, memperbaiki hitungan balasan positif, menambah lifecycle anggota/undangan melalui RPC terotorisasi, serta dua tabel daftar leads dengan RLS. Seluruh 39 tabel publik memakai RLS. Backfill sender hanya dilakukan ketika koneksi belum berubah sejak peluncuran; pemeriksaan hosted menemukan nol peluncuran yang ambigu. Worker tidak akan mengirim dari identitas historis yang tidak dapat dipastikan.
+
+Migrasi kesebelas `20261107011858_leo_router_provider` sudah diterapkan di Elenio. Riwayat LEO menerima engine `9router` serta menyimpan `model` aktual dan `requested_model`. Template lama tetap memakai nilai kosong untuk model. Tidak ada data lama dihapus atau kebijakan RLS dilonggarkan; insert LEO tetap hanya melalui server. Riwayat sebelas migrasi cocok dengan hosted.

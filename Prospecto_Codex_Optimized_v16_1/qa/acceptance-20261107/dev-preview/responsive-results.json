@@ -1,0 +1,86 @@
+{
+  "passed": true,
+  "captures": [
+    {
+      "width": 1440,
+      "section": "My Products",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-My-Products-1440.png"
+    },
+    {
+      "width": 1440,
+      "section": "Campaigns",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-Campaigns-1440.png"
+    },
+    {
+      "width": 1440,
+      "section": "Settings",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-Settings-1440.png"
+    },
+    {
+      "width": 1440,
+      "section": "Subscription & Credits",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-Subscription-and-Credits-1440.png"
+    },
+    {
+      "width": 1024,
+      "section": "My Products",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-My-Products-1024.png"
+    },
+    {
+      "width": 1024,
+      "section": "Campaigns",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-Campaigns-1024.png"
+    },
+    {
+      "width": 1024,
+      "section": "Settings",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-Settings-1024.png"
+    },
+    {
+      "width": 1024,
+      "section": "Subscription & Credits",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-Subscription-and-Credits-1024.png"
+    },
+    {
+      "width": 390,
+      "section": "My Products",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-My-Products-390.png"
+    },
+    {
+      "width": 390,
+      "section": "Campaigns",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-Campaigns-390.png"
+    },
+    {
+      "width": 390,
+      "section": "Settings",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-Settings-390.png"
+    },
+    {
+      "width": 390,
+      "section": "Subscription & Credits",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-Subscription-and-Credits-390.png"
+    },
+    {
+      "width": 320,
+      "section": "My Products",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-My-Products-320.png"
+    },
+    {
+      "width": 320,
+      "section": "Campaigns",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-Campaigns-320.png"
+    },
+    {
+      "width": 320,
+      "section": "Settings",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-Settings-320.png"
+    },
+    {
+      "width": 320,
+      "section": "Subscription & Credits",
+      "path": "qa/acceptance-20261107/dev-preview/responsive-Subscription-and-Credits-320.png"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {mkdir,writeFile} from 'node:fs/promises';
+process.loadEnvFile('.env.local');
+const base=process.env.QA_BASE_URL||'http://127.0.0.1:3000',dir=process.env.QA_OUTPUT_DIR||'qa/local-smoke';await mkdir(dir,{recursive:true});
+const checks=[];
+const app=await fetch(base+'/app');assert.equal(app.status,200);assert.match(await app.text(),/Masuk ke workspace/);assert.equal(app.headers.get('x-frame-options'),'DENY');assert.equal(app.headers.get('x-content-type-options'),'nosniff');checks.push('Unauthenticated production login gate, 200 and security headers');
+assert.equal((await fetch(base+'/api/health')).status,200);checks.push('Server database health 200');
+for(const path of ['/auth/action','/api/command','/api/workflow','/auth/verify','/unsubscribe/confirm'])assert.equal((await fetch(base+path,{method:'POST',headers:{origin:'https://foreign.example','Content-Type':'application/json'},body:'{}'})).status,403);checks.push('Five cross-origin mutation boundaries reject 403');
+assert.equal((await fetch(base+'/api/worker?check=1',{method:'POST'})).status,401);
+const worker=await fetch(base+'/api/worker?check=1',{method:'POST',headers:{Authorization:'Bearer '+process.env.WORKER_SECRET}});assert.equal(worker.status,200);assert.deepEqual(await worker.json(),{ok:true,queueProcessed:false});checks.push('Worker authenticated dry check succeeds without processing a queue; unauthenticated request denied');
+for(const path of ['/qa-visual','/__visual'])assert.equal((await fetch(base+path)).status,404);checks.push('Internal visual fixture routes unavailable');
+const result={passed:true,base,checks,at:new Date().toISOString()};await writeFile(dir+'/http-smoke.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));

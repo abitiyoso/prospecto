@@ -7,6 +7,10 @@ export function requestOrigin(request:Request):string {
 }
 export function sameOrigin(request:Request):boolean {
  const origin=request.headers.get('origin');if(!origin)return false;
+ // no-referrer turns native POST navigation Origin into "null". Browser-set
+ // Fetch Metadata still proves this form came from the exact same origin.
+ // Never accept cross-site/same-site, fetch calls, missing metadata or GETs.
+ if(origin==='null')return request.method==='POST'&&request.headers.get('sec-fetch-site')==='same-origin'&&request.headers.get('sec-fetch-mode')==='navigate'&&request.headers.get('sec-fetch-dest')==='document';
  try{return new URL(origin).origin===origin && origin===requestOrigin(request);}catch{return false;}
 }
 /** Bound streamed bodies too: Content-Length is optional and cannot be trusted. */

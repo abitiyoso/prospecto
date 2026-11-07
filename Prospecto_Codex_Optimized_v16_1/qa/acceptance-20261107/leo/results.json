@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checks": [
+    "Actual UI generation calls 9Router, validates JSON and workspace citations, then persists real provider/model/output",
+    "Saved AI draft and citations survive full reload and fit desktop/tablet/mobile widths",
+    "Foreign tenant denied AI access and saved-run/KMS reads; template remains explicitly separate",
+    "Apply AI fills editor only; explicit Save persists campaign content, without launch, approval or outbound messages"
+  ],
+  "evidence": {
+    "provider": "9router",
+    "requestedModel": "cx/gpt-6-luna",
+    "actualModel": "gpt-6-luna",
+    "sourceCount": 2,
+    "subject": "Informasi produk untuk tim sales"
+  },
+  "errors": [],
+  "emailsSent": 0,
+  "campaignsLaunched": 0,
+  "qaUsersBanned": 2,
+  "qaMetadataRetained": true,
+  "at": "2026-11-07T01:47:05.345Z"
+}

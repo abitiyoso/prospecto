@@ -4,7 +4,7 @@ import {randomUUID,randomBytes} from 'node:crypto';
 import {mkdir,writeFile} from 'node:fs/promises';
 import {zipSync,unzipSync} from 'fflate';
 process.loadEnvFile('.env.local');
-const base=process.env.QA_BASE_URL||'http://127.0.0.1:3000',dir='qa/functional-repair';await mkdir(dir,{recursive:true});
+const base=process.env.QA_BASE_URL||'http://127.0.0.1:3000',dir=process.env.QA_OUTPUT_DIR||'qa/functional-repair';await mkdir(dir,{recursive:true});
 const admin=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SECRET_KEY!,{auth:{persistSession:false}}),browser=await chromium.launch({channel:'chrome',headless:true});
 const users=[0,1,2].map(()=>({email:'prospecto-repair-'+randomUUID()+'@example.com',password:randomBytes(32).toString('base64url')}));
 const contexts=await Promise.all(users.map(()=>browser.newContext({reducedMotion:'reduce'}))),clients=users.map(()=>createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,{auth:{persistSession:false}}));

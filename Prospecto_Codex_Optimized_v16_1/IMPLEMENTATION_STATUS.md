@@ -1,4 +1,9 @@
-# Current milestone: functional cleanup verified
+# Current milestone: local 9Router AI and end-to-end acceptance verified
+
+7 November 2026: real LEO generation through 9Router (`cx/gpt-6-luna` → `gpt-6-luna`), citations, persistence/reload and campaign Apply/Save pass. Native browser confirmation/recovery POST regression fixed without weakening cross-site denial. 77 tests, TypeScript/build, current Firecrawl/KMS/leads/team/backup tests and one own-mail campaign SMTP acceptance pass. Approved visual comparisons remain exact at four widths. Eleven migrations align; 39 public tables retain RLS. Keys are server-only and excluded from Git. Evidence/limits: [QA acceptance](qa/acceptance-20261107/README.md), [state](IMPLEMENTATION_STATE.md). Domain/hosting and scheduled global worker remain manual; payment stays bypassed. Keep 9Router running for local AI.
+
+---
+# Historical milestone: functional cleanup verified
 
 Fixed audited campaign reply/unsubscribe, ICP exclusions and restore bugs. Added safe member role/removal/invite revocation, named lead lists, accurate KMS state and paginated campaign job history. 70 tests plus hosted API/browser checks, TypeScript/build and dependency audit pass. All 39 public tables have RLS. Current evidence and remaining GPT/provider/hosting boundaries: [IMPLEMENTATION_STATE.md](IMPLEMENTATION_STATE.md), `qa/functional-repair/`. No email/campaign was launched by this cleanup's QA; no production deployment.
 

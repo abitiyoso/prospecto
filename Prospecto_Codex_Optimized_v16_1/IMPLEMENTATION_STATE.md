@@ -1,6 +1,18 @@
 # Prospecto — functional presentation release
 
-## Current functional cleanup — 5 November 2026
+## Current local acceptance — 7 November 2026
+
+User selected 9Router for AI inside Prospecto. Local environment now uses AI_PROVIDER=9router, loopback port 20128 and requested model cx/gpt-6-luna; actual successful model is gpt-6-luna. Keys remain only in ignored server environment. OpenAI direct initially returned credit_balance_exhausted, so it is not the selected provider. Codex's own provider configuration was not changed.
+
+LEO UI calls the selected server-only adapter, validates strict JSON, allowed citations/variables and complete provider responses, and persists actual engine/model plus requested routing model. Full browser acceptance passed: product+ICP+indexed KMS → real AI → stored citations/draft → full reload → campaign Apply → explicit Save, without auto-approval or sending. Foreign tenants cannot generate/read the run or its KMS. A malformed upstream draft was correctly rejected during testing; no silent template/provider fallback or automatic retry occurs.
+
+Fixed native browser forms: no-referrer makes navigation POST Origin null. Exact same-origin POST/document/navigation Fetch Metadata permits legitimate confirmation/recovery forms; cross-site/same-site, missing metadata and non-navigation remain denied. Browser confirmation/recovery/password change/new login and token replay/CSRF rejection pass using isolated QA tokens. Confirmation remains ON; no real password changed. This token test does not claim new signup-mail inbox delivery today.
+
+77 unit/PostgreSQL tests, TypeScript and optimized build pass. Fresh local production checks pass for real Firecrawl research, PDF/DOCX/XLSX, named lists, team membership/revocation, backup/private-file restore and campaign self-mail accepted exactly once by Hostinger; duplicate launch/process, pause/resume and unsubscribe pass. Approved landing/workspace pixels and six assets match at four widths. Seven configured secrets absent from 12 browser assets. Eleven hosted/local migrations align, including 20261107011858_leo_router_provider; 39 public tables retain RLS. QA identities signed out/banned and private files/credentials removed. Evidence: [QA 7 November](qa/acceptance-20261107/README.md). Final production preview: http://127.0.0.1:3000. Keep 9Router running.
+
+Remaining: manual hosting/domain/HTTPS/Auth URLs and reachable 9Router on hosting; global scheduled worker activation; payment integration intentionally bypassed; automatic delivery/open/inbox tracking and OCR absent. LinkedIn remains manual. No public deployment performed. This status supersedes historical GPT-unconfigured statements below.
+
+## Historical functional cleanup — 5 November 2026
 
 User requested fixing the audited functions first and previously authorized pushing completed work. Fixed positive_reply handling in condition branches and reply analytics; frozen sender email/name/verification on each launch; old unsubscribe and manual suppression now use original sender AND recipient even after SMTP/contact edits. Worker refuses changed/unresolved sender identities. Existing three hosted launches were safely backfilled; zero ambiguous sender histories found.
 

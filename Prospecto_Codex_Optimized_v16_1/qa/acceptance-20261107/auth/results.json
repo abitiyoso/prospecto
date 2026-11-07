@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checks": [
+    "Hosted email confirmation ON; unverified QA login denied; fresh signup token verifies via browser POST and reaches empty onboarding",
+    "Recovery token establishes session; isolated QA password changes; new password logs in, old password fails; replay/CSRF/unauthenticated changes denied"
+  ],
+  "qaUsersBanned": 1,
+  "tokensStored": false,
+  "emailsSent": 0,
+  "mailboxDeliveryRetested": false,
+  "scope": "Admin-generated QA tokens; public signup SMTP delivery is not tested by this script",
+  "at": "2026-11-07T01:46:40.821Z"
+}

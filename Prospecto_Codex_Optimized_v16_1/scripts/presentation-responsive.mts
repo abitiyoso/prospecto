@@ -1,9 +1,10 @@
 import {chromium,expect} from '@playwright/test';
 import {createClient} from '@supabase/supabase-js';
 import {randomUUID,randomBytes} from 'node:crypto';
-import {writeFile} from 'node:fs/promises';
+import {writeFile,mkdir} from 'node:fs/promises';
 process.loadEnvFile('.env.local');
-const origin='http://127.0.0.1:3000',admin=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SECRET_KEY!,{auth:{persistSession:false}}),browser=await chromium.launch({channel:'chrome',headless:true}),context=await browser.newContext({reducedMotion:'reduce'});
+const dir=process.env.QA_OUTPUT_DIR||'qa/presentation';await mkdir(dir,{recursive:true});
+const origin=process.env.QA_BASE_URL||'http://127.0.0.1:3000',admin=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SECRET_KEY!,{auth:{persistSession:false}}),browser=await chromium.launch({channel:'chrome',headless:true}),context=await browser.newContext({reducedMotion:'reduce'});
 const login={email:'prospecto-presentation-'+randomUUID()+'@example.com',password:randomBytes(32).toString('base64url')};
 const created=await admin.auth.admin.createUser({...login,email_confirm:true});if(created.error)throw Error('QA user unavailable');const user=created.data.user;const client=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,{auth:{persistSession:false}});await client.auth.signInWithPassword(login);
 const errors:string[]=[],captures:unknown[]=[];let passed=false;
@@ -18,9 +19,9 @@ try{
    await page.locator('.side-nav button').filter({hasText:section}).click();
    if(await menu.isVisible())await expect.poll(()=>page.locator('.sidebar').evaluate(el=>el.getBoundingClientRect().right)).toBeLessThanOrEqual(0);
    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
-   const path=`qa/presentation/responsive-${section.replaceAll(' ','-').replaceAll('&','and')}-${width}.png`;await page.screenshot({path,fullPage:true,animations:'disabled'});captures.push({width,section,path});
+   const path=`${dir}/responsive-${section.replaceAll(' ','-').replaceAll('&','and')}-${width}.png`;await page.screenshot({path,fullPage:true,animations:'disabled'});captures.push({width,section,path});
   }
-  await page.getByRole('button',{name:'Ask LEO'}).click();await expect(page.getByRole('dialog',{name:'LEO'})).toBeVisible();await expect(page.getByRole('button',{name:'Buat dengan GPT'})).toBeDisabled();await page.getByRole('button',{name:'Tutup LEO'}).click();
+  await page.getByRole('button',{name:'Ask LEO'}).click();await expect(page.getByRole('dialog',{name:'LEO'})).toBeVisible();await expect(page.getByRole('button',{name:'Buat dengan AI'})).toBeDisabled();await page.getByRole('button',{name:'Tutup LEO'}).click();
  }
  expect(errors).toEqual([]);passed=true;
-}finally{await client.auth.signOut({scope:'global'});await admin.auth.admin.updateUserById(user.id,{ban_duration:'876000h'});await writeFile('qa/presentation/responsive-results.json',JSON.stringify({passed,captures,errors},null,2));await browser.close();console.log(JSON.stringify({passed,captures:captures.length,errors}));}
+}finally{await client.auth.signOut({scope:'global'});await admin.auth.admin.updateUserById(user.id,{ban_duration:'876000h'});await writeFile(dir+'/responsive-results.json',JSON.stringify({passed,captures,errors},null,2));await browser.close();console.log(JSON.stringify({passed,captures:captures.length,errors}));}

@@ -1,0 +1,45 @@
+▲ Next.js 16.4.5 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 32ms
+- Experiments (use with caution):
+  · proxyClientMaxBodySize: "12mb"
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 484ms
+  Running TypeScript ...
+  Finished TypeScript in 1639ms ...
+  Collecting page data using 19 workers ...
+  Generating static pages using 19 workers (0/15) ...
+  Generating static pages using 19 workers (3/15)
+  Generating static pages using 19 workers (7/15)
+  Generating static pages using 19 workers (11/15)
+✓ Generating static pages using 19 workers (15/15) in 212ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /_not-found
+├ ƒ /api/command
+├ ƒ /api/health
+├ ƒ /api/import-file
+├ ƒ /api/payments/webhook
+├ ƒ /api/research
+├ ƒ /api/upload
+├ ƒ /api/worker
+├ ƒ /api/workflow
+├ ƒ /api/workspace-backup
+├ ƒ /app
+├ ƒ /auth/action
+├ ƒ /auth/callback
+├ ƒ /auth/confirm
+├ ƒ /auth/password
+├ ƒ /auth/verify
+├ ƒ /invite
+├ ƒ /invite/accept
+├ ƒ /unsubscribe
+└ ƒ /unsubscribe/confirm
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand

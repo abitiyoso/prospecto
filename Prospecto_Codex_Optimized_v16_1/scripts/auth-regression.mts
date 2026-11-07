@@ -1,0 +1,25 @@
+// Isolated Auth-token lifecycle test; no SMTP send, real-user password changes or token logs.
+import {chromium,expect} from '@playwright/test';
+import {createClient} from '@supabase/supabase-js';
+import {randomUUID,randomBytes} from 'node:crypto';
+import {mkdir,writeFile} from 'node:fs/promises';
+process.loadEnvFile('.env.local');
+const base=process.env.QA_BASE_URL||'http://127.0.0.1:3000',dir=process.env.QA_OUTPUT_DIR||'qa/auth-regression';await mkdir(dir,{recursive:true});
+const admin=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SECRET_KEY!,{auth:{persistSession:false}}),browser=await chromium.launch({channel:'chrome',headless:true}),context=await browser.newContext(),replay=await browser.newContext();
+const email='prospecto-auth-'+randomUUID()+'@example.com',password=randomBytes(32).toString('base64url'),newPassword=randomBytes(32).toString('base64url');let id='',passed=false,stage='settings';const checks:string[]=[];
+const auth=(action:string,values:Record<string,unknown>={})=>context.request.post(base+'/auth/action',{headers:{origin:base},data:{action,email,...values}});
+try{
+ const settings=await fetch(process.env.NEXT_PUBLIC_SUPABASE_URL+'/auth/v1/settings',{headers:{apikey:process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!}});expect(settings.status).toBe(200);expect((await settings.json()).mailer_autoconfirm).toBe(false);
+ stage='signup_token';const signup=await admin.auth.admin.generateLink({type:'signup',email,password});if(signup.error)throw Error();id=signup.data.user.id;stage='unverified_login';expect((await auth('login',{password})).status()).toBe(400);
+ stage='confirm_get';const hash=signup.data.properties.hashed_token,page=await context.newPage();const url=base+'/auth/confirm?type=email&token_hash='+encodeURIComponent(hash);await page.goto(url);await expect(page.getByRole('heading',{name:'Konfirmasi email Anda',exact:true})).toBeVisible();await page.reload();stage='confirm_post';const verifyResponse=page.waitForResponse(r=>new URL(r.url()).pathname==='/auth/verify');await page.getByRole('button',{name:'Konfirmasi email',exact:true}).click();const verified=await verifyResponse,headers=verified.request().headers();console.log(JSON.stringify({stage,verifyStatus:verified.status(),origin:headers.origin,site:headers['sec-fetch-site'],mode:headers['sec-fetch-mode'],dest:headers['sec-fetch-dest']}));await page.screenshot({path:dir+'/qa-confirm-result.png'});stage='confirm_session';await expect(page.getByRole('heading',{name:'Buat workspace',exact:true})).toBeVisible();
+ expect((await admin.auth.admin.getUserById(id)).data.user?.email_confirmed_at).toBeTruthy();checks.push('Hosted email confirmation ON; unverified QA login denied; fresh signup token verifies via browser POST and reaches empty onboarding');
+ stage='token_replay';const replayed=await replay.request.post(base+'/auth/verify',{headers:{origin:base},form:{type:'email',token_hash:hash},maxRedirects:0});expect(new URL(replayed.headers().location).searchParams.get('auth')).toBe('expired');await auth('logout');
+ stage='recovery_token';expect((await auth('update',{password:newPassword})).status()).toBe(401);const recovery=await admin.auth.admin.generateLink({type:'recovery',email});if(recovery.error)throw Error();const recoveryHash=recovery.data.properties.hashed_token;
+ const denied=await replay.request.post(base+'/auth/verify',{headers:{origin:'https://foreign.example'},form:{type:'recovery',token_hash:recoveryHash}});expect(denied.status()).toBe(403);
+ stage='recovery_browser';await page.goto(base+'/auth/confirm?type=recovery&token_hash='+encodeURIComponent(recoveryHash));await page.getByRole('button',{name:'Lanjut atur ulang kata sandi',exact:true}).click();await expect(page.getByRole('heading',{name:'Kata sandi baru',exact:true})).toBeVisible();await page.getByLabel('Kata sandi',{exact:true}).fill(newPassword);await page.getByRole('button',{name:'Simpan kata sandi',exact:true}).click();await expect(page.getByRole('status')).toContainText('Kata sandi diperbarui');await page.screenshot({path:dir+'/qa-password-updated.png'});
+ stage='changed_password_login';await auth('logout');expect((await auth('login',{password})).status()).toBe(400);expect((await auth('login',{password:newPassword})).status()).toBe(200);await auth('logout');
+ checks.push('Recovery token establishes session; isolated QA password changes; new password logs in, old password fails; replay/CSRF/unauthenticated changes denied');passed=true;
+}catch{throw Error('Auth lifecycle QA failed at '+stage+'; sensitive request details suppressed');}finally{
+ if(id){await auth('logout').catch(()=>{});const r=await admin.auth.admin.updateUserById(id,{ban_duration:'876000h'});if(r.error)passed=false;}
+ await browser.close();await writeFile(dir+'/results.json',JSON.stringify({passed,checks,qaUsersBanned:id?1:0,tokensStored:false,emailsSent:0,mailboxDeliveryRetested:false,scope:'Admin-generated QA tokens; public signup SMTP delivery is not tested by this script',at:new Date().toISOString()},null,2));console.log(JSON.stringify({passed,checks}));
+}

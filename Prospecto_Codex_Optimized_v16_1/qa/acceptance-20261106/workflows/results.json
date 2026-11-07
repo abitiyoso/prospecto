@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "checks": [
+    "Saved lead lists persist, replace atomically, filter contacts, and reject foreign workspace access",
+    "Ready KMS label, saved-list filter, team role controls and revoked invite status render correctly at four widths",
+    "Owner protected; owner role change works; removed member loses reads/writes and cannot reuse accepted invitation",
+    "Missing original file rejects before workspace creation; long-name backup restores private bytes, named lists, membership and empty draft without execution"
+  ],
+  "errors": [],
+  "emailsSent": 0,
+  "campaignsLaunched": 0,
+  "qaUsersBanned": 3,
+  "qaMetadataRetained": true,
+  "at": "2026-11-06T01:48:49.930Z"
+}

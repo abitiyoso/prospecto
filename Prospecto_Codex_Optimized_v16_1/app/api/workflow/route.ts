@@ -1,5 +1,6 @@
 import {NextRequest,NextResponse} from 'next/server';
 import {z} from 'zod';
+import {AIProviderError} from '@/lib/leo-contract';
 import {supabase} from '@/lib/supabase';
 import {adminDb} from '@/lib/admin';
 import {sameOrigin,readBody} from '@/lib/request';
@@ -17,7 +18,7 @@ export async function POST(req:NextRequest){
   const ok=(v:unknown={ok:true})=>NextResponse.json(v);const isAdmin=['owner','admin'].includes(member.role);
   if(action==='kms.search')return ok({results:must(await db.rpc('search_knowledge',{w,p:uuid.parse(input.product_id),q:z.string().max(200).parse(input.query)}))});
   if(action==='kms.index')return ok(await indexSource(db,w,uuid.parse(input.source_id),user.id));
-  if(action==='leo.generate')return ok(await generateDraft(db,w,uuid.parse(input.product_id),user.id,z.string().trim().max(2000).parse(input.instruction||''),z.enum(['template','openai']).parse(input.engine)));
+  if(action==='leo.generate')return ok(await generateDraft(db,w,uuid.parse(input.product_id),user.id,z.string().trim().max(2000).parse(input.instruction||''),z.enum(['template','openai','ai']).parse(input.engine)));
   if(action==='outreach.history'){
    const c=uuid.parse(input.campaign_id),offset=z.number().int().min(0).max(1000000).parse(input.offset||0);
    must(await db.from('campaigns').select('id').eq('workspace_id',w).eq('id',c).single());
@@ -69,5 +70,5 @@ export async function POST(req:NextRequest){
    if(['bounced','unsubscribed'].includes(type)){const recipient=launchRecipient(launch,job.contact_id);must(await admin.from('smtp_suppressions').upsert({workspace_id:w,email:recipient.email,sender_email:recipient.senderEmail,reason:type==='bounced'?'bounce':'unsubscribed'},{onConflict:'workspace_id,email,sender_email'}));}return ok();
   }
   return NextResponse.json({error:'Tindakan belum tersedia'},{status:400});
- }catch(e){return NextResponse.json({error:e instanceof z.ZodError?'Isian belum valid':e instanceof Error&&!/password|credential|secret|token|apikey/i.test(e.message)?e.message:'Operasi belum berhasil. Periksa koneksi server.'},{status:400});}
+ }catch(e){if(e instanceof AIProviderError)return NextResponse.json({error:e.message,code:e.code},{status:e.status});return NextResponse.json({error:e instanceof z.ZodError?'Isian belum valid':e instanceof Error&&!/password|credential|secret|token|apikey/i.test(e.message)?e.message:'Operasi belum berhasil. Periksa koneksi server.'},{status:400});}
 }

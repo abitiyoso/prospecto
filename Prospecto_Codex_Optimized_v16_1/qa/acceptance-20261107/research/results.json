@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "Landing login and signup buttons reach real Auth without visual changes",
+    "Two isolated verified QA accounts authenticate; new tenants start empty; public email confirmation remains enabled",
+    "Real Firecrawl search via server route persists up to five sources, survives reload, denies foreign tenant, requires manual review, and fits mobile",
+    "Direct database read/insert/update and application workspace-switch attempts across tenants denied",
+    "Authenticated UI and reload preserve actual tenant data",
+    "Workspace content cleanup, logout session gate and subsequent password login pass"
+  ],
+  "passed": true,
+  "qaUsersBanned": 2,
+  "cleanup": "Product content deleted, sessions signed out and isolated QA users banned.",
+  "at": "2026-11-07T01:41:29.424Z"
+}

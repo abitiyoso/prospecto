@@ -21,7 +21,7 @@ Preview default: http://127.0.0.1:3000. Login memakai akun aplikasi Supabase; pa
 - Workspace terpisah, pengaturan peran/hapus anggota, pencabutan undangan dan perlindungan owner. Produk, ICP beserta pengecualian, riset Firecrawl dengan review sumber dan promosi PIC.
 - Leads manual, CSV/XLSX, mapping, deduplikasi, daftar leads tersimpan dan export aman untuk spreadsheet.
 - KMS privat: catatan/URL/PDF/DOCX/TXT, ekstraksi teks, indeks dan pencarian sumber sesuai workspace. PDF hasil scan memerlukan OCR di luar aplikasi.
-- Draft berbasis profil produk dengan label template; adapter GPT Responses API disiapkan untuk `OPENAI_API_KEY` + `OPENAI_MODEL`. Tanpa kredensial itu, tombol GPT nonaktif dan tidak ada hasil AI yang diklaim.
+- LEO menghasilkan draft AI nyata melalui 9Router atau OpenAI, dengan sumber KMS/ICP dari workspace, riwayat tersimpan dan penggunaan draft di editor campaign. Pilih provider lewat environment server; template tetap diberi label tanpa AI. Koneksi lokal 9Router dengan `cx/gpt-6-luna` sudah diuji sampai Apply/Save.
 - Campaign builder/template, personalisasi, review/approval, jadwal, SMTP TLS, antrean persisten, pause/cancel, suppression dan unsubscribe dengan konfirmasi. LinkedIn merupakan tugas manual.
 - `sent` hanya sesudah SMTP menerima pesan. Balasan positif dihitung sebagai balasan pada cabang dan analytics. Identitas pengirim/penerima unsubscribe diambil dari peluncuran asli, meskipun sender/kontak kemudian diubah. Riwayat antrean memiliki pagination per campaign.
 - Undangan member terikat email yang telah dikonfirmasi. Menghapus anggota mencabut undangan lama serta antrean yang dikelolanya. Backup/restore mencakup file asli, daftar leads dan draft tanpa audience; validasi dilakukan sebelum menulis. Credential dan eksekusi tidak dipulihkan. Endpoint health dan worker berautentikasi tersedia.
@@ -36,6 +36,6 @@ pnpm build
 pnpm audit --prod
 ```
 
-Lihat [IMPLEMENTATION_STATE.md](IMPLEMENTATION_STATE.md) untuk hasil dan batas validasi terbaru; [MANUAL_UPLOAD.md](MANUAL_UPLOAD.md) untuk environment, upload Node.js, domain/Auth URL, worker, backup dan rollback; [MIGRATIONS.md](MIGRATIONS.md) untuk pencocokan riwayat database. Bukti tambahan ada di `qa/presentation/` dan folder QA historis.
+Lihat [IMPLEMENTATION_STATE.md](IMPLEMENTATION_STATE.md) untuk hasil dan batas validasi terbaru; [MANUAL_UPLOAD.md](MANUAL_UPLOAD.md) untuk environment, upload Node.js, domain/Auth URL, worker, backup dan rollback; [MIGRATIONS.md](MIGRATIONS.md) untuk pencocokan riwayat database. Bukti terbaru: [QA 7 November](qa/acceptance-20261107/README.md), termasuk 77 tes, AI 9Router nyata dan verifikasi/reset lewat browser.
 
 Hosting/domain/HTTPS final diatur manual. Pembayaran sengaja belum aktif. ChatGPT login tidak memberikan API key ke aplikasi; GPT masih memerlukan koneksi API terpisah. Local HTTP membatasi penerima SMTP ke allowlist server. Jangan masukkan `.env.local`, server key, SMTP password atau output build ke Git.

@@ -13,3 +13,12 @@ test('request body limits protect declared and chunked payloads',async()=>{
  await assert.rejects(readBody(req('a'.repeat(11)),10),RequestTooLarge);
  assert.equal((await readBody(new Request('http://localhost'),10)).length,0);
 });
+test('no-referrer native POST forms require exact same-origin browser Fetch Metadata',()=>{
+ const headers={origin:'null','sec-fetch-site':'same-origin','sec-fetch-mode':'navigate','sec-fetch-dest':'document'};
+ const req=(extra:Record<string,string>={},method='POST')=>new Request('https://app.example/auth/verify',{method,headers:{...headers,...extra}});
+ assert.equal(sameOrigin(req()),true);
+ const rejected:Record<string,string>[]=[{'sec-fetch-site':'cross-site'},{'sec-fetch-site':'same-site'},{'sec-fetch-site':'none'},{'sec-fetch-mode':'cors'},{'sec-fetch-dest':'empty'},{'sec-fetch-site':''},{origin:'https://foreign.example'},{origin:''}];
+ for(const extra of rejected)assert.equal(sameOrigin(req(extra)),false);
+ assert.equal(sameOrigin(req({},'GET')),false);
+ assert.equal(sameOrigin(new Request('https://app.example/auth/verify',{method:'POST',headers:{origin:'null'}})),false);
+});
