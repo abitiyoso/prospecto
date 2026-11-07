@@ -1,5 +1,11 @@
 # Prospecto — functional presentation release
 
+## Manual production handoff — 7 November 2026
+
+The release can be installed from the app folder or a tracked-source ZIP. Node 24 and the locked pnpm dependencies are required. `pnpm release:check` verifies the final HTTPS origin and read-only provider/SMTP/worker connections; `--local` is for loopback only. Campaigns, invites and SMTP test messages default to an explicit recipient allowlist even on HTTPS. Real delivery requires setting `SMTP_DELIVERY_MODE=live` on the public origin.
+
+Local preflight, worker dry check, frozen lockfile, build, typecheck and 85 tests passed; production dependency audit reported zero advisories. Elenio has 12 migrations, zero public tables without RLS and no pending/processing jobs at inspection. No production DNS/Auth change, scheduled worker start, or send was performed. Finish the domain-specific checks in the [manual upload guide](Prospecto_Codex_Optimized_v16_1/MANUAL_UPLOAD.md).
+
 ## Product → company → PIC → campaign — 7 November 2026
 
 Find Prospects uses product benefits, indexed KMS and target context to find likely buyer companies. Each supported result shows a short profile, evidence, and potential fit. Select a company to find named decision-maker candidates, then select verified PICs with sourced business email to create a draft with exactly that audience. LEO drafts using product/KMS and selected audience roles. Approval and launch remain separate.

@@ -46,7 +46,7 @@ export async function POST(req:NextRequest){
    if(!await presentationActive(admin,w))throw new Error('Aktifkan akses presentasi untuk meluncurkan tanpa pembayaran');
    const c=uuid.parse(input.campaign_id);const audience=must(await db.from('campaign_audience').select('contact_id').eq('workspace_id',w).eq('campaign_id',c));
    if(!audience.length)throw new Error('Audience kosong');const contacts=must(await db.from('contacts').select('email').eq('workspace_id',w).in('id',audience.map(a=>a.contact_id)));
-   if(contacts.some(c=>!allowedRecipient(c.email)))throw new Error('Preview lokal hanya mengirim ke alamat uji server. Hubungkan domain publik sebelum menjangkau penerima lain.');
+   if(contacts.some(c=>!allowedRecipient(c.email)))throw new Error('Ada penerima di luar daftar alamat uji. Pilih penerima yang diizinkan atau minta pengelola mengaktifkan pengiriman live.');
    const scheduled=input.scheduled_at?z.string().datetime({offset:true}).parse(input.scheduled_at):null;
    const id=must(await admin.rpc('launch_campaign',{w,c,actor:user.id,start_at:scheduled}));return ok({id});
   }

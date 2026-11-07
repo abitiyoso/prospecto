@@ -1,4 +1,9 @@
-# Current milestone: product fit to selected-PIC campaign
+# Current milestone: manual production handoff
+
+Source package, server preflight and default test recipient policy prepared. 85 tests, build, local preflight, dry worker and production dependency audit passed. Domain, Auth redirect and worker scheduling remain on the final hosting environment. [Upload instructions](MANUAL_UPLOAD.md).
+
+---
+# Previous milestone: product fit to selected-PIC campaign
 
 84 tests, TypeScript and production build passed. Real product/KMS search returned company profiles with reasons for fit; selecting one returned a sourced named PIC. Browser verified the email eligibility gate and exact selected audience. A separate QA-only recipient completed real 9Router generation and Hostinger SMTP acceptance. Hosted migration 12 preserves tenant RLS. [QA evidence and limits](qa/product-to-campaign-20261107/README.md).
 

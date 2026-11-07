@@ -1,5 +1,9 @@
 # Prospecto — functional presentation release
 
+## Manual production handoff — 7 November 2026
+
+Node 24 source release includes a preflight for HTTPS origin, database, Auth endpoint, AI model discovery, research credit, SMTP login and worker dry check. Campaign, invitation and SMTP test delivery default to the allowlist regardless of scheme; live delivery requires explicit configuration and HTTPS. 85 tests, frozen lockfile, TypeScript/build, local preflight, HTTP smoke and client secret scan passed. Production dependency audit returned no advisories. [Upload checklist](MANUAL_UPLOAD.md) covers final domain/Auth URLs, provider migration and the worker scheduler. These hosted checks remain pending until deployment.
+
 ## Product → company → PIC → campaign — 7 November 2026
 
 Automatic company search uses the offered product, indexed knowledge and ICP; short company profiles and potential fit are backed by separate source and product quotes. Profiles reopen for the selected product. Named decision-maker candidates require evidence tying the person and role to the selected company. Unpublished email stays empty. Verified PIC selections across companies create a product-bound draft atomically, and LEO can use the chosen audience roles and company profiles.

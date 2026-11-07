@@ -1,0 +1,6 @@
+* text=auto eol=lf
+# These attributes also apply when git archive uses the app subtree as its root.
+/public/approved/** -text
+/reference-ui/** -text
+/qa export-ignore
+/screenshots export-ignore
