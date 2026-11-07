@@ -18,7 +18,7 @@ Preview default: http://127.0.0.1:3000. Login memakai akun aplikasi Supabase; pa
 
 ## Fungsi
 
-- Workspace terpisah, pengaturan peran/hapus anggota, pencabutan undangan dan perlindungan owner. Produk, ICP beserta pengecualian, riset Firecrawl dengan review sumber dan promosi PIC.
+- Workspace terpisah, pengaturan peran/hapus anggota, pencabutan undangan dan perlindungan owner. Produk dengan pilihan kategori/industri dan multi buyer roles. ICP beserta pengecualian; journey riset perusahaan → PIC bernama dari sumber publik → tinjauan → kandidat/Leads. Firecrawl membaca halaman dan adapter AI mengenali nama/jabatan dengan validasi kutipan.
 - Leads manual, CSV/XLSX, mapping, deduplikasi, daftar leads tersimpan dan export aman untuk spreadsheet.
 - KMS privat: catatan/URL/PDF/DOCX/TXT, ekstraksi teks, indeks dan pencarian sumber sesuai workspace. PDF hasil scan memerlukan OCR di luar aplikasi.
 - LEO menghasilkan draft AI nyata melalui 9Router atau OpenAI, dengan sumber KMS/ICP dari workspace, riwayat tersimpan dan penggunaan draft di editor campaign. Pilih provider lewat environment server; template tetap diberi label tanpa AI. Koneksi lokal 9Router dengan `cx/gpt-6-luna` sudah diuji sampai Apply/Save.
@@ -36,6 +36,6 @@ pnpm build
 pnpm audit --prod
 ```
 
-Lihat [IMPLEMENTATION_STATE.md](IMPLEMENTATION_STATE.md) untuk hasil dan batas validasi terbaru; [MANUAL_UPLOAD.md](MANUAL_UPLOAD.md) untuk environment, upload Node.js, domain/Auth URL, worker, backup dan rollback; [MIGRATIONS.md](MIGRATIONS.md) untuk pencocokan riwayat database. Bukti terbaru: [QA 7 November](qa/acceptance-20261107/README.md), termasuk 77 tes, AI 9Router nyata dan verifikasi/reset lewat browser.
+Lihat [IMPLEMENTATION_STATE.md](IMPLEMENTATION_STATE.md) untuk hasil dan batas validasi terbaru; [MANUAL_UPLOAD.md](MANUAL_UPLOAD.md) untuk environment, upload Node.js, domain/Auth URL, worker, backup dan rollback; [MIGRATIONS.md](MIGRATIONS.md) untuk pencocokan riwayat database. Bukti terbaru: [perbaikan journey](qa/journey-20261107/README.md), 81 tes, pilihan produk, view password dan penemuan nama PIC nyata. [QA sebelumnya](qa/acceptance-20261107/README.md) mencakup LEO 9Router, verifikasi/reset dan campaign uji ke mailbox sendiri. Email PIC yang tidak dipublikasikan belum tersedia; kandidat tanpa email tetap dapat disimpan.
 
 Hosting/domain/HTTPS final diatur manual. Pembayaran sengaja belum aktif. ChatGPT login tidak memberikan API key ke aplikasi; GPT masih memerlukan koneksi API terpisah. Local HTTP membatasi penerima SMTP ke allowlist server. Jangan masukkan `.env.local`, server key, SMTP password atau output build ke Git.

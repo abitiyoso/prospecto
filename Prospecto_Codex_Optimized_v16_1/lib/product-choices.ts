@@ -1,0 +1,3 @@
+export const productCategories=['Software / SaaS','Properti / Kos','Jasa / Konsultasi','Produk fisik','Perangkat / IoT','Layanan keuangan','Pendidikan / Pelatihan','Layanan kesehatan'];
+export const targetIndustries=['Kos / Properti sewa','Hotel / Hospitality','Restoran / F&B','Retail / Perdagangan','Manufaktur','Logistik / Transportasi','Teknologi / Software','Jasa profesional','Kesehatan','Pendidikan','Keuangan','Konstruksi / Real estate'];
+export const buyerRoles=['Pemilik bisnis','Pemilik / Pengelola kos','CEO / Direktur','Operations Manager','General Manager','Property Manager','Finance Manager','HR Manager','IT Manager','Procurement / Purchasing','Marketing Manager','Sales Manager','Facility Manager'];

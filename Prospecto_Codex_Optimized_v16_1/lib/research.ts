@@ -1,4 +1,5 @@
-export type WebEvidence={title:string;url:string;description:string};
+export type ResearchCandidate={kind:'company'|'pic';name:string;domain:string;title:string;email:string;industry:string;location:string;evidence:string;source_url:string};
+export type WebEvidence={title:string;url:string;description:string;candidates?:ResearchCandidate[]};
 export type ResearchRun={id:string;product_id:string;kind:'company'|'pic';query:string;status:'running'|'completed'|'failed';results:WebEvidence[];error_code:string;created_at:string};
 export function publicEvidenceUrl(raw:string){try{if(raw.length>2000)return null;const u=new URL(raw);if(u.protocol!=='https:'||u.username||u.password||!u.hostname.includes('.')||/^[\d.]+$/.test(u.hostname)||/[:\[\]]/.test(u.hostname)||/\.(local|internal|localhost)$/i.test(u.hostname))return null;return u.href;}catch{return null;}}
 export function normalizeEvidence(rows:unknown):WebEvidence[]{

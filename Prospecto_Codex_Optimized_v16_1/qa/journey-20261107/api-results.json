@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "stage": "pic_discovery",
+  "checks": [
+    "Product choice values and multiple buyer roles persist; product.save returns the saved product ID",
+    "Actual company name/domain extracted from official evidence, then saved after review",
+    "Real named PIC/title/evidence persist with research history and as unverified candidate, without automatic Lead promotion or sending"
+  ],
+  "evidence": {
+    "companyCandidates": [
+      {
+        "name": "PT Astra International Tbk",
+        "domain": "astra.co.id",
+        "source_url": "https://www.astra.co.id/en"
+      }
+    ],
+    "companyError": "",
+    "picCandidates": [
+      {
+        "name": "Rudy",
+        "title": "PRESIDENT DIRECTOR",
+        "hasPublishedEmail": false,
+        "source_url": "https://www.astra.co.id/en/board-of-directors"
+      }
+    ],
+    "picError": ""
+  },
+  "emailsSent": 0,
+  "campaignsLaunched": 0,
+  "qaLoginPendingBrowserVerification": false,
+  "at": "2026-11-07T02:48:57.981Z",
+  "qaUsersBanned": 1
+}

@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "checks": [
+    "Login and registration password toggle switches password/text and back",
+    "Product category/industry dropdowns and multiple buyer roles save and survive full reload",
+    "Mulai pencarian focuses target; Simpan target & lanjut focuses real web search",
+    "Company review is prefilled; save selects company and opens PIC mode",
+    "Actual PIC search button uses saved buyer roles and returns named person/title/source",
+    "Prefilled PIC review saves; repeated/case-varied save retains one stored candidate",
+    "Unavailable public email is explicit and email Lead promotion stays disabled"
+  ],
+  "responsive": [
+    {
+      "cards": [
+        " 1. Target prospek",
+        "3. Temukan PIC",
+        " Perusahaan tersimpan · 1",
+        " PIC tersimpan · PT Astra International Tbk"
+      ],
+      "overflow": false,
+      "width": 360
+    },
+    {
+      "cards": [
+        " 1. Target prospek",
+        "3. Temukan PIC",
+        " Perusahaan tersimpan · 1",
+        " PIC tersimpan · PT Astra International Tbk"
+      ],
+      "overflow": false,
+      "width": 390
+    },
+    {
+      "cards": [
+        " 1. Target prospek",
+        "3. Temukan PIC",
+        " Perusahaan tersimpan · 1",
+        " PIC tersimpan · PT Astra International Tbk"
+      ],
+      "overflow": false,
+      "width": 768
+    },
+    {
+      "cards": [
+        " 1. Target prospek",
+        "3. Temukan PIC",
+        " Perusahaan tersimpan · 1",
+        " PIC tersimpan · PT Astra International Tbk"
+      ],
+      "overflow": false,
+      "width": 1024
+    },
+    {
+      "cards": [
+        " 1. Target prospek",
+        "3. Temukan PIC",
+        " Perusahaan tersimpan · 1",
+        " PIC tersimpan · PT Astra International Tbk"
+      ],
+      "overflow": false,
+      "width": 1440
+    }
+  ],
+  "savedPICCount": 1,
+  "at": "2026-11-07T02:59:32.175Z",
+  "passwordModes": {
+    "loginVisible": true,
+    "registerVisible": true,
+    "modeChangeResetsHidden": true
+  }
+}

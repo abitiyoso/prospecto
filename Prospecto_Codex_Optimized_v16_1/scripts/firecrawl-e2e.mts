@@ -11,7 +11,7 @@ const clients=users.map(()=>createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,p
 const contexts=await Promise.all(users.map(()=>browser.newContext()));const checks:string[]=[],ids:string[]=[],workspaces:string[]=[];
 await mkdir(dir,{recursive:true});
 const must=<T,>(r:{data:T;error:unknown})=>{if(r.error)throw new Error('Provider operation failed');return r.data as NonNullable<T>;};
-async function post(i:number,endpoint:string,data:unknown){const r=await contexts[i].request.post(origin+endpoint,{headers:{origin},data});const body=await r.json();expect(r.status(),body.error).toBe(200);return body;}
+async function post(i:number,endpoint:string,data:unknown){const r=await contexts[i].request.post(origin+endpoint,{headers:{origin},data,timeout:120000});const body=await r.json();expect(r.status(),body.error).toBe(200);return body;}
 try{
  const p=await contexts[0].newPage();await p.goto(origin);await p.getByRole('link',{name:'Masuk',exact:true}).click();await expect(p.getByRole('heading',{name:'Masuk ke workspace'})).toBeVisible();
  await p.goto(origin);await p.getByRole('link',{name:'Mulai Sekarang',exact:true}).first().click();await expect(p.getByRole('heading',{name:'Mulai bersama Prospecto'})).toBeVisible();checks.push('Landing login and signup buttons reach real Auth without visual changes');
@@ -30,8 +30,8 @@ try{
  expect(must(await clients[0].from('research_runs').select('id').single()).id).toBe(researched.run.id);
  expect(must(await clients[1].from('research_runs').select('*').eq('workspace_id',workspaces[0]))).toEqual([]);
  const foreign=await contexts[1].request.post(origin+'/api/research',{headers:{origin},data:{workspace_id:workspaces[0],product_id:productId,kind:'company'}});expect(foreign.status()).toBe(403);
- await p.goto(origin+'/app');await p.getByRole('button',{name:'Find Prospects',exact:true}).click();await expect(p.getByText('Riset web',{exact:true})).toBeVisible();
- await expect(p.getByRole('button',{name:'Tinjau untuk disimpan'}).first()).toBeVisible();await p.getByRole('button',{name:'Tinjau untuk disimpan'}).first().click();await expect(p.getByLabel('Nama perusahaan',{exact:true}).last()).toHaveValue('');
+ await p.goto(origin+'/app');await p.getByRole('button',{name:'Find Prospects',exact:true}).click();await expect(p.getByRole('region',{name:'Pencarian prospek di web',exact:true})).toBeVisible();
+ await p.locator('.research-sources > summary').click();await p.getByRole('button',{name:'Tinjau sumber manual'}).first().click();await expect(p.getByLabel('Nama perusahaan',{exact:true}).last()).toHaveValue('');
  for(const [width,height]of [[1440,900],[390,844],[320,700]]){await p.setViewportSize({width,height});expect(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);await p.screenshot({path:dir+'/research-'+width+'.png',fullPage:true});}
  await p.setViewportSize({width:1440,height:900});
  await post(0,'/api/command',{action:'company.save',workspace_id:workspaces[0],values:{name:'Isolated QA review of Astra official site',domain:'astra.co.id',source_url:'https://www.astra.co.id/'}});

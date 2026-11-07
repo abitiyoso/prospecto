@@ -1,0 +1,22 @@
+{
+  "stage": "pic_discovery",
+  "evidence": {
+    "companyCandidates": [
+      {
+        "name": "PT Astra International Tbk",
+        "domain": "astra.co.id",
+        "source_url": "https://www.astra.co.id/en"
+      }
+    ],
+    "companyError": "",
+    "picCandidates": [
+      {
+        "name": "Rudy",
+        "title": "PRESIDENT DIRECTOR",
+        "hasPublishedEmail": false,
+        "source_url": "https://www.astra.co.id/en/board-of-directors"
+      }
+    ],
+    "picError": ""
+  }
+}

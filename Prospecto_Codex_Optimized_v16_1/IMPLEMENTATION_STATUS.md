@@ -1,4 +1,9 @@
-# Current milestone: local 9Router AI and end-to-end acceptance verified
+# Current milestone: guided, grounded prospect discovery
+
+81 tests and production build pass. Category/industry choices, multiple buyer roles, password visibility and the company → named PIC journey are implemented and verified through the actual UI. Saved-filter ambiguity and blank manual-only source review are fixed. No unpublished email or automatic verification is claimed. Evidence, screenshots and limits: [journey QA](qa/journey-20261107/README.md).
+
+---
+# Historical milestone: local 9Router AI and end-to-end acceptance verified
 
 7 November 2026: real LEO generation through 9Router (`cx/gpt-6-luna` → `gpt-6-luna`), citations, persistence/reload and campaign Apply/Save pass. Native browser confirmation/recovery POST regression fixed without weakening cross-site denial. 77 tests, TypeScript/build, current Firecrawl/KMS/leads/team/backup tests and one own-mail campaign SMTP acceptance pass. Approved visual comparisons remain exact at four widths. Eleven migrations align; 39 public tables retain RLS. Keys are server-only and excluded from Git. Evidence/limits: [QA acceptance](qa/acceptance-20261107/README.md), [state](IMPLEMENTATION_STATE.md). Domain/hosting and scheduled global worker remain manual; payment stays bypassed. Keep 9Router running for local AI.
 

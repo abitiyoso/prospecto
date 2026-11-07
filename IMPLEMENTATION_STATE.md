@@ -1,6 +1,16 @@
 # Prospecto — functional presentation release
 
-## Current local acceptance — 7 November 2026
+## Current functional journey repair — 7 November 2026
+
+Source-only web search and a saved-company filter were insufficient for a usable prospect journey. Product category/industry now have choices with legacy/custom preservation; buyer roles support multiple choices. Login/register/recovery include accessible password show/hide, reset to hidden when changing mode.
+
+Find Prospects now guides target → real web search → prefilled company review/save/select → named PIC search → prefilled candidate review/save → verified email Lead promotion. Visible target values save before searching. Search sources are read by Firecrawl and the selected AI adapter; candidate names, roles, sources and any email are grounded in actual page text. Current management profiles are preferred over archive news. Candidates remain unverified until reviewed; missing public emails remain empty and prevent email Lead promotion. No licensed contact-enrichment provider is connected.
+
+81 tests, TypeScript/build, focused live API/browser journey and production smoke checks pass. Real company and named PIC found on official Astra pages; actual UI search, prefilled review/save, reload persistence, case-varied repeat save, request/tenant boundaries and five responsive widths verified. Seven server secrets absent from 12 browser assets. No migration, customer record edits or outbound send in this milestone. QA users signed out/banned, temporary credentials removed; main Elenio preview refreshed at http://127.0.0.1:3000. The historical acceptance below is scoped evidence, not a claim that all public contacts/emails can be discovered.
+
+Evidence: [journey QA](Prospecto_Codex_Optimized_v16_1/qa/journey-20261107/README.md). Remaining hosting/payment/worker/tracking boundaries are unchanged. Next bounded milestone: connect an authorized contact-enrichment source if unpublished business emails are required; never infer email patterns.
+
+## Historical local acceptance — 7 November 2026
 
 User selected 9Router for AI inside Prospecto. Local environment now uses AI_PROVIDER=9router, loopback port 20128 and requested model cx/gpt-6-luna; actual successful model is gpt-6-luna. Keys remain only in ignored server environment. OpenAI direct initially returned credit_balance_exhausted, so it is not the selected provider. Codex's own provider configuration was not changed.
 
