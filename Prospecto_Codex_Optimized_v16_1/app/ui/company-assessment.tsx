@@ -1,0 +1,6 @@
+'use client';
+import type {ResearchCandidate} from '@/lib/research';
+export default function CompanyAssessment({candidate,productName,pic=false}:{candidate:ResearchCandidate;productName:string;pic?:boolean}){
+ const reasons=candidate.fit_reasons||[];
+ return <div className="company-assessment">{!pic&&<><h4>Profil singkat perusahaan</h4><p>{candidate.profile_quote||'Kegiatan usaha belum terkonfirmasi dari halaman ini. Buka sumber untuk meninjaunya.'}</p><p className="muted">Industri: {candidate.industry||'belum diketahui'} · Lokasi: {candidate.location||'belum diketahui'}</p></>}<h4>{pic?'Relevansi peran terhadap ':'Alasan kecocokan dengan '}{productName}</h4>{reasons.length?<><span className="tag">Analisis · potensial, perlu dikonfirmasi</span>{reasons.map((r,i)=><details key={i} open={i===0}><summary>{r.reason}</summary><p><b>Fakta perusahaan/peran:</b> {r.company_quote}</p><p><b>Konteks produk:</b> {r.product_quote}</p></details>)}</>:<p className="muted">Belum ada alasan kecocokan yang dapat didukung kedua sumber. Nama ditemukan belum berarti cocok sebagai calon pembeli.</p>}{!pic&&<p className="muted">Kebutuhan internal, skala tim, anggaran, dan minat membeli belum dikonfirmasi. Kecocokan di atas merupakan analisis dari sumber publik dan konteks produk.</p>}</div>;
+}

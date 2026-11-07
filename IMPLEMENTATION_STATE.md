@@ -1,6 +1,12 @@
 # Prospecto — functional presentation release
 
-## Current functional journey repair — 7 November 2026
+## Product → company → PIC → campaign — 7 November 2026
+
+Find Prospects uses product benefits, indexed KMS and target context to find likely buyer companies. Each supported result shows a short profile, evidence, and potential fit. Select a company to find named decision-maker candidates, then select verified PICs with sourced business email to create a draft with exactly that audience. LEO drafts using product/KMS and selected audience roles. Approval and launch remain separate.
+
+Live research found Singgahsini and ZIPKOS for a controlled rental-operations offering. Singgahsini had a named PIC in a public business source, without an email; the browser correctly blocked including that PIC in an email draft. A separate controlled PIC flowed from browser selection to a 9Router draft and one message accepted by Hostinger for hello@elenio.id. No real prospect was contacted. 84 tests, build, typecheck, smoke and client secret scan passed. Hosted migration 12 adds the atomic draft operation; all 39 public tables retain RLS. See [QA results](Prospecto_Codex_Optimized_v16_1/qa/product-to-campaign-20261107/README.md).
+
+## Previous functional journey repair — 7 November 2026
 
 Source-only web search and a saved-company filter were insufficient for a usable prospect journey. Product category/industry now have choices with legacy/custom preservation; buyer roles support multiple choices. Login/register/recovery include accessible password show/hide, reset to hidden when changing mode.
 

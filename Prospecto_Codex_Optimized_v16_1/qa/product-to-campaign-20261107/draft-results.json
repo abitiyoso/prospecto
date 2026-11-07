@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "stage": "campaign-draft",
+  "checks": [
+    "Controlled QA selection creates an idempotent product-bound draft with exactly the selected PIC; eligible unselected PIC excluded; zero automatic launch"
+  ],
+  "evidence": {},
+  "isolatedQA": true,
+  "at": "2026-11-07T06:21:31.795Z"
+}

@@ -20,6 +20,20 @@ test('presentation, private KMS, invites and real-send queue boundaries',async t
    await as(C);assert.equal((await one('select count(*)::int n from leo_runs where id=$1',[run])).n,0);await trusted();
    await assert.rejects(db.query("insert into leo_runs(workspace_id,product_id,engine,instruction,result,created_by) values($1,$2,'fake-provider','','{}',$3)",[w,p,A]));
   });
+  await t.test('selected PICs become an exact, product-bound draft audience atomically and retry safely',async()=>{
+   await as(A);const co=(await one("insert into companies(workspace_id,name,domain) values($1,'QA operator','operator.example') returning id",[w])).id;
+   const first=(await one("insert into pic_candidates(workspace_id,company_id,name,title,email,source_url,verification) values($1,$2,'QA First','Director','first@operator.example','https://operator.example/team','verified') returning id",[w,co])).id;
+   const second=(await one("insert into pic_candidates(workspace_id,company_id,name,email,source_url) values($1,$2,'QA Second','second@operator.example','https://operator.example/team') returning id",[w,co])).id;
+   const draft=crypto.randomUUID(),before=(await one('select count(*)::int n from contacts where workspace_id=$1',[w])).n;
+   await assert.rejects(db.query('select create_campaign_from_pics($1,$2,$3,$4,$5)',[w,p,[first,second],'Exact audience',draft]));assert.equal((await one('select count(*)::int n from contacts where workspace_id=$1',[w])).n,before);
+   assert.equal((await one('select create_campaign_from_pics($1,$2,$3,$4,$5) id',[w,p,[first],'Exact audience',draft])).id,draft);
+   assert.equal((await one('select create_campaign_from_pics($1,$2,$3,$4,$5) id',[w,p,[first],'Exact audience',draft])).id,draft);
+   const created=await one('select product_id,status from campaigns where id=$1',[draft]);assert.equal(created.product_id,p);assert.equal(created.status,'draft');assert.equal((await one('select count(*)::int n from campaign_audience where campaign_id=$1',[draft])).n,1);
+   assert.equal((await one('select count(*)::int n from contacts where workspace_id=$1',[w])).n,before+1);
+   await assert.rejects(db.query('select create_campaign_from_pics($1,$2,$3,$4,$5)',[w,p,[first,first],'Duplicated selection',crypto.randomUUID()]));
+   await assert.rejects(db.query('select create_campaign_from_pics($1,$2,$3,$4,$5)',[w,p,[first],'Changed request',draft]));
+   await as(C);await assert.rejects(db.query('select create_campaign_from_pics($1,$2,$3,$4,$5)',[w,p,[first],'Foreign',crypto.randomUUID()]));await trusted();
+  });
   const token='ab'.repeat(32);await db.query("insert into workspace_invites(workspace_id,email,token_hash,created_by) values($1,'member@example.com',encode(sha256(convert_to($2,'UTF8')),'hex'),$3)",[w,token,A]);
   await t.test('invitation binds verified recipient and cannot grant admin or admit a different email',async()=>{await as(C);await assert.rejects(db.query('select accept_workspace_invite($1)',[token]));await as(B);assert.equal((await one('select accept_workspace_invite($1) id',[token])).id,w);assert.equal((await one('select role from workspace_memberships where workspace_id=$1 and user_id=$2',[w,B])).role,'member');assert.equal((await one('select accept_workspace_invite($1) id',[token])).id,w);await assert.rejects(db.query("update workspace_memberships set role='owner' where workspace_id=$1 and user_id=$2",[w,B]));await trusted();});
   await t.test('provider budget is per user across workspaces and denies foreign actors',async()=>{await assert.rejects(db.query('select reserve_provider_usage($1,$2,$3)',[w,C,'company']));for(let i=0;i<5;i++)await db.query('select reserve_provider_usage($1,$2,$3)',[w,A,'company']);await assert.rejects(db.query('select reserve_provider_usage($1,$2,$3)',[w,A,'pic']));});

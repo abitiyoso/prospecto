@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "stage": "own-mail-smtp",
+  "checks": [
+    "Real 9Router draft uses the selected campaign audience roles plus product/KMS context",
+    "Approved controlled campaign processes once through Hostinger to own hello@elenio.id only; unselected QA address never enters audience"
+  ],
+  "evidence": {
+    "leo": {
+      "engine": "9router",
+      "model": "gpt-6-luna",
+      "audienceContext": true
+    },
+    "smtp": {
+      "recipient": "hello@elenio.id",
+      "state": "sent",
+      "acceptedMessageIdRecorded": true
+    }
+  },
+  "isolatedQA": true,
+  "at": "2026-11-07T06:27:58.563Z"
+}

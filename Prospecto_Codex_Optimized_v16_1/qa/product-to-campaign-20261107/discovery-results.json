@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "stage": "campaign-draft",
+  "checks": [
+    "No-keyword search plans from product/KMS; actual company profile and product/company evidence pairs persist per product",
+    "Decision-maker search restricted to selected company; sourced name/title persist as a candidate, not an automatic verified contact",
+    "Controlled QA selection creates an idempotent product-bound draft with exactly the selected PIC; eligible unselected PIC excluded; zero automatic launch"
+  ],
+  "evidence": {
+    "query": "pengelola kos Jakarta situs resmi",
+    "error": "",
+    "companies": [
+      {
+        "name": "Singgahsini",
+        "domain": "singgahsini.id",
+        "profile": "Sistem booking dan pembayaran terotomasi\n- ✓Manajemen penagihan & komplain otomatis\n- ✓Reminder kontrak digital\n- ✓Dashboard monitoring dari jarak jauh",
+        "fit": [
+          {
+            "reason": "Karena halaman resmi menyebut manajemen penagihan otomatis, sistem QA rental operations untuk mengelola billing berpotensi mendukung aktivitas operasional tersebut. Kesesuaian kebutuhan atau minat membeli belum dikonfirmasi.",
+            "company_quote": "- ✓Manajemen penagihan & komplain otomatis",
+            "product_quote": "Mengelola billing sewa dan smart room untuk pengelola kos dan properti sewa."
+          }
+        ],
+        "source_url": "https://singgahsini.id/"
+      },
+      {
+        "name": "ZIPKOS",
+        "domain": "zipkos.id",
+        "profile": "Mengelola bisnis kos bukan hal yang sederhana. Banyak pemilik kos menghadapi tantangan seperti sulitnya menjaga tingkat hunian tetap penuh, mengatur keuangan, menangani keluhan penghuni, hingga menjaga kebersihan dan keamanan properti.",
+        "fit": [
+          {
+            "reason": "ZIPKOS menyebut pengelolaan keuangan dan operasional properti kos sebagai konteks kegiatannya; perangkat lunak billing sewa dan smart room berpotensi membantu sebagian aktivitas pengelolaan itu. Kebutuhan spesifik, minat membeli, dan kewenangan pembelian belum dikonfirmasi.",
+            "company_quote": "Banyak pemilik kos menghadapi tantangan seperti sulitnya menjaga tingkat hunian tetap penuh, mengatur keuangan, menangani keluhan penghuni, hingga menjaga kebersihan dan keamanan properti.",
+            "product_quote": "Mengelola billing sewa dan smart room untuk pengelola kos dan properti sewa."
+          }
+        ],
+        "source_url": "https://zipkos.id/"
+      }
+    ],
+    "people": [
+      {
+        "name": "Maria Regina Anggit",
+        "title": "Co-founder dan CEO Singgahsini",
+        "source_url": "https://wartaekonomi.co.id/read564095/kelola-20-ribu-kamar-dan-sukses-tingkatkan-okupansi-singgahsini-kian-dominan-di-pasar-manajemen-kos",
+        "hasPublicEmail": false,
+        "roleFit": [
+          {
+            "reason": "Karena perusahaan mengelola banyak kamar kos, produk ini berpotensi mendukung pengelolaan billing sewa dan smart room dalam operasional properti. Kecocokan dan kebutuhan aktual tetap perlu ditinjau.",
+            "company_quote": "Singgahsini telah mengelola lebih dari 20.000 kamar kos di berbagai kota besar, termasuk Jabodetabek, Bandung, Surabaya, Yogyakarta, Semarang, dan Solo.",
+            "product_quote": "Mengelola billing sewa dan smart room untuk pengelola kos dan properti sewa."
+          }
+        ]
+      }
+    ],
+    "picError": ""
+  },
+  "isolatedQA": true,
+  "at": "2026-11-07T06:22:45.281Z"
+}

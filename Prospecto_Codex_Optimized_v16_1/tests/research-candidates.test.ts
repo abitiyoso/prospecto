@@ -29,3 +29,16 @@ test('PIC extraction prefers direct team profiles over historical press releases
  const c={...person,name:'Rudy',title:'President Director',email:'',evidence:'Rudy — Presiden Direktur',source_url:url};assert.equal(groundedCandidates({candidates:[c]},[{url,text:'Rudy — Presiden Direktur'}],'pic','official.example')[0].title,'Presiden Direktur');
  const linked={...person,email:'',evidence:'Jane Example Operations Manager'};assert.equal(groundedCandidates({candidates:[linked]},[{url,text:'[Jane Example](https://official.example/bio) **Operations Manager**'}],'pic','official.example').length,1);
 });
+test('company profile and fit require independent company and offered-product evidence',()=>{
+ const c={...person,kind:'company',name:'PT Example',title:'',email:'',evidence:'PT Example operates in Jakarta.',profile_quote:'PT Example operates in Jakarta.',fit_reasons:[{product_quote:'Manage billing and smart rooms',company_quote:'PT Example operates in Jakarta.',reason:'Potensi dukungan operasi perlu dikonfirmasi.'}]};
+ const facts=[{id:'product.value_proposition',title:'Offer',text:'Manage billing and smart rooms'}];
+ const valid=groundedCandidates({candidates:[c]},[source],'company',undefined,facts)[0];assert.equal(valid.fit_reasons?.length,1);assert.equal(valid.profile_quote,c.profile_quote);
+ assert.equal(groundedCandidates({candidates:[c]},[source],'company',undefined,[{...facts[0],text:'Unrelated product facts'}])[0].fit_reasons?.length,0);
+ assert.equal(groundedCandidates({candidates:[{...c,profile_quote:'Invented business',fit_reasons:[{...c.fit_reasons[0],company_quote:'Invented corporate business'}]}]},[source],'company',undefined,facts)[0].fit_reasons?.length,0);
+});
+test('external business sources require the selected company, person and role in the same quote',()=>{
+ const external={url:'https://news.example/story',text:'Jane Example is Operations Manager at PT Example.'},c={...person,source_url:external.url,email:'',official_company_site:false,evidence:external.text};
+ assert.equal(groundedCandidates({candidates:[c]},[external],'pic','official.example',[],'PT Example',true).length,1);
+ assert.deepEqual(groundedCandidates({candidates:[c]},[external],'pic','official.example',[],'Different Company',true),[]);
+ assert.deepEqual(groundedCandidates({candidates:[c]},[external],'pic','official.example'),[]);
+});

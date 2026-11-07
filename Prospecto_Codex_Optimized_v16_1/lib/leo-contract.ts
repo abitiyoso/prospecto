@@ -43,7 +43,8 @@ export function parseDraft(provider:AIProvider,body:any,allowedIds:string[]):{dr
   content=parts.filter((p:any)=>p?.type==='output_text').map((p:any)=>p.text).join('');
  }
  try{
-  const draft=z.object({subject:z.string().trim().min(1).max(300),body:z.string().trim().min(1).max(20000),rationale:z.string().max(2000),source_ids:z.array(z.string()).min(1).max(6)}).strict().parse(JSON.parse(content));
+  const json=provider==='9router'&&typeof content==='string'?content.trim().replace(/^```json\s*([\s\S]*?)\s*```$/i,'$1'):content;
+  const draft=z.object({subject:z.string().trim().min(1).max(300),body:z.string().trim().min(1).max(20000),rationale:z.string().max(2000),source_ids:z.array(z.string()).min(1).max(6)}).strict().parse(JSON.parse(json));
   if(draft.source_ids.some(id=>!allowedIds.includes(id))||/[\r\n]/.test(draft.subject))throw Error();
   const variables=(draft.subject+'\n'+draft.body).matchAll(/\{\{\s*([^}]+?)\s*\}\}/g);for(const m of variables)if(!['first_name','company','sender_name'].includes(m[1]))throw Error();
   return {draft,model:typeof body.model==='string'?body.model.slice(0,200):''};

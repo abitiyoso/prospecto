@@ -9,6 +9,7 @@ import { collectRows } from '@/lib/data';
 import { outreachInput, templateInput, outreachCapabilities } from '@/lib/outreach';
 import {paymentCapability,reportingInput,zones} from '@/lib/commercial';
 import {leadListInput} from '@/lib/lists';
+import {companyResearchProfile} from '@/lib/product-research';
 export async function POST(req:NextRequest) {
  if(!sameOrigin(req))return NextResponse.json({error:'Origin tidak valid'},{status:403});
  if(Number(req.headers.get('content-length')||0)>2_500_000)return NextResponse.json({error:'Permintaan terlalu besar'},{status:413});
@@ -34,6 +35,8 @@ export async function POST(req:NextRequest) {
   if(action==='billing.checkout'){const price=check(await db.from('commercial_catalog').select('id').eq('id',z.string().max(80).parse(input.price_id)).single());return NextResponse.json({error:paymentCapability.reason,price_id:price.id},{status:409});}
   if(['billing.cancel','billing.change'].includes(action))return NextResponse.json({error:'Perubahan langganan menunggu koneksi merchant dan konfirmasi provider.'},{status:409});
   if(action==='icp.save'){const v=icpInput.parse(input.values);check(await db.from('icp_profiles').upsert({...v,workspace_id:w},{onConflict:'workspace_id,product_id'}));return ok();}
+  if(action==='company.profile')return ok(await companyResearchProfile(db,w,uuid.parse(input.product_id),uuid.parse(input.company_id)));
+  if(action==='campaign.from_pics'){const ids=z.array(uuid).min(1).max(1000).parse(input.pic_ids);if(new Set(ids).size!==ids.length)throw Error('PIC terpilih berisi duplikat');const selected=check(await db.from('pic_candidates').select('id,email,verification,source_url').eq('workspace_id',w).in('id',ids));if(selected.length!==ids.length||selected.some(p=>p.verification!=='verified'||!p.email||!p.source_url))throw Error('Semua PIC terpilih harus ditinjau dan memiliki email bisnis beserta bukti.');const id=check(await db.rpc('create_campaign_from_pics',{w,p:uuid.parse(input.product_id),ids,campaign_name:z.string().trim().min(1).max(160).parse(input.name),draft_id:uuid.parse(input.request_id)}));return ok({id});}
   if(action==='company.save'){const v=companyInput.parse(input.values);check(await db.from('companies').upsert({...v,workspace_id:w,observed_at:new Date().toISOString()},{onConflict:'workspace_id,domain'}));return ok();}
   if(action==='pic.save'){const v=picInput.parse(input.values);if(input.id){const saved=check(await db.from('pic_candidates').update(v).eq('workspace_id',w).eq('id',uuid.parse(input.id)).select('id').single());return ok({id:saved.id});}const existing=check(await db.from('pic_candidates').select('id').eq('workspace_id',w).eq('company_id',v.company_id).ilike('name',v.name.replace(/[\\%_]/g,'\\$&')).eq('source_url',v.source_url).limit(1).maybeSingle());if(existing)return ok({id:existing.id,alreadyExists:true});const saved=check(await db.from('pic_candidates').insert({...v,workspace_id:w}).select('id').single());return ok({id:saved.id});}
   if(action==='pic.promote'){const id=check(await db.rpc('promote_pic',{w,pic:uuid.parse(input.id)}));return ok({id});}

@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "base": "http://127.0.0.1:3000",
+  "checks": [
+    "Unauthenticated production login gate, 200 and security headers",
+    "Server database health 200",
+    "Five cross-origin mutation boundaries reject 403",
+    "Worker authenticated dry check succeeds without processing a queue; unauthenticated request denied",
+    "Internal visual fixture routes unavailable"
+  ],
+  "at": "2026-11-07T06:27:57.477Z"
+}

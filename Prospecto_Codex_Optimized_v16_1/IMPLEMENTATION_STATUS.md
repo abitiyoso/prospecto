@@ -1,4 +1,9 @@
-# Current milestone: guided, grounded prospect discovery
+# Current milestone: product fit to selected-PIC campaign
+
+84 tests, TypeScript and production build passed. Real product/KMS search returned company profiles with reasons for fit; selecting one returned a sourced named PIC. Browser verified the email eligibility gate and exact selected audience. A separate QA-only recipient completed real 9Router generation and Hostinger SMTP acceptance. Hosted migration 12 preserves tenant RLS. [QA evidence and limits](qa/product-to-campaign-20261107/README.md).
+
+---
+# Historical milestone: guided, grounded prospect discovery
 
 81 tests and production build pass. Category/industry choices, multiple buyer roles, password visibility and the company → named PIC journey are implemented and verified through the actual UI. Saved-filter ambiguity and blank manual-only source review are fixed. No unpublished email or automatic verification is claimed. Evidence, screenshots and limits: [journey QA](qa/journey-20261107/README.md).
 

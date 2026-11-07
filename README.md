@@ -4,7 +4,7 @@ Kode aplikasi aktif berada di [Prospecto_Codex_Optimized_v16_1](Prospecto_Codex_
 
 Kode aplikasi, migrasi Supabase, pengujian, screenshot QA, dan petunjuk startup tersedia di folder tersebut. Status terperinci: [IMPLEMENTATION_STATUS.md](Prospecto_Codex_Optimized_v16_1/IMPLEMENTATION_STATUS.md).
 
-Status terbaru: pilihan kategori/industri, multi buyer roles, view password dan journey pencarian perusahaan → PIC bernama dari sumber publik sudah ditambahkan. 81 tes dan build lulus. [Laporan journey](Prospecto_Codex_Optimized_v16_1/qa/journey-20261107/README.md). Email yang tidak dipublikasikan belum tersedia.
+Status terbaru: produk/KMS → perusahaan dan alasan kecocokan → profil singkat → PIC bernama → draft campaign dari PIC terpilih. 84 tes dan build lulus; 9Router dan satu email uji ke mailbox sendiri diverifikasi. [Laporan journey](Prospecto_Codex_Optimized_v16_1/qa/product-to-campaign-20261107/README.md). PIC tanpa email bisnis bersumber dapat disimpan sebagai kandidat.
 
 Validasi sebelumnya: LEO memakai AI nyata melalui 9Router (`cx/gpt-6-luna`), dengan sumber KMS, riwayat tersimpan dan Apply/Save campaign yang sudah diuji. Tombol verifikasi/reset browser sudah diperbaiki. Sebanyak 77 tes dan build produksi lulus; uji lokal mencakup Auth, riset, leads, anggota, KMS PDF/DOCX/XLSX, campaign SMTP Hostinger ke mailbox sendiri dan backup–restore. Landing v7 dan workspace v15 tetap identik. Pembayaran masih dibypass untuk presentasi; hosting/domain belum dipasang. [Bukti QA](Prospecto_Codex_Optimized_v16_1/qa/acceptance-20261107/README.md).
 

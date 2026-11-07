@@ -1,6 +1,12 @@
 # Prospecto — functional presentation release
 
-## Current functional journey repair — 7 November 2026
+## Product → company → PIC → campaign — 7 November 2026
+
+Automatic company search uses the offered product, indexed knowledge and ICP; short company profiles and potential fit are backed by separate source and product quotes. Profiles reopen for the selected product. Named decision-maker candidates require evidence tying the person and role to the selected company. Unpublished email stays empty. Verified PIC selections across companies create a product-bound draft atomically, and LEO can use the chosen audience roles and company profiles.
+
+Live Firecrawl and 9Router found Singgahsini and ZIPKOS, plus a sourced PIC at Singgahsini without a public email. Browser QA verified the candidate is blocked from email and a separate controlled PIC goes directly into the campaign editor. The draft from that browser selection used 9Router with audience context and Hostinger accepted one test email to hello@elenio.id. 84 tests, production build, TypeScript, mobile overflow check and HTTP/secret smoke checks passed. Twelve hosted migrations, 39/39 RLS tables. See [QA results](qa/product-to-campaign-20261107/README.md). Production hosting and worker scheduling are still pending.
+
+## Previous functional journey repair — 7 November 2026
 
 Source-only web search and a saved-company filter were insufficient for a usable prospect journey. Product category/industry now have choices with legacy/custom preservation; buyer roles support multiple choices. Login/register/recovery include accessible password show/hide, reset to hidden when changing mode.
 

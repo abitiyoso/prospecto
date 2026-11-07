@@ -18,7 +18,7 @@ export async function POST(req:NextRequest){
   const ok=(v:unknown={ok:true})=>NextResponse.json(v);const isAdmin=['owner','admin'].includes(member.role);
   if(action==='kms.search')return ok({results:must(await db.rpc('search_knowledge',{w,p:uuid.parse(input.product_id),q:z.string().max(200).parse(input.query)}))});
   if(action==='kms.index')return ok(await indexSource(db,w,uuid.parse(input.source_id),user.id));
-  if(action==='leo.generate')return ok(await generateDraft(db,w,uuid.parse(input.product_id),user.id,z.string().trim().max(2000).parse(input.instruction||''),z.enum(['template','openai','ai']).parse(input.engine)));
+  if(action==='leo.generate')return ok(await generateDraft(db,w,uuid.parse(input.product_id),user.id,z.string().trim().max(2000).parse(input.instruction||''),z.enum(['template','openai','ai']).parse(input.engine),input.campaign_id?uuid.parse(input.campaign_id):undefined));
   if(action==='outreach.history'){
    const c=uuid.parse(input.campaign_id),offset=z.number().int().min(0).max(1000000).parse(input.offset||0);
    must(await db.from('campaigns').select('id').eq('workspace_id',w).eq('id',c).single());

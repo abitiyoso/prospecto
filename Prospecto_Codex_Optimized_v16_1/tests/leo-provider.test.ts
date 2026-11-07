@@ -19,6 +19,10 @@ test('provider errors remain actionable without exposing raw upstream diagnostic
 });
 test('both provider protocols preserve the actual model and validated source-linked draft',()=>{
  assert.deepEqual(parseDraft('9router',chat(),['product']),{draft,model:'actual-model'});
+ const audienceDraft={...draft,source_ids:['product','campaign-audience']};
+ const fenced=(value:unknown)=>({choices:[{finish_reason:'stop',message:{content:'```json\n'+JSON.stringify(value)+'\n```'}}]});
+ assert.deepEqual(parseDraft('9router',fenced(audienceDraft),['product','campaign-audience']).draft,audienceDraft);
+ assert.throws(()=>parseDraft('9router',fenced(audienceDraft),['product']),code('ai_invalid_draft'));
  assert.deepEqual(parseDraft('openai',{status:'completed',model:'direct-actual',output:[{content:[{type:'output_text',text:JSON.stringify(draft)}]}]},['product']),{draft,model:'direct-actual'});
 });
 test('refusals and incomplete output never become saved AI drafts',()=>{
