@@ -53,3 +53,43 @@
 .password-input input{width:100%;border:1px solid #e2e8f0;border-radius:9px;background:#fff;color:#111827;padding:11px 48px 11px 12px;min-height:42px}.password-field>label{margin:14px 0 7px}@media(max-width:700px){.prospecto-app .prospect-data>div{display:contents}.prospecto-app .target-card{order:0}.prospecto-app .research-panel{order:1}.prospecto-app .saved-companies{order:2}.prospecto-app .saved-pics{order:3}}
 .prospecto-app #prospect-target,.prospecto-app #prospect-search{scroll-margin-top:85px}@media(max-width:900px){.prospecto-app .prospect-data{display:flex;flex-direction:column}.prospecto-app .prospect-data>div{display:contents}.prospecto-app .target-card{order:0}.prospecto-app .research-panel{order:1}.prospecto-app .saved-companies{order:2}.prospecto-app .saved-pics{order:3}}
 .prospecto-app .company-assessment{margin:16px 0;overflow-wrap:anywhere}.prospecto-app .company-assessment details{margin:12px 0}.prospecto-app .company-assessment summary{line-height:1.7}.prospecto-app [aria-label="Campaign dari PIC terpilih"] .p-row{padding:12px 0;border-bottom:1px solid #e2e8f0}
+
+.prospect-journey{max-width:900px;scroll-margin-top:86px}
+.prospect-journey [hidden]{display:none}
+.prospecto-app .prospect-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 20px}
+.prospecto-app .prospect-steps li{padding:0;color:#526586}
+.prospect-steps li>span,.prospect-steps li>button{display:flex;align-items:center;min-height:44px;width:100%;padding:8px 12px;text-align:left}
+.prospect-steps li>button{border:0;border-radius:8px;background:transparent;color:#30318c;font-weight:650}
+.prospect-steps li[aria-current=step]{font-weight:750}
+.prospect-stage{min-width:0}
+.prospect-stage h2{color:#0b1e49;font-size:22px;line-height:1.25;margin:0 0 8px}
+.prospect-stage h2:focus,.prospect-stage h3:focus{outline:none}
+.prospect-stage .card,.prospect-stage-heading{margin:0 0 14px}
+.prospect-stage-heading .text-button{margin-bottom:10px;min-height:38px}
+.prospect-stage .p-actions{flex-wrap:wrap}
+.prospect-stage .btn{white-space:normal;max-width:100%;min-height:42px}
+.prospecto-app .prospect-stage button[aria-pressed=false]{background:#fff;color:#334155;border:1px solid #e2e8f0}
+.prospecto-app .prospect-stage button[aria-pressed=true]{border:1px solid #d8d0ee;font-weight:750}
+.prospect-stage summary{cursor:pointer;color:#30318c;font-weight:650}
+.prospect-stage .p-link{display:list-item}
+.prospect-stage .p-link svg{margin-right:5px}
+.prospect-stage .p-product-item{border-color:#e2e8f0}
+.prospect-stage .p-product-item:hover{background:#f9f7fe}
+.prospect-stage .outreach-toggle{margin:8px 0}
+.prospect-stage .saved-pics h4{margin:0}
+.prospect-stage .saved-pics .p-actions{align-items:flex-start}
+.prospect-stage .saved-pics details{margin-top:12px}
+.prospect-stage .research-review h3,.prospect-stage #prospect-saved-pics{scroll-margin-top:85px}
+.prospect-stage summary:focus{scroll-margin-top:85px}
+.prospect-target label{margin-block:10px}
+.prospect-target .buyer-roles-field p{margin-block:4px}
+.prospect-target .target-advanced{margin:8px 0 14px}
+.prospect-more-search{margin:0 0 14px}
+.prospect-selection{position:sticky;bottom:12px;z-index:2}
+.prospect-selection p{margin:0}
+@media(max-width:700px){
+ .prospecto-app .prospect-steps{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:14px}
+ .prospect-stage h2{font-size:20px}
+ .prospect-stage .p-form-grid{grid-template-columns:1fr}
+ .prospect-stage .p-actions>.btn{max-width:100%}
+}

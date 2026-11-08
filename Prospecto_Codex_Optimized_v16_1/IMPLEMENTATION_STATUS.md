@@ -1,5 +1,7 @@
 # Current milestone: manual production handoff
 
+9 November 2026. Find Prospects shows four sequential screens for product and target, company selection, PIC research, and draft review. Desktop and mobile browser checks covered live company and PIC results, indexed LinkedIn lookup, keyboard focus on step and review transitions, and the missing-email guard. Node 24 build, TypeScript and 86 tests passed. [Before and after QA](qa/prospect-flow-20261109/README.md).
+
 9 November 2026. Find Prospects can look up indexed LinkedIn profile URLs for a discovered or saved PIC. The lookup uses search metadata and shows links whose indexed title and employer match the selected person. Both entry points passed live API QA with an isolated workspace. Build and 86 tests passed.
 
 Source package, server preflight and default test recipient policy prepared. 85 tests, build, local preflight, dry worker and production dependency audit passed. Domain, Auth redirect and worker scheduling remain on the final hosting environment. [Upload instructions](MANUAL_UPLOAD.md).

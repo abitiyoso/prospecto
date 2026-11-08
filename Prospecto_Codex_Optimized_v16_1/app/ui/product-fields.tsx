@@ -1,7 +1,6 @@
 'use client';
 import {useState} from 'react';
 import {buyerRoles} from '@/lib/product-choices';
-export function focusProspectStep(id:'prospect-target'|'prospect-search'){const node=document.getElementById(id);node?.scrollIntoView({behavior:'smooth',block:'start'});node?.focus({preventScroll:true});}
 export function ChoiceField({name,label,options,defaultValue='',maxLength=500}:{name:string;label:string;options:string[];defaultValue?:string;maxLength?:number}){
  const [choice,setChoice]=useState(defaultValue&&!options.includes(defaultValue)?'__custom__':defaultValue),[custom,setCustom]=useState(defaultValue&&!options.includes(defaultValue)?defaultValue:'');
  return <div className="choice-field"><label>{label}<select aria-label={label} value={choice} onChange={e=>setChoice(e.target.value)}><option value="">Pilih {label.toLowerCase()}</option>{options.map(v=><option key={v}>{v}</option>)}<option value="__custom__">Lainnya…</option></select></label>{choice==='__custom__'&&<label>{label} lainnya<input value={custom} onChange={e=>setCustom(e.target.value)} maxLength={maxLength} required/></label>}<input type="hidden" name={name} value={choice==='__custom__'?custom:choice}/></div>;
