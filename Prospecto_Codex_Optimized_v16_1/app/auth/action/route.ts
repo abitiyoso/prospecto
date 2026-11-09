@@ -14,7 +14,11 @@ export async function POST(req:NextRequest) {
   if(action==='resend'){const {error}=await db.auth.resend({type:'signup',email,options:{emailRedirectTo:requestOrigin(req)+'/auth/confirm'}});if(error)throw error;return NextResponse.json({message:'Jika akun perlu dikonfirmasi, email konfirmasi baru akan dikirim.'});}
   const password=z.string().min(action==='signup'?12:1).max(128).parse(body.password);
   const result=action==='login'?await db.auth.signInWithPassword({email,password}):await db.auth.signUp({email,password,options:{emailRedirectTo:requestOrigin(req)+'/auth/confirm'}});
-  if(result.error) return NextResponse.json({error:action==='login'?'Email atau kata sandi tidak sesuai.':'Pendaftaran belum berhasil. Coba lagi atau gunakan email lain.'},{status:400});
+  if(result.error){
+   if(result.error.status===429)throw result.error;
+   if(action==='login'&&result.error.code==='email_not_confirmed')return NextResponse.json({error:'Email belum dikonfirmasi. Buka tautan di inbox atau pilih Kirim ulang konfirmasi.'},{status:400});
+   return NextResponse.json({error:action==='login'?'Email atau kata sandi tidak sesuai.':'Pendaftaran belum berhasil. Coba lagi atau gunakan email lain.'},{status:400});
+  }
   return NextResponse.json(result.data.session?{ok:true}:{message:'Periksa email Anda untuk mengonfirmasi akun, lalu masuk.'});
  } catch(e) {if(e&&typeof e==='object'&&'status' in e&&e.status===429)return NextResponse.json({error:'Permintaan email terlalu sering. Tunggu setidaknya satu menit sebelum mencoba lagi.'},{status:429});return NextResponse.json({error:'Permintaan belum berhasil. Periksa isian dan koneksi layanan.'},{status:400});}
 }

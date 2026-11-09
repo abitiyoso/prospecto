@@ -1,5 +1,7 @@
 # Current milestone: manual production handoff
 
+9 November 2026. The replacement Firecrawl account passed the credit check and real company/PIC searches through the local preview with hosted 9Router. A new signup required email confirmation. Login with the correct password now explains that confirmation is pending. An admin-generated test link confirmed the account through the app, allowed login, and was rejected on replay. The test email to a tagged Hostinger address bounced, so this run did not verify inbox delivery to a new recipient. Node.js 24 build and 86 tests passed.
+
 Hosted 9Router verification. The Elenio endpoint returned model metadata before OAuth but rejected generation because Codex had no active credentials. After Codex was connected, the preview switched to `https://9router.elenio.id/v1` and `cx/gpt-6-luna`. A structured response probe, local preflight, automatic company discovery and PIC research through the actual app API passed. The isolated QA search found Singgahsini and ZIPKOS, then a sourced decision maker at Singgahsini. The server API key is kept in the ignored environment file.
 
 9 November 2026. Find Prospects shows four sequential screens for product and target, company selection, PIC research, and draft review. Desktop and mobile browser checks covered live company and PIC results, indexed LinkedIn lookup, keyboard focus on step and review transitions, and the missing-email guard. Node 24 build, TypeScript and 86 tests passed. [Before and after QA](qa/prospect-flow-20261109/README.md).
