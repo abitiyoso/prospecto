@@ -1,4 +1,22 @@
-# Upload manual Prospecto
+# Deploy Prospecto ke production
+
+Production memakai `https://prospecto.elenio.id`. Arahkan deployment VPS/Docker ke branch `codex/prospecto-phase2` pada repository `abitiyoso/prospecto` dan pilih `Prospecto_Codex_Optimized_v16_1` sebagai root aplikasi. Di dalam container, jalankan `pnpm exec next start --hostname 0.0.0.0 --port 3000`. Reverse proxy yang melayani domain production meneruskan trafik ke port 3000 container.
+
+Masukkan nilai berikut di environment deployment dan buat ulang container setelah nilainya disimpan.
+
+| Variabel | Nilai di production |
+|---|---|
+| `APP_BASE_URL` | `https://prospecto.elenio.id` |
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://qmuwqwzmezbatvatawur.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key proyek Elenio. Sediakan saat build dan saat aplikasi berjalan. |
+| `SUPABASE_SECRET_KEY` | Secret key proyek Elenio. Sediakan saat aplikasi berjalan. `/api/health` memeriksa akses database dengan key ini. |
+| `FIRECRAWL_API_KEY` | Key akun Firecrawl baru yang telah diuji di preview. |
+| `AI_PROVIDER` | `9router` |
+| `NINE_ROUTER_BASE_URL` | `https://9router.elenio.id/v1` |
+| `NINE_ROUTER_MODEL` | `cx/gpt-6-luna` |
+| `NINE_ROUTER_API_KEY` | API key khusus Prospecto dari 9Router Elenio. |
+
+Salin nilai yang bersifat rahasia ke konfigurasi VPS atau secret store. Gunakan konfigurasi SMTP yang telah diuji, pertahankan `SMTP_DELIVERY_MODE=allowlist` selama pengujian, serta gunakan kembali `PROSPECTO_ENCRYPTION_KEY` dan `WORKER_SECRET` yang berlaku untuk data dan tautan pengiriman yang sudah ada.
 
 ## Paket aplikasi
 
@@ -8,7 +26,7 @@ Folder aplikasi adalah `Prospecto_Codex_Optimized_v16_1` di dalam repository, at
 2. Isi environment server dari `.env.example` sebelum build. Set `APP_BASE_URL` ke origin HTTPS final tanpa slash akhir. Jangan upload `.env.local` ke folder publik atau masukkan ke Git. Pertahankan `SMTP_DELIVERY_MODE=allowlist` untuk pemeriksaan awal.
 3. Jalankan `pnpm typecheck`, `pnpm test`, `pnpm build`, lalu `pnpm start`. Default server bind ke `127.0.0.1:3000`. Atur domain/TLS di panel hosting. Reverse proxy HTTPS harus meneruskan `Host` asli dan menimpa `X-Forwarded-Proto` dengan protokol TLS yang benar. Untuk platform yang membutuhkan bind semua interface gunakan `pnpm exec next start --hostname 0.0.0.0 --port 3000` pada jaringan hosting yang sesuai.
 4. Jalankan `pnpm release:check` dengan environment yang sama seperti proses web. Perintah mengecek HTTPS dan origin, health database, Supabase Auth, model 9Router, kredit Firecrawl, login SMTP, dan autentikasi worker. Perintah ini tidak membuat akun, menghasilkan draft, mengirim email, atau menjalankan antrean. `pnpm release:check --local` tersedia untuk preview loopback dan tidak menggantikan pemeriksaan dari server hosting.
-5. Di [Supabase Auth](https://supabase.com/docs/guides/auth/redirect-urls), ubah Site URL ke origin final dan tambahkan tepat `https://DOMAIN/auth/confirm` serta callback OAuth/legacy yang memang dipakai. Pertahankan konfirmasi email ON dan [custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp) Hostinger. Template ada di `supabase/templates/`; pengaturan SMTP/URL berada di dashboard. Di domain final, uji signup, tautan verifikasi, reset password, pencarian perusahaan/PIC, draft LEO dan satu email ke mailbox sendiri.
+5. Site URL proyek Elenio sudah disetel ke `https://prospecto.elenio.id`, dengan `https://prospecto.elenio.id/auth/confirm` sebagai redirect yang diizinkan. Redirect lokal tetap tersedia untuk pengujian. Pertahankan konfirmasi email dan custom SMTP Hostinger. Template ada di `supabase/templates/`. Di domain production, uji signup, tautan verifikasi, reset password, pencarian perusahaan/PIC, draft LEO, dan satu email ke mailbox sendiri. [Supabase Redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls) · [Supabase Custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp)
 6. Setelah uji tersebut lulus, jadwalkan worker jika membutuhkan pengiriman otomatis. Jalankan `pnpm worker` dengan supervisor/restart otomatis **atau** scheduler setiap menit yang melakukan POST `/api/worker` dengan header `Authorization: Bearer WORKER_SECRET`; gunakan salah satu. Satu panggilan memproses maksimal 3 langkah jatuh tempo; klaim database mencegah klaim ganda. `pnpm worker --once` adalah satu putaran aktif, sedangkan `pnpm worker --check` tidak mengambil antrean. Worker dan web harus memakai environment serta database yang sama. Jangan pasang secret pada URL.
 
 ## Environment dan data
@@ -41,4 +59,4 @@ Rollback aplikasi: checkout commit release sebelumnya dan build ulang. Jangan ro
 
 ## Batas kesiapan
 
-Hosting/domain/HTTPS dan URL Auth final masih manual. Pembayaran sengaja belum diaktifkan; pertahankan akses presentasi pada workspace yang membutuhkan campaign tanpa pembayaran. AI lokal sudah terhubung ke 9Router; pindahkan konfigurasi dan koneksi provider saat upload. Hosting harus memonitor `/api/health`, restart proses, dan mencatat kegagalan worker tanpa secret. Peringatan Supabase leaked-password protection perlu ditangani sesuai kemampuan paket Auth. Verifikasi/reset browser lokal sudah diuji; penerimaan email signup baru ke inbox pada domain final tetap perlu diperiksa.
+Domain production sudah melayani halaman Prospecto. Login dan pemakaian token konfirmasi berhasil di domain itu, sementara `/api/health` masih HTTP 503 saat diperiksa. Jalankan `pnpm release:check` dari konfigurasi VPS setelah memperbarui container. Pembayaran belum diaktifkan. Pertahankan akses presentasi pada workspace yang membutuhkannya. Pantau `/api/health`, restart proses, dan catat kegagalan worker tanpa mencatat secret.

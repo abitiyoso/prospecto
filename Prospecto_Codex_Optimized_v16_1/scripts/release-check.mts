@@ -31,7 +31,11 @@ const checks:[string,()=>Promise<void>][]=[
  ['HTTPS origin / app and database health',async()=>{const [app,health]=await Promise.all([request(new URL('/app',base)),request(new URL('/api/health',base))]);status(app,200);status(health,200);if(!(await app.text()).includes('Masuk ke workspace')||(await health.json()).ok!==true)throw Error('wrong app');}],
  ['Proxy preserves same origin; foreign origin denied',async()=>{const post=(origin:string)=>request(command,{method:'POST',headers:{origin,'Content-Type':'application/json'},body:'{}'});const [same,foreign]=await Promise.all([post(base.origin),post('https://foreign.invalid')]);status(same,401);status(foreign,403);}],
  ['Worker authentication and dry check (no queue processed)',async()=>{const post=(headers:HeadersInit={})=>request(worker,{method:'POST',headers});const [denied,dry]=await Promise.all([post(),post({Authorization:'Bearer '+env.WORKER_SECRET})]);status(denied,401);status(dry,200);const v=await dry.json();if(v.ok!==true||v.queueProcessed!==false)throw Error('wrong worker response');}],
- ['Supabase Auth settings endpoint',async()=>{const r=await request(new URL('/auth/v1/settings',supabase),{headers:{apikey:env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!}});status(r,200);}],
+ ['Supabase Auth requires email confirmation',async()=>{
+   const r=await request(new URL('/auth/v1/settings',supabase),{headers:{apikey:env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!}});
+   status(r,200);
+   if((await r.json()).mailer_autoconfirm!==false)throw Error('Email confirmation is disabled');
+ }],
  ['AI provider lists configured model (no generation)',async()=>{const r=await request(aiConnection.baseURL+'/models',{headers:{Authorization:'Bearer '+aiConnection.apiKey}});status(r,200);const v=await r.json();if(!Array.isArray(v.data)||!v.data.some((m:{id?:string})=>m?.id===aiConnection.model))throw Error('model not listed');}],
  ['Firecrawl account has research credits (no search)',async()=>{const r=await request('https://api.firecrawl.dev/v2/team/credit-usage',{headers:{Authorization:'Bearer '+env.FIRECRAWL_API_KEY}});status(r,200);const v=await r.json();if(v.success!==true||!(v.data?.remainingCredits>0))throw Error('research unavailable');}],
  ['Platform SMTP TLS and login (no email sent)',async()=>{const transport=await smtpTransport(smtpConnection);try{await transport.verify();}finally{transport.close();}}],
