@@ -1,5 +1,7 @@
 # Current milestone: manual production handoff
 
+Hosted 9Router verification. The Elenio endpoint returned model metadata before OAuth but rejected generation because Codex had no active credentials. After Codex was connected, the preview switched to `https://9router.elenio.id/v1` and `cx/gpt-6-luna`. A structured response probe, local preflight, automatic company discovery and PIC research through the actual app API passed. The isolated QA search found Singgahsini and ZIPKOS, then a sourced decision maker at Singgahsini. The server API key is kept in the ignored environment file.
+
 9 November 2026. Find Prospects shows four sequential screens for product and target, company selection, PIC research, and draft review. Desktop and mobile browser checks covered live company and PIC results, indexed LinkedIn lookup, keyboard focus on step and review transitions, and the missing-email guard. Node 24 build, TypeScript and 86 tests passed. [Before and after QA](qa/prospect-flow-20261109/README.md).
 
 9 November 2026. Find Prospects can look up indexed LinkedIn profile URLs for a discovered or saved PIC. The lookup uses search metadata and shows links whose indexed title and employer match the selected person. Both entry points passed live API QA with an isolated workspace. Build and 86 tests passed.
