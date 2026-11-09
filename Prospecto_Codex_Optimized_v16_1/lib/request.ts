@@ -1,5 +1,11 @@
+import {applicationOrigin,isLoopback} from './delivery-policy';
+
 export class RequestTooLarge extends Error { constructor(){super('Permintaan terlalu besar');} }
 export function requestOrigin(request:Request):string {
+ // TLS ends at the reverse proxy. Use the configured public origin for
+ // production redirects and CSRF checks instead of incoming proxy headers.
+ const publicOrigin=applicationOrigin(process.env.APP_BASE_URL);
+ if(publicOrigin?.protocol==='https:'&&!isLoopback(publicOrigin.hostname))return publicOrigin.origin;
  const url=new URL(request.url);
  const host=request.headers.get('host');
  if(host)url.host=host;

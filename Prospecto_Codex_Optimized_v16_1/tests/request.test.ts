@@ -1,10 +1,23 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {readBody,RequestTooLarge,sameOrigin} from '../lib/request';
+import {readBody,RequestTooLarge,requestOrigin,sameOrigin} from '../lib/request';
 test('CSRF accepts actual request host when framework normalizes URL hostname',()=>{
  const req=(origin:string,host='127.0.0.1:3189')=>new Request('http://localhost:3189/auth/action',{headers:{host,origin}});
  assert.equal(sameOrigin(req('http://127.0.0.1:3189')),true);
  for(const origin of ['https://foreign.example','null','http://127.0.0.1:3190','http://127.0.0.1:3189/path'])assert.equal(sameOrigin(req(origin)),false);
+});
+test('TLS-terminating proxy uses the configured public origin for CSRF and redirects',()=>{
+ const original=process.env.APP_BASE_URL;
+ process.env.APP_BASE_URL='https://app.example';
+ try {
+  const req=(origin:string)=>new Request('http://localhost:3000/auth/action',{method:'POST',headers:{host:'app.example',origin,'x-forwarded-proto':'http','x-forwarded-host':'foreign.example'}});
+  assert.equal(requestOrigin(req('https://app.example')),'https://app.example');
+  assert.equal(sameOrigin(req('https://app.example')),true);
+  for(const origin of ['http://app.example','http://localhost:3000','https://foreign.example'])assert.equal(sameOrigin(req(origin)),false);
+ } finally {
+  if(original===undefined)delete process.env.APP_BASE_URL;
+  else process.env.APP_BASE_URL=original;
+ }
 });
 test('request body limits protect declared and chunked payloads',async()=>{
  const req=(body:string,headers:Record<string,string>={})=>new Request('http://localhost',{method:'POST',body,headers});
